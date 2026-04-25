@@ -4,6 +4,7 @@ import SidebarStepper from "../components/SidebarStepper";
 import VerificationList from "../components/VerificationList";
 import ActionButtons from "../components/ActionButtons";
 import AddressStep from "../components/AddressStep";
+import IdDetails from "../components/IdDetails";
 
 export default function VerificationPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -73,6 +74,10 @@ export default function VerificationPage() {
           {/* STEP 2 : Address */}
           {currentStep === 1 && (
             <AddressStep onNext={handleNext} />
+          )}
+
+          {currentStep === 2 && (
+            <IdDetails onNext={handleNext} />
           )}
 
         </div>

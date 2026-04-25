@@ -4,6 +4,7 @@ import UploadBox from "./UploadBox";
 import UploadSuccess from "./UploadSuccess";
 import PermanentAddressSection from "./PermanentAddressSection";
 
+
 export default function AddressStep({ onNext }) {
   const [aadhaar, setAadhaar] = useState("");
   const [showOtp, setShowOtp] = useState(false);
@@ -20,6 +21,8 @@ export default function AddressStep({ onNext }) {
   const [uploaded, setUploaded] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [fileName, setFileName] = useState("");
+
+  
 
  const handleSubmit = () => {
   // First click = open OTP
