@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import LoginPage from "./pages/LoginPage";
 import VerificationPage from "./pages/VerificationPage";
 
 function App() {
@@ -7,7 +6,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<VerificationPage />} />
-        <Route path="/verification" element={<VerificationPage />} />
+        {/* <Route path="/verification" element={<VerificationPage />} /> */}
       </Routes>
     </BrowserRouter>
   );
