@@ -5,6 +5,7 @@ import VerificationList from "../components/VerificationList";
 import ActionButtons from "../components/ActionButtons";
 import AddressStep from "../components/AddressStep";
 import IdDetails from "../components/IdDetails";
+import Employment from "../components/Employment";
 
 export default function VerificationPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -79,6 +80,12 @@ export default function VerificationPage() {
           {currentStep === 2 && (
             <IdDetails onNext={handleNext} />
           )}
+          {currentStep === 3 && (
+            <Employment onNext={handleNext} />
+          )}
+          {/* {currentStep === 4 && (
+            <Education onNext={handleNext} />
+          )} */}
 
         </div>
       </div>
