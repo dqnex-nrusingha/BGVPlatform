@@ -8,7 +8,7 @@ function Employment({ onNext }) {
   const [formData, setFormData] = useState(null);
 
   return (
-    <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm p-10 min-h-screen">
+    <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm p-10 min-h-72">
       <h2 className="text-blue-900 text-2xl font-bold">
         Employment Details
       </h2>
