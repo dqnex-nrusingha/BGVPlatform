@@ -6,6 +6,8 @@ import ActionButtons from "../components/ActionButtons";
 import AddressStep from "../components/AddressStep";
 import IdDetails from "../components/IdDetails";
 import Employment from "../components/Employment";
+import Education from "../components/Education";
+import DrugTestStep from "../components/DrugTestStep";
 
 export default function VerificationPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -83,9 +85,12 @@ export default function VerificationPage() {
           {currentStep === 3 && (
             <Employment onNext={handleNext} />
           )}
-          {/* {currentStep === 4 && (
+          {currentStep === 4 && (
             <Education onNext={handleNext} />
-          )} */}
+          )}
+          {currentStep === 5 && (
+            <DrugTestStep onNext={handleNext} />
+          )}
 
         </div>
       </div>
