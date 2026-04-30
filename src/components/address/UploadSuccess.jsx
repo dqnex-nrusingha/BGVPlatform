@@ -1,5 +1,3 @@
-// src/components/UploadSuccess.jsx
-
 export default function UploadSuccess({
   fileName = "document.pdf",
   fileSize = "232 KB",
