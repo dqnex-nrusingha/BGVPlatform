@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function SidebarStepper({
   currentStep,
   onStepBack,
+  onStepClick,
 }) {
   const navigate = useNavigate();
 
@@ -19,9 +20,13 @@ export default function SidebarStepper({
     <div className="pt-8 pl-20 flex flex-col h-[calc(100vh-110px)] sticky top-6">
       
       {/* Steps */}
-      <div className="flex-1 space-y-1 overflow-y-auto pr-2">
+      <div className="flex-1 space-y-2 overflow-y-auto pr-2">
         {steps.map((step, index) => (
-          <div key={index} className="flex gap-4">
+          <div
+            key={index}
+            onClick={() => onStepClick(index)}   // ✅ CLICK ENABLED
+            className="flex gap-4 cursor-pointer hover:opacity-80 transition"
+          >
             
             {/* Dot + Line */}
             <div className="flex flex-col items-center">
@@ -33,10 +38,10 @@ export default function SidebarStepper({
                     ? "bg-green-500"
                     : "bg-gray-300"
                 }`}
-              ></div>
+              />
 
               {index !== steps.length - 1 && (
-                <div className="w-px h-10 bg-gray-300"></div>
+                <div className="w-px h-10 bg-gray-300" />
               )}
             </div>
 
@@ -50,16 +55,16 @@ export default function SidebarStepper({
                   : "text-gray-400"
               }`}
             >
-              {step}
+              {step.name}   {/* ✅ FIXED */}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Back Button Always Visible */}
+      {/* Back Button */}
       <button
         onClick={handleBack}
-        className="mt-4 ml-2 w-fit px-6 h-9 rounded-xl border border-indigo-400 text-indigo-700 text-sm hover:bg-white transition shrink-0"
+        className="mt-4 ml-2 w-fit px-6 h-9 rounded-xl border border-indigo-400 text-indigo-700 text-sm hover:bg-white transition"
       >
         ← Back
       </button>
