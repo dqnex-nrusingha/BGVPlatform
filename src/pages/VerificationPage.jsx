@@ -115,8 +115,8 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import SidebarStepper from "../components/SidebarStepper";
-import VerificationList from "../components/VerificationList";
-import ActionButtons from "../components/ActionButtons";
+import VerificationList from "../components/concent/VerificationList";
+import ActionButtons from "../components/concent/ActionButtons";
 import AddressStep from "../components/address/AddressStep";
 import IdDetails from "../components/IdDetails";
 import Employment from "../components/employment/Employment";
@@ -125,9 +125,14 @@ import DrugTestStep from "../components/drug/DrugTestStep";
 import CriminalCheck from "../components/criminal/CriminalCheck";
 import ReferenceCheck from "../components/reference/ReferenceCheck";
 import ReviewSubmit from "../components/review/ReviewSubmit";
+import { useLocation } from "react-router-dom";
 
 export default function VerificationPage() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const location = useLocation();
+
+const [currentStep, setCurrentStep] = useState(
+  location.state?.step ?? 0
+);
 
   const handleNext = () => {
     if (currentStep < 8) {
