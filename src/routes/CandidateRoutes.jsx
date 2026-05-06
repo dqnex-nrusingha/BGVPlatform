@@ -1,0 +1,19 @@
+import { Routes, Route } from "react-router-dom";
+
+import LoginPage from "../pages/candidate/LoginPage";
+import VerificationPage from "../pages/candidate/VerificationPage";
+import ForgotPassword from "../components/candidate/login/ForgotPassword";
+import DigiLockerPage from "../components/candidate/digilocker/DigiLockerPage";
+
+function CandidateRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="verification" element={<VerificationPage />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="digilocker" element={<DigiLockerPage />} />
+    </Routes>
+  );
+}
+
+export default CandidateRoutes;

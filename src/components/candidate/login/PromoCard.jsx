@@ -1,5 +1,5 @@
-import student from "../../assets/student.png";
-import bgPattern from "../../assets/promocard.png";
+import student from "../../../assets/student.png";
+import bgPattern from "../../../assets/promocard.png";
 
 export default function PromoCard() {
   return (

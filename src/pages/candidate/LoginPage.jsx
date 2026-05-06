@@ -1,6 +1,6 @@
 
-import LoginForm from "../components/login/LoginForm";
-import PromoCard from "../components/login/PromoCard";
+import LoginForm from "../../components/candidate/login/LoginForm";
+import PromoCard from "../../components/candidate/login/PromoCard";
 
 export default function LoginPage() {
   return (
