@@ -1,11 +1,12 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import Header from "../components/common/Header"; // ✅ import header
 
 function AdminLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("role");
-    navigate("/admin/login");
+    localStorage.clear(); // better than removing only role
+    navigate("/admin/login");   // ✅ you are using /login for admin
   };
 
   return (
@@ -28,9 +29,17 @@ function AdminLayout() {
         </button>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-100 overflow-auto">
-        <Outlet />
+      {/* Right Side */}
+      <div className="flex-1 flex flex-col">
+
+        {/* ✅ Header always on top */}
+        <Header />
+
+        {/* Page Content */}
+        <div className="flex-1 p-6 bg-gray-100 overflow-auto">
+          <Outlet />
+        </div>
+
       </div>
 
     </div>
