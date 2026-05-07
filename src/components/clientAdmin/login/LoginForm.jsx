@@ -127,7 +127,7 @@ export default function LoginForm() {
       );
 
       // ✅ Redirect to admin dashboard
-      navigate("/admin/dashboard");
+      navigate("/admin/home");
     } else {
       alert("Invalid email or password");
     }

@@ -1,0 +1,199 @@
+import React, { useState, useEffect } from "react";
+
+import {
+  Home,
+  Users,
+  BarChart3,
+  BadgeCheck,
+  ReceiptText,
+  LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
+} from "lucide-react";
+
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
+
+function Sidebar() {
+  const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(true);
+  const [isHovering, setIsHovering] =
+    useState(false);
+
+  // LOAD SIDEBAR STATE
+  useEffect(() => {
+    const saved =
+      localStorage.getItem("sidebarOpen");
+
+    if (saved !== null) {
+      setIsOpen(JSON.parse(saved));
+    }
+  }, []);
+
+  // SAVE SIDEBAR STATE
+  useEffect(() => {
+    localStorage.setItem(
+      "sidebarOpen",
+      JSON.stringify(isOpen)
+    );
+  }, [isOpen]);
+
+  // LOGOUT
+  const handleLogout = () => {
+    localStorage.clear();
+
+    navigate("/login");
+  };
+
+  // MENU ITEMS
+  const menu = [
+    {
+      name: "Home",
+      icon: Home,
+      path: "/admin/home",
+    },
+
+    {
+      name: "Candidate",
+      icon: Users,
+      path: "/admin/candidates",
+    },
+
+    {
+      name: "Analytics",
+      icon: BarChart3,
+      path: "/admin/analytics",
+    },
+
+    {
+      name: "HR",
+      icon: BadgeCheck,
+      path: "/admin/hr",
+    },
+
+    {
+      name: "Billing",
+      icon: ReceiptText,
+      path: "/admin/billing",
+    },
+  ];
+
+  const expanded = isOpen || isHovering;
+
+  return (
+    <div
+      onMouseEnter={() =>
+        !isOpen && setIsHovering(true)
+      }
+      onMouseLeave={() =>
+        setIsHovering(false)
+      }
+      className={`${
+        expanded ? "w-64" : "w-20"
+      } h-full bg-white border-r border-gray-200 flex flex-col justify-between transition-all duration-300 shadow-sm`}
+    >
+
+      {/* TOP SECTION */}
+      <div className="p-4">
+
+        {/* TOGGLE BUTTON */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="mb-8 p-2 rounded-lg hover:bg-gray-100 transition"
+        >
+          {expanded ? (
+            <PanelLeftClose size={20} />
+          ) : (
+            <PanelLeftOpen size={20} />
+          )}
+        </button>
+
+        {/* MENU */}
+        <div className="space-y-3">
+
+          {menu.map((item, index) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={index}
+                to={item.path}
+                className={({ isActive }) =>
+                  `group relative flex items-center ${
+                    expanded
+                      ? "gap-3 px-4"
+                      : "justify-center"
+                  } py-3 rounded-xl transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#E8E8FF] text-[#1E1B8F] border border-[#6366F1]"
+                      : "text-[#1E1B8F] hover:bg-gray-100"
+                  }`
+                }
+              >
+
+                {/* ICON */}
+                <Icon
+                  size={20}
+                  strokeWidth={2}
+                />
+
+                {/* TEXT */}
+                {expanded && (
+                  <span className="text-sm font-medium">
+                    {item.name}
+                  </span>
+                )}
+
+                {/* TOOLTIP */}
+                {!expanded && (
+                  <span className="absolute left-16 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition z-50">
+                    {item.name}
+                  </span>
+                )}
+              </NavLink>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* LOGOUT */}
+      <div className="p-4 border-t border-gray-100">
+
+        <button
+          onClick={handleLogout}
+          className={`group relative flex items-center ${
+            expanded
+              ? "gap-3 px-4"
+              : "justify-center"
+          } py-3 w-full rounded-xl text-red-500 hover:bg-red-50 transition-all duration-200`}
+        >
+
+          {/* ICON */}
+          <LogOut
+            size={20}
+            strokeWidth={2}
+          />
+
+          {/* TEXT */}
+          {expanded && (
+            <span className="text-sm font-medium">
+              Logout
+            </span>
+          )}
+
+          {/* TOOLTIP */}
+          {!expanded && (
+            <span className="absolute left-16 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition z-50">
+              Logout
+            </span>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Sidebar;
