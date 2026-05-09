@@ -1,25 +1,50 @@
-import { useState } from "react"
-import Pagination from "../../components/clientAdmin/home/Pagination"
-import ProfileHeader from "../../components/clientAdmin/home/ProfileHeader"
-import TableSection from "../../components/clientAdmin/home/TableSection"
-import TableToolbar from "../../components/clientAdmin/home/TableToolbar"
+import ProfileHeader from "../../components/clientAdmin/home/ProfileHeader";
 
+import OverviewSection from "../../components/clientAdmin/home/OverviewSection";
 
-const Home = () => {
-  const [page, setPage] = useState(1);
-  const totalPages = 9;
+import RecentProfiles from "../../components/clientAdmin/home/RecentProfiles";
+
+import MessagePanel from "../../components/clientAdmin/home/MessagePanel";
+
+function Home() {
+
   return (
-    <div className="p-4 flex flex-col">
-      <ProfileHeader showExport={false} showAddCandidate={true}/>
-      <TableToolbar/>
-      <TableSection/>
-      <div className="mt-6">
-        <Pagination currentPage={page}
-          totalPages={9}
-          onPageChange={setPage}/>
-      </div>    
+    <div className="p-5">
+
+      {/* HEADER */}
+      <ProfileHeader
+        showExport={false}
+        showCreateHR={false}
+      />
+
+      {/* MAIN */}
+      <div className="grid grid-cols-12 gap-5 mt-6">
+
+        {/* LEFT */}
+        <div className="col-span-8">
+
+          <OverviewSection />
+
+        </div>
+
+        {/* CENTER */}
+        <div className="col-span-2">
+
+          <RecentProfiles />
+
+        </div>
+
+        {/* RIGHT */}
+        <div className="col-span-2">
+
+          <MessagePanel />
+
+        </div>
+
+      </div>
+
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
