@@ -62,17 +62,18 @@ function Sidebar() {
       path: "/admin/candidates",
     },
 
+     {
+      name: "HR",
+      icon: BadgeCheck,
+      path: "/admin/hr",
+    },
+
     {
       name: "Analytics",
       icon: BarChart3,
       path: "/admin/analytics",
     },
 
-    {
-      name: "HR",
-      icon: BadgeCheck,
-      path: "/admin/hr",
-    },
 
     {
       name: "Billing",

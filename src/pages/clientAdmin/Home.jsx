@@ -13,9 +13,11 @@ const Home = () => {
       <ProfileHeader showExport={false} showAddCandidate={true}/>
       <TableToolbar/>
       <TableSection/>
-      <Pagination currentPage={page}
-        totalPages={9}
-        onPageChange={setPage}/>
+      <div className="mt-6">
+        <Pagination currentPage={page}
+          totalPages={9}
+          onPageChange={setPage}/>
+      </div>    
     </div>
   )
 }

@@ -4,7 +4,8 @@ export const tableData = [
     first_name: "Ananya",
     last_name: "Iyer",
     Email: "ananya.iyer@example.com",
-    Phone: "+91 98200 00001",
+    Phone: "+91 9820000001",
+    status: "Active",
   },
 
   {
@@ -12,7 +13,8 @@ export const tableData = [
     first_name: "Advait",
     last_name: "Joshi",
     Email: "advait.joshi@mail.com",
-    Phone: "+91 81234 56789",
+    Phone: "+91 8123456789",
+    status: "Active",
   },
 
   {
@@ -20,7 +22,8 @@ export const tableData = [
     first_name: "Niten",
     last_name: "Sharma",
     Email: "nitenkumar34@gmail.com",
-    Phone: "+91 98200 00002",
+    Phone: "+91 9820000002",
+    status: "In Active",
   },
 
   {
@@ -28,7 +31,8 @@ export const tableData = [
     first_name: "Reyansh",
     last_name: "Reddy",
     Email: "niten.sharma@webmail.org",
-    Phone: "+91 98200 00003",
+    Phone: "+91 9820000003",
+    status: "Terminated",
   },
 
   {
@@ -36,7 +40,8 @@ export const tableData = [
     first_name: "Sia",
     last_name: "Banerjee",
     Email: "sia.banerjee@example.com",
-    Phone: "+91 70123 45678",
+    Phone: "+91 7012345678",
+    status: "In Active",
   },
 
   {
@@ -44,7 +49,8 @@ export const tableData = [
     first_name: "Myra",
     last_name: "Kulkarni",
     Email: "myra.kulkarni@mail.com",
-    Phone: "+91 91234 43210",
+    Phone: "+91 9123443210",
+    status: "Active",
   },
 
   {
@@ -52,22 +58,7 @@ export const tableData = [
     first_name: "Navya",
     last_name: "Sharma",
     Email: "nitenkumar34@gmail.com",
-    Phone: "+91 77665 54433",
-  },
-
-  {
-    cand_id: "SAL-876-C",
-    first_name: "Inaya",
-    last_name: "Mirza",
-    Email: "navya.sharma@webmail.org",
-    Phone: "+91 95000 11122",
-  },
-
-  {
-    cand_id: "CORP-101",
-    first_name: "Diya",
-    last_name: "Verma",
-    Email: "diya.verma@example.com",
-    Phone: "+91 96000 22233",
+    Phone: "+91 7766554433",
+    status: "Active",
   },
 ];

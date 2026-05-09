@@ -3,6 +3,8 @@ import {
   Pencil,
   Mail,
   Ban,
+  PauseCircle,
+  XCircle,
   MoreVertical,
 } from "lucide-react";
 
@@ -99,6 +101,10 @@ function TableSection({ isToolBarRequired }) {
             </th>
 
             <th className="px-4 py-4 text-left font-semibold">
+              Status
+            </th>
+
+            <th className="px-4 py-4 text-left font-semibold">
               Phone
             </th>
 
@@ -143,6 +149,27 @@ function TableSection({ isToolBarRequired }) {
               <td className="px-4 py-5 text-gray-600">
                 {item.Email}
               </td>
+              {/* STATUS */}
+            <td className="px-4 py-4">
+
+              <span
+                className={`px-4 py-1 rounded-full text-xs font-medium ${
+                  item.status === "Active"
+                    ? "bg-green-100 text-green-600"
+
+                    : item.status === "In Active"
+                    ? "bg-orange-100 text-orange-500"
+
+                    : item.status === "Terminated"
+                    ? "bg-red-100 text-red-500"
+
+                    : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                {item.status}
+              </span>
+
+            </td>
 
               {/* PHONE */}
               <td className="px-4 py-5 text-gray-700">
@@ -179,11 +206,13 @@ function TableSection({ isToolBarRequired }) {
 
                       {/* VIEW */}
                       <div
-                        onClick={() =>
+                        onClick={() => {
+                          setOpenMenu(null);
+
                           navigate(
-                            `/candidate/${item.cand_id}`
-                          )
-                        }
+                            `/admin/view-hr`
+                          );
+                        }}
                         className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
                       >
                         <Eye
@@ -193,25 +222,25 @@ function TableSection({ isToolBarRequired }) {
                         View
                       </div>
 
+                      
                       {/* EDIT */}
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
+                    <div
+                      onClick={(e) => {
 
-                          setOpenMenu(null);
+                        e.stopPropagation();
 
-                          navigate(
-                            `/candidate/edit/${item.cand_id}`
-                          );
-                        }}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
-                      >
-                        <Pencil
-                          size={17}
-                          className="text-gray-600"
-                        />
-                        Edit
-                      </div>
+                        setOpenMenu(null);
+
+                        navigate("/admin/edit-hr");
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
+                    >
+                      <Pencil
+                        size={17}
+                        className="text-gray-600"
+                      />
+                      Edit
+                    </div>
 
                       {/* SEND EMAIL */}
                       <div
@@ -224,12 +253,20 @@ function TableSection({ isToolBarRequired }) {
                         Send Email
                       </div>
 
-                      {/* TERMINATE */}
+                      {/* ON HOLD */}
+                      <div
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-yellow-50 cursor-pointer text-sm text-yellow-600 transition"
+                      >
+                        <PauseCircle size={17} />
+                        On Hold
+                      </div>
+
+                      {/* REJECT */}
                       <div
                         className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 cursor-pointer text-sm text-red-500 transition"
                       >
-                        <Ban size={17} />
-                        Terminate
+                        <XCircle size={17} />
+                        Reject
                       </div>
 
                     </div>
