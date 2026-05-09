@@ -56,7 +56,7 @@ const ProfileHeader = ({
       {/* LEFT */}
       <div>
 
-        <h1 className="text-[38px] font-bold text-black leading-tight">
+        <h1 className="text-[30px] font-bold text-black leading-tight">
           {title}
         </h1>
 
