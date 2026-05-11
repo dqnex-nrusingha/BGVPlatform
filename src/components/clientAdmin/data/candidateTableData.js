@@ -60,7 +60,7 @@ export const candidateTableData = [
     caseId: "CASE-6567FAFB",
     name: "Bibek Sudiyari",
     email: "nitenkumar34@gmail.com",
-    phone: "123456789",
+    phone: "+91 823487789",
     progress: 43,
     status: "In Progress",
   },

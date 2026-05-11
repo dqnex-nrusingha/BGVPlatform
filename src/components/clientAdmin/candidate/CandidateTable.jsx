@@ -1,9 +1,5 @@
 import {
   MoreVertical,
-  Eye,
-  Pencil,
-  Mail,
-  Ban,
 } from "lucide-react";
 
 import {
@@ -14,14 +10,19 @@ import {
 
 import { candidateTableData } from "../../../components/clientAdmin/data/candidateTableData";
 
+import ActionDropdown from "../candidate/ActionDropdown";
+
 function CandidateTable() {
+
   const [openMenu, setOpenMenu] = useState(null);
 
   const menuRef = useRef(null);
 
   // CLOSE DROPDOWN ON OUTSIDE CLICK
   useEffect(() => {
+
     const handleClickOutside = (event) => {
+
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target)
@@ -36,16 +37,20 @@ function CandidateTable() {
     );
 
     return () => {
+
       document.removeEventListener(
         "mousedown",
         handleClickOutside
       );
     };
+
   }, []);
 
   // STATUS COLORS
   const getStatusStyle = (status) => {
+
     switch (status) {
+
       case "In Progress":
         return "bg-orange-100 text-orange-500";
 
@@ -58,13 +63,20 @@ function CandidateTable() {
       case "Complete":
         return "bg-green-100 text-green-600";
 
+      case "On Hold":
+        return "bg-yellow-100 text-yellow-600";
+
+      case "Rejected":
+        return "bg-red-100 text-red-500";
+
       default:
         return "bg-gray-100 text-gray-500";
     }
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-visible shadow-sm">
 
       <table className="w-full border-collapse">
 
@@ -106,6 +118,7 @@ function CandidateTable() {
             </th>
 
           </tr>
+
         </thead>
 
         {/* BODY */}
@@ -114,7 +127,7 @@ function CandidateTable() {
           {candidateTableData.map((item, index) => (
 
             <tr
-              key={item.id}
+              key={item.id || index}
               className="border-b border-gray-100 hover:bg-[#FAFAFA] transition-all duration-150"
             >
 
@@ -199,6 +212,7 @@ function CandidateTable() {
                   {/* MENU BUTTON */}
                   <button
                     onClick={(e) => {
+
                       e.stopPropagation();
 
                       setOpenMenu(
@@ -209,67 +223,99 @@ function CandidateTable() {
                     }}
                     className="p-2 rounded-lg hover:bg-gray-100 transition"
                   >
+
                     <MoreVertical
                       size={18}
                       className="text-gray-500"
                     />
+
                   </button>
 
                   {/* DROPDOWN */}
                   {openMenu === index && (
 
                     <div
-                        className={`absolute right-12 w-44 bg-white rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-gray-100 z-9999 py-2 ${
-                            index >= candidateTableData.length - 3
-                            ? "bottom-10"
-                            : "top-10"
-                        }`}
-                        >
+                      className={`absolute right-12 w-56 z-9999 ${
+                        index >= candidateTableData.length - 3
+                          ? "bottom-10"
+                          : "top-10"
+                      }`}
+                    >
 
-                      {/* VIEW */}
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 text-sm text-gray-700 transition">
+                      <ActionDropdown
 
-                        <Eye size={16} />
+                        onView={() => {
 
-                        View
-                      </button>
+                          console.log("View");
 
-                      {/* EDIT */}
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 text-sm text-gray-700 transition">
+                          setOpenMenu(null);
+                        }}
 
-                        <Pencil size={16} />
+                        onEdit={() => {
 
-                        Edit
-                      </button>
+                          console.log("Edit");
 
-                      {/* SEND EMAIL */}
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 text-sm text-gray-700 transition">
+                          setOpenMenu(null);
+                        }}
 
-                        <Mail
-                          size={16}
-                          className="text-blue-500"
-                        />
+                        onEmail={() => {
 
-                        Send Email
-                      </button>
+                          console.log("Send Email");
 
-                      {/* TERMINATE */}
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 text-sm text-red-500 transition">
+                          setOpenMenu(null);
+                        }}
 
-                        <Ban size={16} />
+                        onAssignHr={() => {
 
-                        Terminate
-                      </button>
+                          console.log("Assign HR");
+
+                          setOpenMenu(null);
+                        }}
+
+                        onAuditLog={() => {
+
+                          console.log("Audit Log");
+
+                          setOpenMenu(null);
+                        }}
+
+                        onAssignVerification={() => {
+
+                          console.log("Assign Verification");
+
+                          setOpenMenu(null);
+                        }}
+
+                        onHold={() => {
+
+                          console.log("On Hold");
+
+                          setOpenMenu(null);
+                        }}
+
+                        onReject={() => {
+
+                          console.log("Reject");
+
+                          setOpenMenu(null);
+                        }}
+
+                      />
 
                     </div>
                   )}
+
                 </div>
+
               </td>
 
             </tr>
           ))}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }

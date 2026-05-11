@@ -279,11 +279,11 @@ function CreateHRForm() {
 
                     {/* OPTIONS */}
                     <option value="HR">
-                    HR
+                    HR Excutive 
                     </option>
 
                     <option value="HR 2">
-                    HR 2
+                    HR Manager
                     </option>
 
                 </select>

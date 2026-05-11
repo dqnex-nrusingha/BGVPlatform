@@ -69,17 +69,17 @@ function Sidebar() {
     },
 
     {
+      name: "Billing",
+      icon: ReceiptText,
+      path: "/admin/billing",
+    },
+
+    {
       name: "Analytics",
       icon: BarChart3,
       path: "/admin/analytics",
     },
 
-
-    {
-      name: "Billing",
-      icon: ReceiptText,
-      path: "/admin/billing",
-    },
   ];
 
   const expanded = isOpen || isHovering;

@@ -1,6 +1,6 @@
 export const tableData = [
   {
-    cand_id: "HQ-999-Z1",
+    cand_id: "EMP-0001",
     first_name: "Ananya",
     last_name: "Iyer",
     Email: "ananya.iyer@example.com",
@@ -9,7 +9,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "EMP-0001",
+    cand_id: "EMP-0002",
     first_name: "Advait",
     last_name: "Joshi",
     Email: "advait.joshi@mail.com",
@@ -18,7 +18,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "ST-23456",
+    cand_id: "EMP-0003",
     first_name: "Niten",
     last_name: "Sharma",
     Email: "nitenkumar34@gmail.com",
@@ -27,7 +27,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "AZ-100-B",
+    cand_id: "EMP-0004",
     first_name: "Reyansh",
     last_name: "Reddy",
     Email: "niten.sharma@webmail.org",
@@ -36,7 +36,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "J-789-0",
+    cand_id: "EMP-0005",
     first_name: "Sia",
     last_name: "Banerjee",
     Email: "sia.banerjee@example.com",
@@ -45,7 +45,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "HQ-999-Z2",
+    cand_id: "EMP-0006",
     first_name: "Myra",
     last_name: "Kulkarni",
     Email: "myra.kulkarni@mail.com",
@@ -54,7 +54,7 @@ export const tableData = [
   },
 
   {
-    cand_id: "60001-A",
+    cand_id: "EMP-0007",
     first_name: "Navya",
     last_name: "Sharma",
     Email: "nitenkumar34@gmail.com",

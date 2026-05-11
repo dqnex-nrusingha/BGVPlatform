@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import TableToolbar from "./TableToolbar";
 import { tableData } from "../data/tableData";
+import HRActionDropdown from "../hr/HRActionDropdown";
 
 function TableSection({ isToolBarRequired }) {
   const [data, setData] = useState([]);
@@ -201,73 +202,41 @@ function TableSection({ isToolBarRequired }) {
                   </button>
 
                   {/* DROPDOWN */}
-                  {openMenu === index && (
-                    <div className="absolute right-10 top-0 w-52 bg-white rounded-2xl shadow-2xl border border-gray-200 z-9999 py-2">
+                 {openMenu === index && (
 
-                      {/* VIEW */}
-                      <div
-                        onClick={() => {
+                    <div className="absolute right-10 top-0 z-9999">
+
+                      <HRActionDropdown
+
+                        onView={() => {
+
                           setOpenMenu(null);
 
-                          navigate(
-                            `/admin/view-hr`
-                          );
+                          navigate("/admin/view-hr");
                         }}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
-                      >
-                        <Eye
-                          size={17}
-                          className="text-gray-600"
-                        />
-                        View
-                      </div>
 
-                      
-                      {/* EDIT */}
-                    <div
-                      onClick={(e) => {
+                        onEdit={() => {
 
-                        e.stopPropagation();
+                          setOpenMenu(null);
 
-                        setOpenMenu(null);
+                          navigate("/admin/edit-hr");
+                        }}
 
-                        navigate("/admin/edit-hr");
-                      }}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
-                    >
-                      <Pencil
-                        size={17}
-                        className="text-gray-600"
+                        onEmail={() => {
+
+                          console.log("Send Email");
+
+                          setOpenMenu(null);
+                        }}
+
+                        onTerminate={() => {
+
+                          console.log("Terminate");
+
+                          setOpenMenu(null);
+                        }}
+
                       />
-                      Edit
-                    </div>
-
-                      {/* SEND EMAIL */}
-                      <div
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 transition"
-                      >
-                        <Mail
-                          size={17}
-                          className="text-blue-500"
-                        />
-                        Send Email
-                      </div>
-
-                      {/* ON HOLD */}
-                      <div
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-yellow-50 cursor-pointer text-sm text-yellow-600 transition"
-                      >
-                        <PauseCircle size={17} />
-                        On Hold
-                      </div>
-
-                      {/* REJECT */}
-                      <div
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 cursor-pointer text-sm text-red-500 transition"
-                      >
-                        <XCircle size={17} />
-                        Reject
-                      </div>
 
                     </div>
                   )}
