@@ -12,6 +12,7 @@ import CreateHR from "../pages/clientAdmin/CreateHR";
 import EditHr from "../pages/clientAdmin/EditHr";
 
 import ViewHr from "../pages/clientAdmin/ViewHr";
+import BillingPage from "../pages/clientAdmin/BillingPage";
 
 
 function AdminRoutes() {
@@ -63,6 +64,12 @@ function AdminRoutes() {
         <Route
           path="view-hr"
           element={<ViewHr />}
+        />
+
+        {/* BILLING */}
+        <Route
+          path="billing"
+          element={<BillingPage />}
         />
 
       </Route>
