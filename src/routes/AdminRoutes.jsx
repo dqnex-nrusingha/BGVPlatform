@@ -1,4 +1,102 @@
-import { Routes, Route } from "react-router-dom";
+// import { Routes, Route } from "react-router-dom";
+
+// import AdminLogin from "../pages/clientAdmin/AdminLogin";
+// import Home from "../pages/clientAdmin/Home";
+
+// import ProtectedRoute from "./ProtectedRoute";
+
+// import AdminLayout from "../layouts/AdminLayout";
+// import Candidates from "../pages/clientAdmin/Candidates";
+// import Hr from "../pages/clientAdmin/Hr";
+// import CreateHR from "../pages/clientAdmin/CreateHR";
+// import EditHr from "../pages/clientAdmin/EditHr";
+
+// import ViewHr from "../pages/clientAdmin/ViewHr";
+// import BillingPage from "../pages/clientAdmin/BillingPage";
+
+// import View from "../components/clientAdmin/candidate/View";
+// import EditCandidate from "../components/clientAdmin/candidate/EditCandidate";
+// import AuditPage from "../pages/clientAdmin/AuditPage";
+
+
+// function AdminRoutes() {
+//   return (
+//     <Routes>
+
+//       {/* LOGIN */}
+//       <Route
+//         path="login"
+//         element={<AdminLogin />}
+//       />
+
+//       {/* PROTECTED ADMIN LAYOUT */}
+//       <Route
+//         element={
+//           <ProtectedRoute role="admin">
+//             <AdminLayout />
+//           </ProtectedRoute>
+//         }
+//       >
+
+//         {/* HOME */}
+//         <Route
+//           path="home"
+//           element={<Home />}
+//         />
+
+//         {/* CANDIDATES */}
+//         <Route
+//           path="candidates"
+//           element={<Candidates/>}
+//         />
+//         {/* Hr */}
+//         <Route
+//           path="hr"
+//           element={<Hr/>}
+//         />
+//         <Route
+//           path="create-hr"
+//           element={<CreateHR />}
+//         />
+//          {/* EDIT HR */}
+//         <Route
+//           path="edit-hr"
+//           element={<EditHr />}
+//         />
+
+//         {/* VIEW HR */}
+//         <Route
+//           path="view-hr"
+//           element={<ViewHr />}
+//         />
+
+//         {/* BILLING */}
+//         <Route
+//           path="billing"
+//           element={<BillingPage />}
+//         />
+
+//         <Route
+//           path="view/:id"
+//           element={<View />}
+//         />
+
+//         <Route
+//           path="edit-candidate/:id"
+//           element={<EditCandidate />}
+//         />
+
+//         <Route path="audit-log" element={<AuditPage />} />
+
+//       </Route>
+
+//     </Routes>
+//   );
+// }
+
+// export default AdminRoutes;
+
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import AdminLogin from "../pages/clientAdmin/AdminLogin";
 import Home from "../pages/clientAdmin/Home";
@@ -10,20 +108,20 @@ import Candidates from "../pages/clientAdmin/Candidates";
 import Hr from "../pages/clientAdmin/Hr";
 import CreateHR from "../pages/clientAdmin/CreateHR";
 import EditHr from "../pages/clientAdmin/EditHr";
-
 import ViewHr from "../pages/clientAdmin/ViewHr";
 import BillingPage from "../pages/clientAdmin/BillingPage";
 
+import View from "../components/clientAdmin/candidate/View";
+import EditCandidate from "../components/clientAdmin/candidate/EditCandidate";
+import AuditPage from "../pages/clientAdmin/AuditPage";
+import AssignVerificationOfficerPage from "../pages/clientAdmin/AssignVerificationOfficerPage";
+import BulkAssignPage from "../pages/clientAdmin/BulkAssignPage";
 
 function AdminRoutes() {
   return (
     <Routes>
-
       {/* LOGIN */}
-      <Route
-        path="login"
-        element={<AdminLogin />}
-      />
+      <Route path="login" element={<AdminLogin />} />
 
       {/* PROTECTED ADMIN LAYOUT */}
       <Route
@@ -33,47 +131,39 @@ function AdminRoutes() {
           </ProtectedRoute>
         }
       >
+        {/* INDEX route → defaults to Home */}
+        <Route index element={<Home />} />
 
         {/* HOME */}
-        <Route
-          path="home"
-          element={<Home />}
-        />
+        <Route path="home" element={<Home />} />
 
         {/* CANDIDATES */}
-        <Route
-          path="candidates"
-          element={<Candidates/>}
-        />
-        {/* Hr */}
-        <Route
-          path="hr"
-          element={<Hr/>}
-        />
-        <Route
-          path="create-hr"
-          element={<CreateHR />}
-        />
-         {/* EDIT HR */}
-        <Route
-          path="edit-hr"
-          element={<EditHr />}
-        />
+        <Route path="candidates" element={<Candidates />} />
 
-        {/* VIEW HR */}
-        <Route
-          path="view-hr"
-          element={<ViewHr />}
-        />
+        {/* HR */}
+        <Route path="hr" element={<Hr />} />
+        <Route path="create-hr" element={<CreateHR />} />
+        <Route path="edit-hr/:id" element={<EditHr />} />
+        <Route path="view-hr/:id" element={<ViewHr />} />
 
         {/* BILLING */}
+        <Route path="billing" element={<BillingPage />} />
+
+        {/* CANDIDATE VIEW/EDIT */}
+        <Route path="view/:id" element={<View />} />
+        <Route path="edit-candidate/:id" element={<EditCandidate />} />
+
+        {/* AUDIT LOG */}
+        <Route path="audit-log" element={<AuditPage />} />
+
+        {/* FALLBACK route → redirect to Home */}
+        <Route path="*" element={<Navigate to="home" replace />} />
+        <Route path="assign-verification" element={<AssignVerificationOfficerPage />} />
         <Route
-          path="billing"
-          element={<BillingPage />}
+          path="bulk-assign"
+          element={<BulkAssignPage />}
         />
-
       </Route>
-
     </Routes>
   );
 }

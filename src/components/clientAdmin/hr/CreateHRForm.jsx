@@ -18,6 +18,7 @@ function CreateHRForm() {
 
   // ERROR STATE
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // HANDLE CHANGE
   const handleChange = (e) => {
@@ -96,10 +97,8 @@ function CreateHRForm() {
   // SUBMIT
   const handleSubmit = () => {
     if (!validateForm()) return;
-
     console.log(formData);
-
-    alert("HR Created Successfully");
+    setShowSuccessModal(true);
   };
 
   return (
@@ -333,6 +332,90 @@ function CreateHRForm() {
             </button>
 
         </div>
+        {/* SUCCESS MODAL */}
+            {showSuccessModal && (
+
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-9999">
+
+                <div className="relative bg-white w-125 rounded-[30px] overflow-hidden shadow-2xl text-center pb-7">
+
+                {/* GREEN TOP */}
+                <div className="relative h-36 bg-lime-500 rounded-b-[50%] flex items-center justify-center">
+
+                    {/* ICON */}
+                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-9 h-9 text-lime-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={3}
+                    >
+
+                        <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                        />
+
+                    </svg>
+
+                    </div>
+
+                </div>
+
+                {/* CONTENT */}
+                <div className="px-10 mt-6">
+
+                    {/* TITLE */}
+                    <h2 className="text-3xl font-bold text-lime-500 leading-tight">
+
+                    HR "{formData.empId}"
+
+                    <br />
+
+                    Successfully Created.
+
+                    </h2>
+
+                    {/* DESCRIPTION */}
+                    <p className="text-gray-700 text-base leading-7 mt-5">
+
+                    The HR Details Have Been Saved Successfully
+                    And Are Now Available In The System.
+
+                    </p>
+
+                    {/* REDIRECT TEXT */}
+                    <p className="text-gray-500 text-sm mt-5">
+
+                    Redirect In 3 Sec
+
+                    </p>
+
+                    {/* BUTTON */}
+                    <button
+                    onClick={() => {
+
+                        setShowSuccessModal(false);
+
+                        navigate("/admin/hr");
+                    }}
+                    className="mt-5 border-2 border-lime-500 text-lime-500 hover:bg-lime-50 px-10 py-2.5 rounded-xl text-base font-medium transition"
+                    >
+
+                    Okay
+
+                    </button>
+
+                </div>
+
+                </div>
+
+            </div>
+            )}
 
         </div>
     </div>
