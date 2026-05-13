@@ -257,10 +257,29 @@ function Sidebar({
   // LOGOUT
   const handleLogout = () => {
 
-    localStorage.clear();
+  const role =
+    localStorage.getItem("role");
 
-    navigate("/login");
-  };
+  localStorage.clear();
+
+  // ADMIN
+  if (role === "admin") {
+
+    navigate("/admin/login");
+  }
+
+  // HR
+  else if (role === "hr") {
+
+    navigate("/hr/login");
+  }
+
+  // DEFAULT
+  else {
+
+    navigate("/");
+  }
+};
 
   // SIDEBAR EXPAND
   const expanded =
