@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TerminateModal({ candidateId = "TCS-5214872", onCancel, onSuccess }) {
+function TerminateModal({ candidateId = "EMP-008", onCancel, onSuccess }) {
   const [step, setStep] = useState("confirm"); // "confirm" | "success"
   const [reason, setReason] = useState("");
 
@@ -30,7 +30,7 @@ function TerminateModal({ candidateId = "TCS-5214872", onCancel, onSuccess }) {
           {/* REASON FIELD */}
           <div className="mt-6">
             <label className="text-sm font-medium text-gray-800 mb-1.5 block">
-              "Reason For Terminate" <span className="text-red-500">*</span>
+              "Reason For Terminating the HR" <span className="text-red-500">*</span>
             </label>
             <textarea
               value={reason}

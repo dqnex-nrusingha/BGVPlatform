@@ -23,7 +23,7 @@ export const tableData = [
     last_name: "Sharma",
     Email: "nitenkumar34@gmail.com",
     Phone: "+91 9820000002",
-    status: "In Active",
+    status: "Inactive",
   },
 
   {

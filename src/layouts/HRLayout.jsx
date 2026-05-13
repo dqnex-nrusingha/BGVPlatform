@@ -1,32 +1,44 @@
-import { Outlet } from "react-router-dom";
-
 import Sidebar from "../components/common/sidebar/Sidebar";
-import Header from "../components/common/Header";
-import {
-  adminMenu,
-} from "../components/common/sidebar/adminMenu";
+import HRHeader from "../components/common/Header";
 
-function AdminLayout() {
+import {
+  Outlet,
+} from "react-router-dom";
+
+import {
+  hrMenu,
+} from "../components/common/sidebar/hrMenu";
+
+function HRLayout() {
+
   return (
+
     <div className="h-screen flex flex-col bg-gray-100">
 
-      {/* HEADER */}
-      <Header />
+      {/* TOP HEADER */}
+      
 
-      {/* BODY */}
+        <HRHeader />
+
+      
+
+      {/* BELOW HEADER */}
       <div className="flex flex-1 overflow-hidden">
 
         {/* SIDEBAR */}
-        <Sidebar menu={adminMenu} />
+        <Sidebar menu={hrMenu} />
 
         {/* CONTENT */}
         <div className="flex-1 p-6 overflow-y-auto">
+
           <Outlet />
+
         </div>
 
       </div>
+
     </div>
   );
 }
 
-export default AdminLayout;
+export default HRLayout;

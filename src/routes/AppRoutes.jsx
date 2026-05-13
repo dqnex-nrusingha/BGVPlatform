@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import CandidateRoutes from "./CandidateRoutes";
 import AdminRoutes from "./AdminRoutes";
+import HRRoutes from "./HRRoutes";
 
 function AppRoutes() {
   return (
@@ -13,6 +14,12 @@ function AppRoutes() {
 
         {/* Admin */}
         <Route path="/admin/*" element={<AdminRoutes />} />
+
+         {/* HR */}
+        <Route
+          path="/hr/*"
+          element={<HRRoutes />}
+        />
 
       </Routes>
     </BrowserRouter>
