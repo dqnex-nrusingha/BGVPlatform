@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UploadCard from "./UploadCard";
 import DocumentFields from "./DocumentFields";
+import { uploadPanCardOCR } from "../../../API/ocrApi";
 
 const docs = [
   "Passport",
@@ -22,14 +23,14 @@ const docFields = {
     gender: "Male",
   },
 
-  "PAN card": {
-    pan_number: "ABCDE1234F",
-    date_of_birth: "25/05/1997",
-    first_name: "Ramesh",
-    last_name: "Mishra",
-    father_first_name: "Narayan",
-    father_last_name: "Mishra",
-  },
+  // "PAN card": {
+  //   pan_number: "ABCDE1234F",
+  //   date_of_birth: "25/05/1997",
+  //   first_name: "Ramesh",
+  //   last_name: "Mishra",
+  //   father_first_name: "Narayan",
+  //   father_last_name: "Mishra",
+  // },
 
   "Driving license": {
     driving_licence_number: "OD05201254895545",
@@ -56,24 +57,42 @@ export default function IdDetails({ onNext }) {
   const [data, setData] = useState({});
   const [openCard, setOpenCard] = useState(null);
 
-  const handleUpload = (e, docType) => {
-    const file = e.target.files[0];
-    if (!file) return;
+ const handleUpload = async (e, docType) => {
+  const file = e.target.files[0];
 
-    const allowed = [
-      "image/png",
-      "image/jpeg",
-      "application/pdf",
-    ];
+  if (!file) return;
 
-    if (!allowed.includes(file.type)) {
-      alert("Only PDF / JPG / PNG allowed");
-      return;
-    }
+  const allowed = [
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+  ];
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Max file size is 5MB");
-      return;
+  if (!allowed.includes(file.type)) {
+    alert("Only PDF / JPG / PNG allowed");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("Max file size is 5MB");
+    return;
+  }
+
+  try {
+
+    let extractedFields = {};
+
+    // OCR for PAN card
+    if (docType === "PAN card") {
+
+      const response = await uploadPanCardOCR(file);
+
+      extractedFields = response;
+
+    } else {
+
+      // static data for other docs
+      extractedFields = docFields[docType];
     }
 
     setData((prev) => ({
@@ -81,12 +100,19 @@ export default function IdDetails({ onNext }) {
       [docType]: {
         fileName: file.name,
         size: (file.size / 1024 / 1024).toFixed(1),
-        fields: docFields[docType],
+        fields: extractedFields,
       },
     }));
 
     setOpenCard(docType);
-  };
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("OCR extraction failed");
+  }
+};
 
   const removeFile = (docType) => {
     setData((prev) => {

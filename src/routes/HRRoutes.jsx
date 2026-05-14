@@ -16,7 +16,7 @@ import DashBoard from "../pages/hr/DashBoard";
 
 import CreateCandidateForm from "../components/hr/CreateCandidateForm";
 
-// ✅ LOGIN PAGE
+
 import Login from "../pages/hr/Login";
 
 function HRRoutes() {
