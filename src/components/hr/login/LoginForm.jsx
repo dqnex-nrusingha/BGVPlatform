@@ -21,6 +21,7 @@ export default function HRLoginForm() {
         JSON.stringify({
           name: "Puja Gupta",
           email: "puja@gmail.com",
+           role: "HR Executive",
         })
       );
 

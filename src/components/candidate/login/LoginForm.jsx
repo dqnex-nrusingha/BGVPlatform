@@ -123,6 +123,7 @@ export default function LoginForm() {
         JSON.stringify({
           name: "Ramesh Kumar",
           email: "ramesh@gmail.com",
+          role: "Candidate",
         })
       );
 

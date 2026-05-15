@@ -21,6 +21,7 @@ export default function SuperAdminLoginForm() {
         JSON.stringify({
           name: "Super Admin",
           email: "superadmin@gmail.com",
+           role: "Super Admin",
         })
       );
 
