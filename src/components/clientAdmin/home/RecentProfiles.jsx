@@ -1,63 +1,3 @@
-// const profiles = [
-//   "Deepak Mukherji",
-//   "Devika Banaji",
-//   "Rena Biswal",
-//   "Arjun Malhotra",
-//   "Ananya Banerjee",
-//   "Kyra Pillai",
-// ];
-
-// function RecentProfiles() {
-
-//   return (
-//     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 h-full overflow-hidden">
-
-//       {/* TITLE */}
-//       <h2 className="text-lg font-semibold mb-4">
-//         Recent Profiles
-//       </h2>
-
-//       {/* LIST */}
-//       <div className="space-y-3">
-
-//         {profiles.map((item, index) => (
-
-//           <div
-//             key={index}
-//             className="flex items-center gap-3"
-//           >
-
-//             {/* AVATAR */}
-//             <img
-//               src={`https://i.pravatar.cc/150?img=${index + 10}`}
-//               alt=""
-//               className="w-9 h-9 rounded-full object-cover"
-//             />
-
-//             {/* CONTENT */}
-//             <div className="min-w-0">
-
-//               <h4 className="text-sm font-medium text-gray-800 truncate">
-//                 {item}
-//               </h4>
-
-//               <p className="text-[11px] text-gray-500">
-//                 Candidate
-//               </p>
-
-//             </div>
-
-//           </div>
-//         ))}
-
-//       </div>
-
-//     </div>
-//   );
-// }
-
-// export default RecentProfiles;
-
 
 const profiles = [
   { name: "Deepak Mukherji", role: "Candidate", time: "2.4k day ago", img: 10 },
@@ -77,7 +17,7 @@ const profiles = [
 
 function RecentProfiles() {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 h-full overflow-y-auto">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 h-full overflow-y-auto">
 
       {/* TITLE */}
       <h2 className="text-base font-semibold text-gray-900 mb-4">Recent Profiles</h2>

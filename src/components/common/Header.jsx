@@ -264,7 +264,11 @@ function ChangePasswordModal({ onClose }) {
 
 // ── Main Header ───────────────────────────────────────────
 export default function Header() {
-  const [user, setUser] = useState({ name: "", email: "", role: "Admin" });
+  const [user, setUser] = useState({
+  name: "",
+  email: "",
+  role: "",
+});
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modal, setModal] = useState(null); // "profile" | "password" | null
 

@@ -1,7 +1,7 @@
 import ProfileHeader from "../../components/clientAdmin/home/ProfileHeader";
 import OverviewSection from "../../components/clientAdmin/home/OverviewSection";
+import VerificationCredits from "../../components/clientAdmin/home/VerificationCredits";
 import RecentProfiles from "../../components/clientAdmin/home/RecentProfiles";
-import MessagePanel from "../../components/clientAdmin/home/MessagePanel";
 
 function Home() {
   return (
@@ -11,25 +11,24 @@ function Home() {
       <ProfileHeader showExport={false} showCreateHR={false} />
 
       {/* MAIN GRID */}
-      <div className="grid grid-cols-12 gap-4 mt-5" style={{ height: "calc(100vh - 140px)" }}>
+      <div className="grid grid-cols-12 gap-4 mt-5 items-start">
 
-        {/* LEFT — Overview cards */}
-        <div className="col-span-4 overflow-y-auto">
+        {/* LEFT — HR + Candidate Overview cards */}
+        <div className="col-span-5">
           <OverviewSection />
         </div>
 
-        {/* CENTER — Recent Profiles */}
-        <div className="col-span-4 overflow-hidden">
+        {/* CENTER — Verification Credits — full height */}
+        <div className="col-span-3 self-stretch">
+          <VerificationCredits />
+        </div>
+
+        {/* RIGHT — Recent Profiles — full height */}
+        <div className="col-span-4 self-stretch">
           <RecentProfiles />
         </div>
 
-        {/* RIGHT — Message Panel */}
-        <div className="col-span-4 overflow-hidden">
-          <MessagePanel />
-        </div>
-
       </div>
-
     </div>
   );
 }
