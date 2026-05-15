@@ -28,11 +28,11 @@ function CreateHR() {
       <div className="mb-3">
 
         <h1 className="text-3xl font-bold text-[#02027A]">
-          Create New Human Resources (HR)
+          Create New Human Resources Officer
         </h1>
 
         <p className="text-gray-600 mt-2">
-          Add A New (HR) To The Verification System
+          Add A New HR Member To The Platform
         </p>
 
       </div>
@@ -45,7 +45,7 @@ function CreateHR() {
         <span>{">"}</span>
 
         <span className="text-black font-medium">
-          HR Candidate
+          Create HR
         </span>
 
       </div>

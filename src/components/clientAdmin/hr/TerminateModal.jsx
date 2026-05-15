@@ -22,15 +22,19 @@ function TerminateModal({ candidateId = "EMP-008", onCancel, onSuccess }) {
 
           {/* TITLE */}
           <h2 className="text-2xl font-bold text-gray-900 text-center leading-9">
-            ""Are You Sure You Want To{" "}
-            <span className="text-red-700">Terminate</span>{" "}
-            {candidateId}"
-          </h2>
+  Are You Sure You Want To{" "}
+  
+  <span className="text-red-700">
+    Terminate
+  </span>{" "}
+  
+  "{candidateId}"?
+</h2>
 
           {/* REASON FIELD */}
           <div className="mt-6">
             <label className="text-sm font-medium text-gray-800 mb-1.5 block">
-              "Reason For Terminating the HR" <span className="text-red-500">*</span>
+              "Reason For Terminating The HR" <span className="text-red-500">*</span>
             </label>
             <textarea
               value={reason}
@@ -58,7 +62,7 @@ function TerminateModal({ candidateId = "EMP-008", onCancel, onSuccess }) {
                     : "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed"
                 }`}
                 >
-                Terminate Application
+                Terminate To HR
                 </button>
           </div>
 

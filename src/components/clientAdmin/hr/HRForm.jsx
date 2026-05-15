@@ -203,12 +203,12 @@ function HRForm({ mode = "view" }) {
         </div>
 
         {/* NOTE */}
-        <div className="bg-[#ECECFF] border border-indigo-300 rounded-xl p-3 mb-5">
+        {/* <div className="bg-[#ECECFF] border border-indigo-300 rounded-xl p-3 mb-5">
           <p className="text-xs text-gray-700 leading-5">
             <span className="font-semibold">Note:</span>{" "}
             The HR will be notified via email if login credentials or access permissions are updated.
           </p>
-        </div>
+        </div> */}
 
         {/* BUTTONS */}
         <div className="flex justify-end gap-3">

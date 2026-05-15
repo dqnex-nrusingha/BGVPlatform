@@ -14,7 +14,7 @@ const Candidates = () => {
     <div className="p-5">
 
       {/* PROFILE HEADER */}
-      <ProfileHeader showExport={false} showCreateHR={false} />
+      <ProfileHeader showExport={false} showCreateHR={false} showCreateCandidate={true} />
 
       {/* CANDIDATE OVERVIEW CARDS */}
       <div className="mt-6">

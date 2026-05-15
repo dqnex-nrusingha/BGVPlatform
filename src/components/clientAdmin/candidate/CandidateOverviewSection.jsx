@@ -9,6 +9,17 @@ import {
 
 const cards = [
   {
+    title: "Awaiting Input",
+    value: "20",
+    icon: (
+      <ClipboardList
+        size={18}
+        className="text-indigo-500"
+      />
+    ),
+    color: "bg-indigo-100",
+  },
+  {
     title: "Profile Complete",
     value: "10",
     icon: (
@@ -18,18 +29,6 @@ const cards = [
       />
     ),
     color: "bg-green-100",
-  },
-
-  {
-    title: "Verified",
-    value: "18",
-    icon: (
-      <BadgeCheck
-        size={18}
-        className="text-teal-600"
-      />
-    ),
-    color: "bg-teal-100",
   },
 
   {
@@ -45,16 +44,40 @@ const cards = [
   },
 
   {
-    title: "Awaiting Input",
-    value: "20",
+    title: "Verified",
+    value: "18",
     icon: (
-      <ClipboardList
+      <BadgeCheck
         size={18}
-        className="text-indigo-500"
+        className="text-teal-600"
       />
     ),
-    color: "bg-indigo-100",
+    color: "bg-teal-100",
   },
+
+  // {
+  //   title: "Verification In Progress",
+  //   value: "09",
+  //   icon: (
+  //     <FileClock
+  //       size={18}
+  //       className="text-orange-500"
+  //     />
+  //   ),
+  //   color: "bg-orange-100",
+  // },
+
+  // {
+  //   title: "Awaiting Input",
+  //   value: "20",
+  //   icon: (
+  //     <ClipboardList
+  //       size={18}
+  //       className="text-indigo-500"
+  //     />
+  //   ),
+  //   color: "bg-indigo-100",
+  // },
 
   {
     title: "On Hold",

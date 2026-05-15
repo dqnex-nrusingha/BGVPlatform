@@ -17,6 +17,7 @@ const ProfileHeader = ({
   subtitle = "Let’s Customize Your Workspace",
   showExport = true,
   showCreateHR = false,
+   showCreateCandidate = false,
 }) => {
 
   const [showExportModal, setShowExportModal] =useState(false);
@@ -80,6 +81,20 @@ const ProfileHeader = ({
             Create HR
           </button>
         )}
+
+        {/* CREATE CANDIDATE BUTTON */}
+{showCreateCandidate && (
+  <button
+    onClick={() =>
+      navigate("/admin/create-candidate")
+    }
+    className="flex items-center gap-2 bg-[#02027A] hover:bg-[#00005E] text-white px-5 py-3 rounded-xl text-sm font-medium transition-all"
+  >
+    <Plus size={18} />
+
+    Create Candidate
+  </button>
+)}
 
         {/* EXPORT BUTTON */}
         {showExport && (

@@ -116,6 +116,7 @@ import EditCandidate from "../components/clientAdmin/candidate/EditCandidate";
 import AuditPage from "../pages/clientAdmin/AuditPage";
 import AssignVerificationOfficerPage from "../pages/clientAdmin/AssignVerificationOfficerPage";
 import BulkAssignPage from "../pages/clientAdmin/BulkAssignPage";
+import CreateCandidateForm from "../components/hr/CreateCandidateForm";
 
 function AdminRoutes() {
   return (
@@ -152,6 +153,10 @@ function AdminRoutes() {
         {/* CANDIDATE VIEW/EDIT */}
         <Route path="view/:id" element={<View />} />
         <Route path="edit-candidate/:id" element={<EditCandidate />} />
+        <Route
+  path="create-candidate"
+  element={<CreateCandidateForm />}
+ />
 
         {/* AUDIT LOG */}
         <Route path="audit-log" element={<AuditPage />} />

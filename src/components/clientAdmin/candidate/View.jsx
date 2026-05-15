@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import {
   CheckCircle,
@@ -23,6 +23,8 @@ const SectionCard = ({
   </div>
 );
 
+
+
 const Label = ({
   label,
   value,
@@ -44,6 +46,7 @@ const Label = ({
 function View() {
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F4F7FE] p-6">
@@ -51,32 +54,50 @@ function View() {
       {/* TOP */}
       <div className="mb-6">
 
-        <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#02027A] transition">
-
-          <ArrowLeft size={16} />
-
-          Back
-
-        </button>
-
+        <button
+  onClick={() => navigate(-1)}
+  className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#02027A] transition"
+>
+  <ArrowLeft size={16} />
+  Back
+</button>
       </div>
 
       {/* TITLE */}
-      <div className="mb-6">
+      {/* TITLE + STATUS BADGE */}
+<div className="flex justify-between items-start mb-6">
 
-        <h1 className="text-3xl font-bold text-[#02027A]">
+  <div>
+    <h1 className="text-3xl font-bold text-[#02027A]">
+      Candidate Details
+    </h1>
+    <p className="text-gray-500 mt-1">
+      View Complete Candidate Verification Information
+    </p>
+  </div>
 
-          Candidate Details
+  {/* ACCOUNT STATUS - RIGHT SIDE */}
+  <div className="flex items-center gap-3 bg-[#e8fce8] border border-green-200 rounded-2xl px-5 py-3">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#00cc00"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 2L3 6v6c0 5.55 4.18 10.74 9 12 4.82-1.26 9-6.45 9-12V6L12 2z" />
+      <polyline points="9 12 11 14 15 10" />
+    </svg>
+    <span className="text-[#00cc00] text-base font-bold tracking-wide">
+      Account Status: Active
+    </span>
+  </div>
 
-        </h1>
-
-        <p className="text-gray-500 mt-1">
-
-          View Complete Candidate Verification Information
-
-        </p>
-
-      </div>
+</div>
 
       {/* CANDIDATE ID */}
       <div className="mb-6">

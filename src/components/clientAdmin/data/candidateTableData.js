@@ -18,7 +18,7 @@ export const candidateTableData = [
     email: "nitenkumar34@gmail.com",
     phone: "+91 2634560789",
     progress: 72,
-    status: "Verify",
+    status: "In Progress",
   },
 
   {

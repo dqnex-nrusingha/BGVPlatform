@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, Pencil, Mail, Ban } from "lucide-react";
 import TerminateModal from "./TerminateModal";
 
-function HRActionDropdown({ onView, onEdit, candidateId = "TCS-5214872" }) {
+function HRActionDropdown({ onView, onEdit, candidateId = "EMP-0002" }) {
   const [showTerminate, setShowTerminate] = useState(false);
   const [showEmailSuccess, setShowEmailSuccess] = useState(false);
 
@@ -39,10 +39,10 @@ function HRActionDropdown({ onView, onEdit, candidateId = "TCS-5214872" }) {
             {/* CONTENT */}
             <div className="px-10 py-7">
               <h2 className="text-xl font-bold text-gray-900 mb-2">
-                Invitation E-Mail Send Successfully
+                E-Mail Has Been Sent Successfully
               </h2>
               <p className="text-sm text-gray-500">
-                "We've Sent You An Email—Take A Look In Your Inbox."
+                "We've Sent You An Email—Take A Look In Inbox."
               </p>
 
               <button

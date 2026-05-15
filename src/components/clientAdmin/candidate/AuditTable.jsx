@@ -31,8 +31,8 @@ export const auditData = [
   },
   {
     initials: "SY",
-    name: "System",
-    role: "Automated",
+    name: "Surya Kumar",
+    role: "Client Admin",
     badgeLabel: "Wallet Recharge",
     badgeColor: "bg-green-100 text-green-600",
     badgeIcon: <RefreshCw size={11} />,
