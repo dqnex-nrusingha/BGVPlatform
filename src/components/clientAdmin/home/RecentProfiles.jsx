@@ -17,7 +17,7 @@ const profiles = [
 
 function RecentProfiles() {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 h-full overflow-y-auto">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 h-full w-full overflow-y-auto">
 
       {/* TITLE */}
       <h2 className="text-base font-semibold text-gray-900 mb-4">Recent Profiles</h2>

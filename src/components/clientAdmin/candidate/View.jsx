@@ -66,7 +66,7 @@ function View() {
             <polyline points="9 12 11 14 15 10" />
           </svg>
           <span className="text-[#00cc00] text-base font-bold tracking-wide">
-            Account Status: Active
+            Account Status: Veryfied
           </span>
         </div>
       </div>

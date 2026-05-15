@@ -20,7 +20,7 @@ export default function VerificationCredits() {
   ];
 
   return (
-    <div className="bg-[#1c1c4d] rounded-2xl p-5 text-white flex flex-col h-full">
+    <div className="bg-[#1c1c4d] rounded-2xl p-5 text-white flex flex-col h-full w-full">
 
       {/* TOP */}
       <div className="flex items-center justify-between mb-3">

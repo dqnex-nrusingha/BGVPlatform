@@ -57,7 +57,7 @@ export const tableData = [
     cand_id: "EMP-0007",
     first_name: "Puja",
     last_name: "Gupta",
-    Email: "nitenkumar34@gmail.com",
+    Email: "puja@gmail.com",
     Phone: "+91 7766554433",
     status: "Active",
   },
