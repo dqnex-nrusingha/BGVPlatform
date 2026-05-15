@@ -41,7 +41,7 @@ export const tableData = [
     last_name: "Banerjee",
     Email: "sia.banerjee@example.com",
     Phone: "+91 7012345678",
-    status: "In Active",
+    status: "Inactive",
   },
 
   {
@@ -55,8 +55,8 @@ export const tableData = [
 
   {
     cand_id: "EMP-0007",
-    first_name: "Navya",
-    last_name: "Sharma",
+    first_name: "Puja",
+    last_name: "Gupta",
     Email: "nitenkumar34@gmail.com",
     Phone: "+91 7766554433",
     status: "Active",

@@ -158,7 +158,7 @@ function TableSection({ isToolBarRequired }) {
                   item.status === "Active"
                     ? "bg-green-100 text-green-600"
 
-                    : item.status === "In Active"
+                    : item.status === "Inactive"
                     ? "bg-orange-100 text-orange-500"
 
                     : item.status === "Terminated"

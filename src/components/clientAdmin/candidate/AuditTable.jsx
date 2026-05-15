@@ -41,7 +41,7 @@ export const auditData = [
     moduleColor: "text-green-600",
     moduleIcon: <CreditCard size={14} className="text-green-500" />,
     datetime: "May 11, 2026, 02:30 PM",
-    ip: "System Internal",
+    ip: "48.32.17.102",
     status: "success",
   },
   {
