@@ -12,16 +12,16 @@ export default function SuperAdminLoginForm() {
     const dummyPassword = "123456";
 
     if (email === dummyEmail && password === dummyPassword) {
-      // ✅ Store role
-      localStorage.setItem("role", "superAdmin");
+      localStorage.clear();
 
-      // ✅ Store user info
+      localStorage.setItem("role", "super-admin");
+
       localStorage.setItem(
         "user",
         JSON.stringify({
-          name: "Super Admin",
+          name: "Dhiren mukharji",
           email: "superadmin@gmail.com",
-           role: "Super Admin",
+          role: "Super Admin",
         })
       );
 

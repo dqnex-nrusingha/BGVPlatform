@@ -207,6 +207,7 @@ import React, {
 import {
   NavLink,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 
 import {
@@ -221,13 +222,15 @@ function Sidebar({
 
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const [isOpen, setIsOpen] =
     useState(true);
 
   const [isHovering, setIsHovering] =
     useState(false);
 
-  // LOAD SIDEBAR STATE
+  /* LOAD SIDEBAR STATE */
   useEffect(() => {
 
     const saved =
@@ -244,7 +247,7 @@ function Sidebar({
 
   }, []);
 
-  // SAVE SIDEBAR STATE
+  /* SAVE SIDEBAR STATE */
   useEffect(() => {
 
     localStorage.setItem(
@@ -254,34 +257,40 @@ function Sidebar({
 
   }, [isOpen]);
 
-  // LOGOUT
+  /* LOGOUT */
   const handleLogout = () => {
 
-  const role =
-    localStorage.getItem("role");
+    const role =
+      localStorage.getItem("role");
 
-  localStorage.clear();
+    localStorage.clear();
 
-  // ADMIN
-  if (role === "admin") {
+    // ADMIN
+    if (role === "admin") {
 
-    navigate("/admin/login");
-  }
+      navigate("/admin/login");
+    }
 
-  // HR
-  else if (role === "hr") {
+    // HR
+    else if (role === "hr") {
 
-    navigate("/hr/login");
-  }
+      navigate("/hr/login");
+    }
 
-  // DEFAULT
-  else {
+    // SUPER ADMIN
+    else if (role === "super-admin") {
 
-    navigate("/");
-  }
-};
+      navigate("/super-admin/login");
+    }
 
-  // SIDEBAR EXPAND
+    // DEFAULT
+    else {
+
+      navigate("/");
+    }
+  };
+
+  /* SIDEBAR EXPAND */
   const expanded =
     isOpen || isHovering;
 
@@ -302,10 +311,10 @@ function Sidebar({
       } h-full bg-white border-r border-gray-200 flex flex-col justify-between transition-all duration-300 shadow-sm`}
     >
 
-      {/* TOP SECTION */}
+      {/* TOP */}
       <div className="p-4">
 
-        {/* TOGGLE BUTTON */}
+        {/* TOGGLE */}
         <button
           onClick={() =>
             setIsOpen(!isOpen)
@@ -332,24 +341,41 @@ function Sidebar({
 
             const Icon = item.icon;
 
+            /* ACTIVE LOGIC */
+            const isActive =
+              item.activePaths
+                ? item.activePaths.some((path) =>
+                    location.pathname.startsWith(path)
+                  )
+                : location.pathname.startsWith(item.path);
+
             return (
 
               <NavLink
                 key={index}
                 to={item.path}
-                end
-                className={({ isActive }) =>
-                  `group relative flex items-center ${
+                className={`
+                  group relative flex items-center
+                  ${
                     expanded
                       ? "gap-3 px-4"
                       : "justify-center"
-                  } py-3 rounded-xl transition-all duration-200 ${
+                  }
+                  py-3 rounded-xl transition-all duration-200 overflow-hidden
+                  ${
                     isActive
-                      ? "bg-[#E8E8FF] text-[#1E1B8F] border border-[#6366F1]"
+                      ? "bg-[#EEF2FF] text-[#4338CA] border border-[#C7D2FE] shadow-sm"
                       : "text-[#1E1B8F] hover:bg-gray-100"
-                  }`
-                }
+                  }
+                `}
               >
+
+                {/* ACTIVE LEFT BAR */}
+                {isActive && (
+
+                  <div className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-[#4338CA]" />
+
+                )}
 
                 {/* ICON */}
                 {Icon && (
@@ -387,7 +413,7 @@ function Sidebar({
             );
           })}
 
-          {/* EMPTY MENU */}
+          {/* EMPTY */}
           {menu.length === 0 && (
 
             <div className="text-center text-sm text-gray-400 pt-10">

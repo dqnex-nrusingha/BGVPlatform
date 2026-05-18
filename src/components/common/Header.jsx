@@ -1,70 +1,3 @@
-// import { useEffect, useState } from "react";
-// import logo from "../../assets/logo.png";
-
-// export default function Header() {
-
-//   const [user, setUser] = useState({
-//     name: "",
-//     email: "",
-//   });
-
-//   // ✅ GET USER FROM LOCAL STORAGE
-//   useEffect(() => {
-//     const storedUser = JSON.parse(
-//       localStorage.getItem("user")
-//     );
-
-//     if (storedUser) {
-//       setUser(storedUser);
-//     }
-//   }, []);
-
-//   return (
-//     <header className="h-16 bg-white flex items-center justify-between px-6 shadow-sm">
-
-//       {/* LEFT LOGO */}
-//       <div className="flex items-center">
-//         <img
-//           src={logo}
-//           alt="Logo"
-//           className="h-24 w-auto object-contain"
-//         />
-//       </div>
-
-//       {/* RIGHT SIDE */}
-//       <div className="flex items-center gap-4">
-
-//         {/* NOTIFICATION */}
-//         <button className="w-9 h-9 rounded-full border flex items-center justify-center hover:bg-gray-50 transition">
-//           🔔
-//         </button>
-
-//         {/* USER */}
-//         <div className="flex items-center gap-3">
-
-//           <img
-//             src="https://i.pravatar.cc/40"
-//             alt="User"
-//             className="w-10 h-10 rounded-full border"
-//           />
-
-//           <div className="leading-tight">
-//             <p className="text-sm font-semibold text-gray-800">
-//               {user.name}
-//             </p>
-
-//             <p className="text-xs text-gray-500">
-//               {user.email}
-//             </p>
-//           </div>
-
-//         </div>
-//       </div>
-//     </header>
-//   );
-// }
-
-
 import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -118,7 +51,7 @@ function ProfileModal({ user, onClose }) {
           { label: "Name", value: user.name },
           { label: "Mail Id", value: user.email },
           { label: "Phone Number", value: user.phone || "+91 878 241 9830" },
-          { label: "Role", value: user.role || "Admin" },
+          { label: "Role", value: user.role },
         ].map(({ label, value }) => (
           <div key={label}>
             <label className="text-sm text-gray-600 font-medium">{label}</label>
@@ -270,7 +203,7 @@ export default function Header() {
   role: "",
 });
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modal, setModal] = useState(null); // "profile" | "password" | null
+  const [modal, setModal] = useState(null);
 
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -382,7 +315,7 @@ export default function Header() {
 
               <div className="leading-tight text-left">
                 <p className="text-sm font-semibold text-gray-800">{user.name}</p>
-                <p className="text-xs text-gray-500">{user.role || "Admin"}</p>
+                <p className="text-xs text-gray-500">{user.role}</p>
               </div>
 
               {dropdownOpen ? (
