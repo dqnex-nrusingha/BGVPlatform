@@ -18,30 +18,51 @@ export default function ClientPageHeader({
   const navigate = useNavigate();
 
   const [showExportModal, setShowExportModal] = useState(false);
-
   const [selectedType, setSelectedType] = useState(null);
+  const [showCreateDropdown, setShowCreateDropdown] = useState(false);
 
   const exportBtnRef = useRef(null);
+   const createBtnRef = useRef(null);
 
   /* ───────────────── CLOSE OUTSIDE ───────────────── */
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        exportBtnRef.current &&
-        !exportBtnRef.current.contains(event.target)
-      ) {
-        setShowExportModal(false);
-      }
-    };
-
-    if (showExportModal) {
-      document.addEventListener("mousedown", handleClickOutside);
+ useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      exportBtnRef.current &&
+      !exportBtnRef.current.contains(event.target)
+    ) {
+      setShowExportModal(false);
     }
+  };
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showExportModal]);
+  if (showExportModal) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [showExportModal]);
+
+
+
+/* CREATE DROPDOWN CLOSE OUTSIDE */
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      createBtnRef.current &&
+      !createBtnRef.current.contains(event.target)
+    ) {
+      setShowCreateDropdown(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   /* ───────────────── BUTTON TEXT ───────────────── */
   const buttonText =
@@ -89,19 +110,65 @@ export default function ClientPageHeader({
       {/* ───────────────── RIGHT ───────────────── */}
       {(showCreateButton || showExportButton) && (
         <div className="flex items-center gap-3">
-          {/* CREATE BUTTON */}
-          {showCreateButton && (
-            <button
-              type="button"
-              onClick={handleCreate}
-              className="flex items-center gap-2 bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-indigo-800 transition shadow-sm"
-            >
-              <Plus size={16} />
+         {/* CREATE BUTTON */}
+{showCreateButton && (
+  <div className="relative" ref={createBtnRef}>
+    
 
-              {buttonText}
-            </button>
-          )}
+    {/* DROPDOWN */}
+  
+{showCreateButton && (
+  <div className="relative" ref={createBtnRef}>
+    <button
+      type="button"
+      onClick={() => {
+        if (createType === "candidate") {
+          setShowCreateDropdown(!showCreateDropdown);
+        } else {
+          handleCreate();
+        }
+      }}
+      className="flex items-center gap-2 bg-[#0A0F8F] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[#090d75] transition"
+    >
+      <Plus size={18} />
+      {buttonText}
+    </button>
 
+    {/* DROPDOWN */}
+    {showCreateDropdown && createType === "candidate" && (
+      <div className="absolute right-0 mt-3 w-60 bg-white border border-black rounded-2xl shadow-lg overflow-hidden z-50">
+        
+        {/* SINGLE */}
+        <button
+          type="button"
+          onClick={() => {
+            navigate("/super-admin/create-candidate");
+            setShowCreateDropdown(false);
+          }}
+          className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
+        >
+          <Plus size={20} />
+          Add Single
+        </button>
+
+        {/* BULK */}
+        <button
+          type="button"
+          onClick={() => {
+            navigate("/super-admin/create-candidate-bulk");
+            setShowCreateDropdown(false);
+          }}
+          className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
+        >
+          <Upload size={20} />
+          Add in Bulk
+        </button>
+      </div>
+    )}
+  </div>
+)}
+  </div>
+)}
           {/* EXPORT */}
           {showExportButton && (
             <div className="relative" ref={exportBtnRef}>

@@ -30,14 +30,15 @@ import EditHr from "../pages/superAdmin/EditHr";
 /* CANDIDATES */
 import Candidates from "../pages/superAdmin/Candidates";
 
-/* BULK */
-import BulkAssignPage from "../pages/superAdmin/BulkAssignPage";
 
 /* AUDIT */
 import AuditPage from "../pages/superAdmin/AuditPage";
 
 /* ASSIGN VERIFICATION */
 import AssignVerificationOfficer from "../pages/superAdmin/AssignVerificationOfficerPage";
+import CreateCandidateForm from "../components/superAdmin/candidate/CreateCandidateForm";
+
+import BulkUpload from "../pages/superAdmin/BulkUpload";
 
 function SuperAdminRoutes() {
   return (
@@ -85,8 +86,15 @@ function SuperAdminRoutes() {
 
         <Route path="candidate" element={<Candidates />} />
 
-        {/* BULK ASSIGN */}
-        <Route path="bulk-assign" element={<BulkAssignPage />} />
+        <Route
+  path="/create-candidate"
+  element={<CreateCandidateForm />}
+/>
+
+<Route
+  path="/create-candidate-bulk"
+  element={<BulkUpload />}
+/>
 
         {/* AUDIT */}
         <Route path="audit" element={<AuditPage />} />

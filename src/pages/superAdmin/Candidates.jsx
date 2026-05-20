@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import ProfileHeader from "../../components/clientAdmin/home/ProfileHeader";
+import ClientPageHeader from "../../components/superAdmin/client/ClientPageHeader";
 import CandidateOverviewSection from "../../components/superAdmin/candidate/CandidateOverviewSection";
 import TableToolbar from "../../components/clientAdmin/home/TableToolbar";
 import CandidateTable from "../../components/superAdmin/candidate/CandidateTable";
@@ -12,9 +12,8 @@ const Candidates = () => {
 
   return (
     <div className="p-5">
-
       {/* PROFILE HEADER */}
-      <ProfileHeader showExport={false} showCreateHR={false} showCreateCandidate={true} />
+      <ClientPageHeader createType="candidate" showExportButton={false} />
 
       {/* CANDIDATE OVERVIEW CARDS */}
       <div className="mt-6">
@@ -39,7 +38,6 @@ const Candidates = () => {
           onPageChange={setPage}
         />
       </div>
-
     </div>
   );
 };
