@@ -10,8 +10,6 @@ import {
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import TableToolbar from "./TableToolbar";
 import { tableData } from "../../clientAdmin/data/tableData";
 import HRActionDropdown from "../hr/HRActionDropdown";
 

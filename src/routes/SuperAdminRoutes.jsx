@@ -76,17 +76,14 @@ function SuperAdminRoutes() {
 
         {/* HR */}
         <Route path="hr" element={<Hr />} />
-{/* 
-        <Route path="create-hr" element={<CreateHR />} /> */}
+
+        <Route path="create-hr" element={<CreateHR />} />
 
         <Route path="view-hr/:id" element={<ViewHr />} />
 
         <Route path="edit-hr/:id" element={<EditHr />} />
 
-        <Route
-  path="candidate"
-  element={<Candidates />}
-/>
+        <Route path="candidate" element={<Candidates />} />
 
         {/* BULK ASSIGN */}
         <Route path="bulk-assign" element={<BulkAssignPage />} />
