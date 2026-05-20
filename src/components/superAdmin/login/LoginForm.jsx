@@ -26,7 +26,7 @@ export default function SuperAdminLoginForm() {
       );
 
       // ✅ Redirect to Super Admin dashboard
-      navigate("/super-admin/clients");
+      navigate("/super-admin/home");
     } else {
       alert("Invalid email or password");
     }

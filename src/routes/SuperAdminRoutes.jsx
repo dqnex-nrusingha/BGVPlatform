@@ -1,43 +1,104 @@
 import { Routes, Route } from "react-router-dom";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 import SuperAdminLayout from "../layouts/SuperAdminLayout";
 
-import ClientListPage from "../pages/superAdmin/ClientListPage";
+/* AUTH */
 import Login from "../pages/superAdmin/Login";
+
+/* DASHBOARD */
+import Home from "../pages/superAdmin/Home";
+import Analytics from "../pages/superAdmin/Analytics";
+
+/* CLIENT */
+import ClientListPage from "../pages/superAdmin/ClientListPage";
 import CreateClientPage from "../pages/superAdmin/CreateClientPage";
 import ViewClientPage from "../pages/superAdmin/ViewClientPage";
 import EditClientPage from "../pages/superAdmin/EditClientPage";
-import Home from "../pages/superAdmin/Home";
+
+/* VENDOR */
 import Vendor from "../pages/superAdmin/Vendor";
 import CreateVendor from "../pages/superAdmin/CreateVendor";
+
+/* HR */
+import Hr from "../pages/superAdmin/Hr";
+import CreateHR from "../pages/superAdmin/CreateHR";
+import ViewHr from "../pages/superAdmin/ViewHr";
+import EditHr from "../pages/superAdmin/EditHr";
+
+/* CANDIDATES */
+import Candidates from "../pages/superAdmin/Candidates";
+
+/* BULK */
+import BulkAssignPage from "../pages/superAdmin/BulkAssignPage";
+
+/* AUDIT */
+import AuditPage from "../pages/superAdmin/AuditPage";
+
+/* ASSIGN VERIFICATION */
+import AssignVerificationOfficer from "../pages/superAdmin/AssignVerificationOfficerPage";
 
 function SuperAdminRoutes() {
   return (
     <Routes>
-      {/* Login Page */}
+      {/* LOGIN */}
       <Route path="login" element={<Login />} />
 
-      {/* Layout Routes */}
-      <Route element={<SuperAdminLayout />}>
-        {/* Client List */}
+      {/* PROTECTED LAYOUT */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute role="super-admin">
+            <SuperAdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        {/* HOME */}
+        <Route path="home" element={<Home />} />
+
+        {/* ANALYTICS */}
+        <Route path="analytics" element={<Analytics />} />
+
+        {/* CLIENT */}
         <Route path="clients" element={<ClientListPage />} />
+
         <Route path="create-client" element={<CreateClientPage />} />
 
         <Route path="clients/view/:id" element={<ViewClientPage />} />
 
         <Route path="clients/edit/:id" element={<EditClientPage />} />
-        <Route path="home" element={<Home />} />
+
         {/* VENDOR */}
         <Route path="vendor" element={<Vendor />} />
 
-         <Route
-          path="create-vendor"
-          element={<CreateVendor />}
+        <Route path="create-vendor" element={<CreateVendor />} />
+
+        {/* HR */}
+        <Route path="hr" element={<Hr />} />
+{/* 
+        <Route path="create-hr" element={<CreateHR />} /> */}
+
+        <Route path="view-hr/:id" element={<ViewHr />} />
+
+        <Route path="edit-hr/:id" element={<EditHr />} />
+
+        <Route
+  path="candidate"
+  element={<Candidates />}
+/>
+
+        {/* BULK ASSIGN */}
+        <Route path="bulk-assign" element={<BulkAssignPage />} />
+
+        {/* AUDIT */}
+        <Route path="audit" element={<AuditPage />} />
+
+        {/* ASSIGN VERIFICATION */}
+        <Route
+          path="assign-verification"
+          element={<AssignVerificationOfficer />}
         />
-
-        {/* <Route path="view-vendor/:id" element={<ViewVendor />} />
-
-        <Route path="edit-vendor/:id" element={<EditVendor />} />  */}
       </Route>
     </Routes>
   );
