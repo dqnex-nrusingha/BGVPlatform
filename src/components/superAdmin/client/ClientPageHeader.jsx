@@ -22,47 +22,45 @@ export default function ClientPageHeader({
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
 
   const exportBtnRef = useRef(null);
-   const createBtnRef = useRef(null);
+  const createBtnRef = useRef(null);
 
   /* ───────────────── CLOSE OUTSIDE ───────────────── */
- useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (
-      exportBtnRef.current &&
-      !exportBtnRef.current.contains(event.target)
-    ) {
-      setShowExportModal(false);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        exportBtnRef.current &&
+        !exportBtnRef.current.contains(event.target)
+      ) {
+        setShowExportModal(false);
+      }
+    };
 
-  if (showExportModal) {
+    if (showExportModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showExportModal]);
+
+  /* CREATE DROPDOWN CLOSE OUTSIDE */
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        createBtnRef.current &&
+        !createBtnRef.current.contains(event.target)
+      ) {
+        setShowCreateDropdown(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-  }
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [showExportModal]);
-
-
-
-/* CREATE DROPDOWN CLOSE OUTSIDE */
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (
-      createBtnRef.current &&
-      !createBtnRef.current.contains(event.target)
-    ) {
-      setShowCreateDropdown(false);
-    }
-  };
-
-  document.addEventListener("mousedown", handleClickOutside);
-
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   /* ───────────────── BUTTON TEXT ───────────────── */
   const buttonText =
@@ -110,65 +108,62 @@ useEffect(() => {
       {/* ───────────────── RIGHT ───────────────── */}
       {(showCreateButton || showExportButton) && (
         <div className="flex items-center gap-3">
-         {/* CREATE BUTTON */}
-{showCreateButton && (
-  <div className="relative" ref={createBtnRef}>
-    
+          {/* CREATE BUTTON */}
+          {showCreateButton && (
+            <div className="relative" ref={createBtnRef}>
+              {/* DROPDOWN */}
 
-    {/* DROPDOWN */}
-  
-{showCreateButton && (
-  <div className="relative" ref={createBtnRef}>
-    <button
-      type="button"
-      onClick={() => {
-        if (createType === "candidate") {
-          setShowCreateDropdown(!showCreateDropdown);
-        } else {
-          handleCreate();
-        }
-      }}
-      className="flex items-center gap-2 bg-[#0A0F8F] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[#090d75] transition"
-    >
-      <Plus size={18} />
-      {buttonText}
-    </button>
+              {showCreateButton && (
+                <div className="relative" ref={createBtnRef}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (createType === "candidate") {
+                        setShowCreateDropdown(!showCreateDropdown);
+                      } else {
+                        handleCreate();
+                      }
+                    }}
+                    className="flex items-center gap-2 bg-[#0A0F8F] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[#090d75] transition"
+                  >
+                    <Plus size={18} />
+                    {buttonText}
+                  </button>
 
-    {/* DROPDOWN */}
-    {showCreateDropdown && createType === "candidate" && (
-      <div className="absolute right-0 mt-3 w-60 bg-white border border-black rounded-2xl shadow-lg overflow-hidden z-50">
-        
-        {/* SINGLE */}
-        <button
-          type="button"
-          onClick={() => {
-            navigate("/super-admin/create-candidate");
-            setShowCreateDropdown(false);
-          }}
-          className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
-        >
-          <Plus size={20} />
-          Add Single
-        </button>
+                  {/* DROPDOWN */}
+                  {showCreateDropdown && createType === "candidate" && (
+                    <div className="absolute right-0 mt-3 w-60 bg-white border border-black rounded-2xl shadow-lg overflow-hidden z-50">
+                      {/* SINGLE */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigate("/super-admin/create-candidate");
+                          setShowCreateDropdown(false);
+                        }}
+                        className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
+                      >
+                        <Plus size={20} />
+                        Add Single
+                      </button>
 
-        {/* BULK */}
-        <button
-          type="button"
-          onClick={() => {
-            navigate("/super-admin/create-candidate-bulk");
-            setShowCreateDropdown(false);
-          }}
-          className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
-        >
-          <Upload size={20} />
-          Add in Bulk
-        </button>
-      </div>
-    )}
-  </div>
-)}
-  </div>
-)}
+                      {/* BULK */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigate("/super-admin/create-candidate-bulk");
+                          setShowCreateDropdown(false);
+                        }}
+                        className="w-full flex items-center gap-3 px-5 py-5 text-left text-black text-[18px] hover:bg-gray-50 transition"
+                      >
+                        <Upload size={20} />
+                        Add in Bulk
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
           {/* EXPORT */}
           {showExportButton && (
             <div className="relative" ref={exportBtnRef}>
@@ -186,58 +181,47 @@ useEffect(() => {
               {showExportModal && (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-85 z-50"
+                  className="absolute right-0 top-full mt-3 bg-white rounded-xl shadow-xl border border-gray-200 p-4 w-62.5 z-50"
                 >
                   {/* TITLE */}
-                  <h2 className="text-lg font-bold text-gray-900 mb-5">
-                    Select file type
+                  <h2 className="text-sm font-bold text-gray-900 mb-4">
+                    Select File Type
                   </h2>
 
                   {/* FILE TYPES */}
-                  <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="grid grid-cols-2 gap-3 mb-4">
                     {/* PDF */}
                     <button
                       type="button"
                       onClick={() => setSelectedType("PDF")}
-                      className={`flex flex-col items-center justify-center gap-2 border rounded-xl p-4 transition ${
+                      className={`flex flex-col items-center justify-center gap-1 border rounded-xl p-3 transition ${
                         selectedType === "PDF"
                           ? "border-indigo-600 bg-indigo-50"
                           : "border-gray-200 hover:bg-gray-50"
                       }`}
                     >
-                      <FileText size={26} className="text-indigo-600" />
+                      <FileText size={22} className="text-indigo-600" />
 
-                      <span className="text-sm font-medium">PDF</span>
-                    </button>
-
-                    {/* EXCEL */}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedType("Excel")}
-                      className={`flex flex-col items-center justify-center gap-2 border rounded-xl p-4 transition ${
-                        selectedType === "Excel"
-                          ? "border-green-600 bg-green-50"
-                          : "border-gray-200 hover:bg-gray-50"
-                      }`}
-                    >
-                      <FileSpreadsheet size={26} className="text-green-600" />
-
-                      <span className="text-sm font-medium">Excel</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        PDF
+                      </span>
                     </button>
 
                     {/* CSV */}
                     <button
                       type="button"
                       onClick={() => setSelectedType("CSV")}
-                      className={`flex flex-col items-center justify-center gap-2 border rounded-xl p-4 transition ${
+                      className={`flex flex-col items-center justify-center gap-1 border rounded-xl p-3 transition ${
                         selectedType === "CSV"
                           ? "border-orange-500 bg-orange-50"
                           : "border-gray-200 hover:bg-gray-50"
                       }`}
                     >
-                      <FileDown size={26} className="text-orange-500" />
+                      <FileDown size={22} className="text-orange-500" />
 
-                      <span className="text-sm font-medium">CSV</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        CSV
+                      </span>
                     </button>
                   </div>
 
@@ -246,7 +230,7 @@ useEffect(() => {
                     type="button"
                     onClick={handleDownload}
                     disabled={!selectedType}
-                    className={`w-full py-3 rounded-xl text-white font-semibold transition ${
+                    className={`w-full py-2.5 rounded-lg text-sm text-white font-semibold transition ${
                       selectedType
                         ? "bg-indigo-700 hover:bg-indigo-800"
                         : "bg-gray-300 cursor-not-allowed"

@@ -30,7 +30,6 @@ import EditHr from "../pages/superAdmin/EditHr";
 /* CANDIDATES */
 import Candidates from "../pages/superAdmin/Candidates";
 
-
 /* AUDIT */
 import AuditPage from "../pages/superAdmin/AuditPage";
 
@@ -39,6 +38,9 @@ import AssignVerificationOfficer from "../pages/superAdmin/AssignVerificationOff
 import CreateCandidateForm from "../components/superAdmin/candidate/CreateCandidateForm";
 
 import BulkUpload from "../pages/superAdmin/BulkUpload";
+import View from "../components/superAdmin/candidate/View";
+import EditCandidate from "../components/superAdmin/candidate/EditCandidate";
+import BulkAssignPage from "../pages/superAdmin/BulkAssignPage";
 
 function SuperAdminRoutes() {
   return (
@@ -86,15 +88,13 @@ function SuperAdminRoutes() {
 
         <Route path="candidate" element={<Candidates />} />
 
-        <Route
-  path="/create-candidate"
-  element={<CreateCandidateForm />}
-/>
+        <Route path="/create-candidate" element={<CreateCandidateForm />} />
 
-<Route
-  path="/create-candidate-bulk"
-  element={<BulkUpload />}
-/>
+        <Route path="/create-candidate-bulk" element={<BulkUpload />} />
+
+         <Route path="view/:id" element={<View />} />
+        <Route path="edit-candidate/:id" element={<EditCandidate />} />
+        
 
         {/* AUDIT */}
         <Route path="audit" element={<AuditPage />} />
@@ -104,6 +104,7 @@ function SuperAdminRoutes() {
           path="assign-verification"
           element={<AssignVerificationOfficer />}
         />
+        <Route path="bulk-assign" element={<BulkAssignPage />} />
       </Route>
     </Routes>
   );

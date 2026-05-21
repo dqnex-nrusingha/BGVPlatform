@@ -18,7 +18,6 @@
 // import EditCandidate from "../components/clientAdmin/candidate/EditCandidate";
 // import AuditPage from "../pages/clientAdmin/AuditPage";
 
-
 // function AdminRoutes() {
 //   return (
 //     <Routes>
@@ -153,21 +152,18 @@ function AdminRoutes() {
         {/* CANDIDATE VIEW/EDIT */}
         <Route path="view/:id" element={<View />} />
         <Route path="edit-candidate/:id" element={<EditCandidate />} />
-        <Route
-  path="create-candidate"
-  element={<CreateCandidateForm />}
- />
+        <Route path="create-candidate" element={<CreateCandidateForm />} />
 
         {/* AUDIT LOG */}
         <Route path="audit-log" element={<AuditPage />} />
 
         {/* FALLBACK route → redirect to Home */}
         <Route path="*" element={<Navigate to="home" replace />} />
-        <Route path="assign-verification" element={<AssignVerificationOfficerPage />} />
         <Route
-          path="bulk-assign"
-          element={<BulkAssignPage />}
+          path="assign-verification"
+          element={<AssignVerificationOfficerPage />}
         />
+        <Route path="bulk-assign" element={<BulkAssignPage />} />
       </Route>
     </Routes>
   );

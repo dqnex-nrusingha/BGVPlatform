@@ -315,7 +315,7 @@ function CandidateTable() {
       onClick={() => {
 
         navigate(
-          "/admin/bulk-assign",
+          "/super-admin/bulk-assign",
           {
             state: {
               selectedCandidates:
@@ -433,11 +433,11 @@ function CandidateTable() {
                       >
                         <ActionDropdown
                           onView={() => {
-                            navigate(`/admin/view/${item.candidateId}`);
+                            navigate(`/super-admin/view/${item.candidateId}`);
                             setOpenMenu(null);
                           }}
                           onEdit={() => {
-                            navigate(`/admin/edit-candidate/${item.candidateId}`);
+                            navigate(`/super-admin/edit-candidate/${item.candidateId}`)
                             setOpenMenu(null);
                           }}
                           onEmail={() => {
@@ -445,11 +445,11 @@ function CandidateTable() {
                             setOpenMenu(null);
                           }}
                          onAssignHr={() => {
-                            navigate("/admin/assign-verification");
+                            navigate("/super-admin/assign-verification");
                             setOpenMenu(null);
                           }}
                           onAuditLog={() => {
-                            navigate("/admin/audit-log");
+                            navigate("/super-admin/audit");
                             setOpenMenu(null);
                           }}
                           onAssignVerification={() => {
