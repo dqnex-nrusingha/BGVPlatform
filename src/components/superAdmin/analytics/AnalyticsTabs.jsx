@@ -1,4 +1,4 @@
-const TABS = ["M/S", "SLA Breach", "TAT"];
+const TABS = ["MIS", "SLA Breach", "TAT"];
 
 export default function AnalyticsTabs({ active, onChange }) {
   return (

@@ -6,7 +6,7 @@ import {
   Search,
   Upload,
   FileText,
-  FileSpreadsheet
+  FileSpreadsheet,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -30,10 +30,11 @@ function TableToolbar() {
 
   return (
     <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
-      
       {/* Left Side */}
       <div className="flex gap-2 flex-wrap">
-        <button className="px-4 py-2 bg-gray-200 rounded-lg text-sm">All</button>
+        <button className="px-4 py-2 bg-gray-200 rounded-lg text-sm">
+          All
+        </button>
 
         <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg text-sm">
           <RefreshCw size={16} />
@@ -58,7 +59,6 @@ function TableToolbar() {
 
       {/* Right Side */}
       <div className="flex items-center gap-3">
-        
         {/* Search */}
         <div className="flex items-center bg-gray-200 px-3 py-2 rounded-lg">
           <input
@@ -71,7 +71,6 @@ function TableToolbar() {
 
         {/* Export Dropdown */}
         <div className="relative" ref={dropdownRef}>
-          
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -85,20 +84,16 @@ function TableToolbar() {
 
           {/* Dropdown Panel */}
           {showExportModal && (
-            <div className="absolute right-full mr-2 top-0 w-70 bg-white border rounded-xl shadow-lg z-50 p-4">
-
+            <div className="absolute right-full mr-2 top-0 w-56 bg-white border rounded-xl shadow-lg z-50 p-4">
               {/* Title */}
-              <h3 className="text-sm font-medium mb-3">
-                Select file type
-              </h3>
+              <h3 className="text-sm font-medium mb-3">Select file type</h3>
 
               {/* Options */}
               <div className="flex gap-2 mb-4">
-
                 {/* PDF */}
                 <div
                   onClick={() => setSelectedType("pdf")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
+                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer flex-1 justify-center ${
                     selectedType === "pdf"
                       ? "border-[#01026E] bg-blue-50"
                       : "hover:bg-gray-50"
@@ -108,23 +103,10 @@ function TableToolbar() {
                   <span className="text-xs">PDF</span>
                 </div>
 
-                {/* Excel */}
-                <div
-                  onClick={() => setSelectedType("excel")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
-                    selectedType === "excel"
-                      ? "border-[#01026E] bg-blue-50"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  <FileSpreadsheet size={16} className="text-green-600" />
-                  <span className="text-xs">Excel</span>
-                </div>
-
                 {/* CSV */}
                 <div
                   onClick={() => setSelectedType("csv")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
+                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer flex-1 justify-center ${
                     selectedType === "csv"
                       ? "border-[#01026E] bg-blue-50"
                       : "hover:bg-gray-100"
@@ -133,7 +115,6 @@ function TableToolbar() {
                   <FileText size={16} className="text-green-500" />
                   <span className="text-xs">CSV</span>
                 </div>
-
               </div>
 
               {/* Download Button */}
@@ -148,12 +129,9 @@ function TableToolbar() {
                   Download
                 </button>
               </div>
-
             </div>
           )}
-
         </div>
-
       </div>
     </div>
   );

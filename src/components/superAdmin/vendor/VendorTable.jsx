@@ -124,32 +124,64 @@ const TerminateSuccessModal = ({ vendor, onClose }) => (
 );
 
 // ── Send Email Modal ───────────────────────────────────────
+// const SendEmailModal = ({ onClose }) => (
+//   <Modal onClose={onClose}>
+//     <div className="text-center">
+//       {/* Purple wave top */}
+//       <div className="bg-purple-600 h-28 flex items-center justify-center rounded-t-2xl">
+//         <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+//           <Mail size={32} className="text-white" />
+//         </div>
+//       </div>
+
+//       <div className="p-8">
+//         <h2 className="text-lg font-bold text-gray-800 mb-2">
+//           The Email Has Been Successfully<br />Sent To The Client.
+//         </h2>
+//         <p className="text-sm text-gray-400 mb-6">
+//           "We've Sent You An Email—Take A Look In Your Inbox."
+//         </p>
+//         <button
+//           onClick={onClose}
+//           className="px-8 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+//         >
+//           Okay
+//         </button>
+//       </div>
+//     </div>
+//   </Modal>
+// );
+
 const SendEmailModal = ({ onClose }) => (
-  <Modal onClose={onClose}>
-    <div className="text-center">
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-9999">
+    <div className="bg-white rounded-2xl w-120 overflow-hidden shadow-xl text-center">
+
       {/* Purple wave top */}
-      <div className="bg-purple-600 h-28 flex items-center justify-center rounded-t-2xl">
-        <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-          <Mail size={32} className="text-white" />
+      <div className="relative bg-purple-600 h-40 flex items-center justify-center">
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[50%]" />
+        <div className="relative z-10 mb-2">
+          <Mail size={56} className="text-white" strokeWidth={1.5} />
         </div>
       </div>
 
-      <div className="p-8">
-        <h2 className="text-lg font-bold text-gray-800 mb-2">
-          The Email Has Been Successfully<br />Sent To The Client.
+      {/* Content */}
+      <div className="px-8 py-6">
+        <h2 className="text-lg font-bold text-purple-600 mb-2">
+          The Email Has Been Successfully Sent To The Client.
         </h2>
-        <p className="text-sm text-gray-400 mb-6">
-          "We've Sent You An Email—Take A Look In Your Inbox."
+        <p className="text-sm text-gray-500">
+          We've Sent You An Email — Check Your Inbox.
         </p>
         <button
           onClick={onClose}
-          className="px-8 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+          className="mt-6 border border-purple-500 text-purple-600 hover:bg-purple-50 px-8 py-2.5 rounded-xl text-sm font-medium transition"
         >
           Okay
         </button>
       </div>
+
     </div>
-  </Modal>
+  </div>
 );
 
 // ── Action Menu ────────────────────────────────────────────

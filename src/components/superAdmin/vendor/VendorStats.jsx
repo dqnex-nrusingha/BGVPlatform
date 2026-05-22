@@ -31,7 +31,7 @@ const stats = [
     iconColor: "text-orange-500",
   },
   {
-    title: "Suspend",
+    title: "Suspended",
     value: "18",
     icon: UserMinus,
     iconBg: "bg-red-100",

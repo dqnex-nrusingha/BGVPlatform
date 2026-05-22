@@ -2,7 +2,6 @@ import {
   Download,
   Plus,
   FileText,
-  FileSpreadsheet,
 } from "lucide-react";
 
 import {
@@ -128,7 +127,7 @@ const ProfileHeader = ({
                 </h3>
 
                 {/* OPTIONS */}
-                <div className="grid grid-cols-3 gap-3 mb-5">
+                <div className="grid grid-cols-2 gap-3 mb-5">
 
                   {/* PDF */}
                   <div
@@ -149,29 +148,6 @@ const ProfileHeader = ({
 
                     <span className="text-xs font-medium text-gray-700">
                       PDF
-                    </span>
-
-                  </div>
-
-                  {/* EXCEL */}
-                  <div
-                    onClick={() =>
-                      setSelectedType("excel")
-                    }
-                    className={`flex flex-col items-center justify-center gap-2 border rounded-xl px-3 py-4 cursor-pointer transition-all ${
-                      selectedType === "excel"
-                        ? "border-[#01026E] bg-indigo-50"
-                        : "border-gray-200 hover:bg-gray-50"
-                    }`}
-                  >
-
-                    <FileSpreadsheet
-                      size={22}
-                      className="text-green-600"
-                    />
-
-                    <span className="text-xs font-medium text-gray-700">
-                      Excel
                     </span>
 
                   </div>

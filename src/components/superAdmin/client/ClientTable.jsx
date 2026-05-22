@@ -172,49 +172,35 @@ export default function ClientTable({ data = CLIENT_DATA, onView, onEdit, onEmai
 
       </table>
       {/* EMAIL SUCCESS MODAL */}
-        {showEmailModal && (
-        <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
+       {showEmailModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-9999">
+          <div className="bg-white rounded-2xl w-120 overflow-hidden shadow-xl text-center">
 
-            <div className="relative w-125 bg-white rounded-2xl overflow-hidden shadow-2xl">
-
-            {/* Top Purple Shape */}
-            <div className="relative h-40 bg-indigo-600 rounded-b-[120px] flex items-center justify-center">
-
-
-                {/* Icon */}
-                <div className="w-20 h- rounded-full bg-white/15 flex items-center justify-center">
-                <MailCheck
-                    size={42}
-                    className="text-white"
-                />
-                </div>
+            <div className="relative bg-purple-600 h-40 flex items-center justify-center">
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[50%]" />
+              <div className="relative z-10 mb-2">
+                <Mail size={56} className="text-white" strokeWidth={1.5} />
+              </div>
             </div>
 
-            {/* Content */}
-            <div className="px-10 pt-8 pb-10 text-center">
-
-                <h2 className="text-3xl font-bold text-indigo-700 leading-snug">
-                The Email Has Been Successfully
-                <br />
-                Sent To Client.
-                </h2>
-
-                <p className="text-gray-500 text-sm mt-5">
-                “We've Sent You An Email—Take A Look In Your Inbox.”
-                </p>
-
-                {/* Button */}
-                <button
+            <div className="px-8 py-6">
+              <h2 className="text-lg font-bold text-purple-600 mb-2">
+                The Email Has Been Successfully Sent To The Client.
+              </h2>
+              <p className="text-sm text-gray-500">
+                We've Sent You An Email — Check Your Inbox.
+              </p>
+              <button
                 onClick={() => setShowEmailModal(false)}
-                className="mt-8 border border-indigo-500 text-indigo-700 px-10 py-2.5 rounded-xl font-medium hover:bg-indigo-50 transition"
-                >
+                className="mt-6 border border-purple-500 text-purple-600 hover:bg-purple-50 px-8 py-2.5 rounded-xl text-sm font-medium transition"
+              >
                 Okay
-                </button>
+              </button>
+            </div>
 
-            </div>
-            </div>
+          </div>
         </div>
-        )}
+      )}
         {/* SUSPEND MODAL */}
         {showSuspendModal && (
         <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/40 backdrop-blur-sm">
