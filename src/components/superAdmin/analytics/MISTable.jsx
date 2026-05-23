@@ -87,12 +87,27 @@ export default function MISTable({ data }) {
                   <td className="px-8 py-5">
                     <StatusBadge status={row.status} />
                   </td>
-                  <td className="px-8 py-5">
-                    <StatusBadge status={row.permanentAddress} />
+
+                  {/* Permanent Address */}
+                  <td className="px-8 py-5 max-w-50">
+                    <span
+                      className="block truncate"
+                      title={row.permanentAddress}
+                    >
+                      {row.permanentAddress}
+                    </span>
                   </td>
-                  <td className="px-8 py-5">
-                    <StatusBadge status={row.presentAddress} />
+
+                  {/* Present Address */}
+                  <td className="px-8 py-5 max-w-50">
+                    <span
+                      className="block truncate"
+                      title={row.presentAddress}
+                    >
+                      {row.presentAddress}
+                    </span>
                   </td>
+
                   <td className="px-8 py-5">
                     <StatusBadge status={row.drivingLicense} />
                   </td>

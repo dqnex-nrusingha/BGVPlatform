@@ -10,7 +10,7 @@ import { analyticsData } from "../../components/superAdmin/analytics/analyticsDa
 import { misData } from "../../components/superAdmin/analytics/misData";
 
 export default function Analytics() {
-  const [activeTab, setActiveTab] = useState("SLA Breach");
+  const [activeTab, setActiveTab] = useState("MIS");
   const [search, setSearch] = useState("");
 
   // Filter SLA/TAT data
@@ -99,8 +99,9 @@ export default function Analytics() {
       />
 
       {/* TABLES */}
-      {activeTab === "SLA Breach" && <SLABreachTable data={filteredAnalytics} />}
       {activeTab === "MIS" && <MISTable data={filteredMIS} />}
+      {activeTab === "SLA Breach" && <SLABreachTable data={filteredAnalytics} />}
+      {/* {activeTab === "MIS" && <MISTable data={filteredMIS} />} */}
       {activeTab === "TAT" && <TATTable data={filteredAnalytics} />}
     </div>
   );
