@@ -1,4 +1,5 @@
-import student from "../../../assets/student.png";
+// import student from "../../../assets/student.png";
+import hrlogo from "../../../assets/hrlogo.png";
 import bgPattern from "../../../assets/promocard.png";
 
 export default function PromoCard() {
@@ -25,8 +26,8 @@ export default function PromoCard() {
 
           
           <img
-            src={student}
-            alt="student"
+            src={hrlogo}
+            alt="hrlogo"
             className="absolute bottom-0 -right-2 w-63.75 max-w-none"
           />
         </div>

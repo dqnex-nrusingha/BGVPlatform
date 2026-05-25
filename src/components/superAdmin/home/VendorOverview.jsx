@@ -1,50 +1,226 @@
-import { Maximize2, Users, UserCheck, UserX, AlertTriangle } from "lucide-react";
+import {
+  Users,
+  UserCheck,
+  Clock3,
+  Ban,
+} from "lucide-react";
 
-const StatCard = ({ label, value, icon, iconBg }) => (
-  <div className="bg-white rounded-2xl p-4 flex flex-col justify-between shadow-sm border border-gray-100 hover:shadow-md transition min-h-30">
-    <div className="flex items-center justify-between">
-      <p className="text-sm text-gray-600 font-medium">{label}</p>
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
+/* ───────────────── CARD ───────────────── */
+
+const StatCard = ({
+  label,
+  value,
+  icon,
+  iconBg,
+  borderColor,
+  cardBg,
+}) => (
+
+  <div
+    className={`relative rounded-2xl p-5 overflow-hidden ${cardBg}`}
+  >
+
+    {/* LEFT BORDER */}
+    <div
+      className={`absolute left-0 top-5 bottom-5 w-1 rounded-full ${borderColor}`}
+    />
+
+    {/* TOP */}
+    <div className="flex items-start justify-between">
+
+      <h3 className="text-[15px] font-semibold text-[#202020] leading-5">
+
+        {label}
+
+      </h3>
+
+      <div
+        className={`w-10 h-10 rounded-full flex items-center justify-center ${iconBg}`}
+      >
+
         {icon}
+
       </div>
+
     </div>
-    <div className="flex items-end justify-between mt-3">
-      <p className="text-3xl font-bold text-gray-900">{value}</p>
-      <Maximize2 size={13} className="text-gray-300 cursor-pointer" />
+
+    {/* VALUE */}
+    <div className="mt-7">
+
+      <h1 className="text-[46px] font-bold leading-none text-[#202020]">
+
+        {value}
+
+      </h1>
+
     </div>
+
   </div>
 );
 
+/* ───────────────── DATA ───────────────── */
+
 const vendors = [
+
   {
-    label: "Total Case", value: "20",
-    icon: <Users size={16} className="text-indigo-400" />,
-    iconBg: "bg-indigo-50",
+    label: "Total Vendor",
+    value: "20",
+
+    icon: (
+      <Users
+        size={18}
+        className="text-[#5B4CEB]"
+      />
+    ),
+
+    iconBg: "bg-[#DCD4FF]",
+
+    borderColor: "bg-[#5B4CEB]",
+
+    cardBg: "bg-[#F4F2FF]",
   },
+
   {
-    label: "Pending For Verification", value: "10",
-    icon: <UserX size={16} className="text-orange-400" />,
-    iconBg: "bg-orange-50",
+    label: "Verified",
+    value: "09",
+
+    icon: (
+      <UserCheck
+        size={18}
+        className="text-[#2AA8F2]"
+      />
+    ),
+
+    iconBg: "bg-[#D7F1FF]",
+
+    borderColor: "bg-[#2AA8F2]",
+
+    cardBg: "bg-[#EEF9FF]",
   },
+
   {
-    label: "Verified", value: "18",
-    icon: <UserCheck size={16} className="text-green-500" />,
-    iconBg: "bg-green-50",
+    label: "Total Case",
+    value: "10",
+
+    icon: (
+      <Users
+        size={18}
+        className="text-[#B66BFF]"
+      />
+    ),
+
+    iconBg: "bg-[#F1DEFF]",
+
+    borderColor: "bg-[#B66BFF]",
+
+    cardBg: "bg-[#F8F0FF]",
   },
+
   {
-    label: "SLA Breach", value: "09",
-    icon: <AlertTriangle size={16} className="text-red-400" />,
-    iconBg: "bg-red-50",
+    label: "On Hold",
+    value: "09",
+
+    icon: (
+      <Clock3
+        size={18}
+        className="text-[#FF8A3D]"
+      />
+    ),
+
+    iconBg: "bg-[#FFE6D7]",
+
+    borderColor: "bg-[#FF8A3D]",
+
+    cardBg: "bg-[#FFF4EC]",
   },
+
+  {
+    label: "Pending Verification",
+    value: "10",
+
+    icon: (
+      <Clock3
+        size={18}
+        className="text-[#D8AE20]"
+      />
+    ),
+
+    iconBg: "bg-[#FFF1BE]",
+
+    borderColor: "bg-[#E7C94B]",
+
+    cardBg: "bg-[#FFFBEA]",
+  },
+
+  {
+    label: "Suspended",
+    value: "18",
+
+    icon: (
+      <Ban
+        size={18}
+        className="text-[#FF5C5C]"
+      />
+    ),
+
+    iconBg: "bg-[#FFDCDC]",
+
+    borderColor: "bg-[#FF5C5C]",
+
+    cardBg: "bg-[#FFF1F1]",
+  },
+
 ];
 
+/* ───────────────── COMPONENT ───────────────── */
+
 export default function VendorOverview() {
+
   return (
-    <div>
-      <h2 className="text-base font-semibold text-gray-800 mb-3">Vendor</h2>
-      <div className="grid grid-cols-2 gap-3">
-        {vendors.map((v) => <StatCard key={v.label} {...v} />)}
+
+    <div className="bg-[#F4F6FF] rounded-2xl p-5">
+
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-5">
+
+        <h2 className="text-[28px] font-bold text-[#202020]">
+
+          Vendor
+
+        </h2>
+
+        <div className="text-right">
+
+          <p className="text-xs text-gray-500">
+
+            Total Vendors
+
+          </p>
+
+          <h3 className="text-[42px] font-bold text-[#202020] leading-none">
+
+            40
+
+          </h3>
+
+        </div>
+
       </div>
+
+      {/* GRID */}
+      <div className="grid grid-cols-2 gap-4">
+
+        {vendors.map((item) => (
+
+          <StatCard
+            key={item.label}
+            {...item}
+          />
+
+        ))}
+
+      </div>
+
     </div>
   );
 }

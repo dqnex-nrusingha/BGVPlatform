@@ -1,69 +1,158 @@
-import { Monitor, BarChart2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Download } from "lucide-react";
 
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+
+/* ── Data ─────────────────────────────────────────────── */
+const monthlyData   = [600000, 98674, 660000, 720000, 680000, 820000, 740000, 490000, 580000, 650000, 610000, 790000];
+const quarterlyData = [1865674, 1990000, 2070000, 2230000];
+const yearlyData    = [18000000, 19500000, 20900000];
+
+const monthLabels    = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"];
+const quarterLabels  = ["Q1","Q2","Q3","Q4"];
+const yearLabels     = ["2022","2023","2024"];
+
+/* ── Gradient plugin ──────────────────────────────────── */
+const gradientPlugin = {
+  id: "gradientBars",
+  beforeDatasetsDraw(chart) {
+    const { ctx, chartArea: { top, bottom } } = chart;
+    chart.data.datasets.forEach((dataset) => {
+      const gradient = ctx.createLinearGradient(0, top, 0, bottom);
+      gradient.addColorStop(0, "#4B47B6");
+      gradient.addColorStop(1, "rgba(200, 198, 240, 0.15)");
+      dataset.backgroundColor = gradient;
+    });
+  },
+};
+
+/* ── Component ────────────────────────────────────────── */
 export default function RevenueGrowth() {
+  const [view, setView] = useState("Monthly");
+
+  const labels = view === "Monthly" ? monthLabels : view === "Quarterly" ? quarterLabels : yearLabels;
+  const values = view === "Monthly" ? monthlyData  : view === "Quarterly" ? quarterlyData  : yearlyData;
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Revenue",
+        data: values,
+        backgroundColor: "#4B47B6",
+        borderRadius: { topLeft: 6, topRight: 6 },
+        borderSkipped: false,
+        barThickness: view === "Yearly" ? 80 : view === "Quarterly" ? 60 : 38,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#1F2937",
+        padding: 12,
+        cornerRadius: 10,
+        titleColor: "#E5E7EB",
+        bodyColor: "#FFFFFF",
+        titleFont: { size: 11 },
+        bodyFont: { size: 13, weight: "bold" },
+        callbacks: {
+          title: (items) => {
+            const label = items[0].label;
+            return view === "Monthly" ? `${label} 2026` : label;
+          },
+          label: (ctx) => ` ₹ ${ctx.raw.toLocaleString("en-IN")}`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        border: { display: false },
+        ticks: { color: "#9CA3AF", font: { size: 12 } },
+      },
+      y: {
+        grid: { color: "#F3F4F6", drawBorder: false },
+        border: { display: false },
+        beginAtZero: true,
+        ticks: {
+          color: "#9CA3AF",
+          font: { size: 12 },
+          callback: (value) => {
+            if (value >= 1000000) return `${value / 1000000}M`;
+            if (value >= 1000)    return `${value / 1000}K`;
+            return value;
+          },
+        },
+      },
+    },
+  };
+
   return (
-    <div>
-      {/* Title */}
-      <h2 className="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2">
-        <Monitor size={16} className="text-gray-500" />
-        Revenue & Growth
-      </h2>
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5">
 
-      <div className="bg-[#02027A] rounded-2xl p-6 text-white">
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-4">
 
-        {/* TOP — main revenue + arrow */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-sm text-white/60 mb-1">Revenue (FY 26-27)</p>
-            <p className="text-4xl font-bold">₹14.2M</p>
-          </div>
-
-          {/* Arrow chart illustration */}
-          <div className="relative w-32 h-20">
-            <svg viewBox="0 0 120 70" className="w-full h-full">
-              {/* Trend line */}
-              <polyline
-                points="0,60 30,45 55,50 80,25 100,15"
-                fill="none"
-                stroke="white"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              {/* Arrow head */}
-              <polyline
-                points="88,8 105,12 100,28"
-                fill="none"
-                stroke="white"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+        {/* LEFT */}
+        <div>
+          <p className="text-sm font-semibold text-gray-700">Revenue</p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <h1 className="text-2xl font-bold text-gray-900">₹ 159,849</h1>
+            <span className="text-xs font-semibold text-green-500 flex items-center gap-0.5">
+              ↗ 5.2%
+            </span>
+            <span className="text-xs text-gray-400">Last Month</span>
           </div>
         </div>
 
-        {/* BOTTOM — two sub cards */}
-        <div className="flex flex-col gap-4">
+        {/* RIGHT */}
+        <div className="flex items-center gap-3">
 
-          <div className="bg-white/30 rounded-xl px-4 py-4">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-white/60">Revenue (This Month)</p>
-              <BarChart2 size={15} className="text-white/40" />
-            </div>
-            <p className="text-xl font-bold">₹14.2M</p>
+          {/* TOGGLE */}
+          <div className="flex items-center bg-gray-100 rounded-xl p-1">
+            {["Monthly", "Quartile", "Yearly"].map((item) => (
+              <button
+                key={item}
+                onClick={() => setView(item === "Quartile" ? "Quarterly" : item)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                  (item === "Quartile" ? view === "Quarterly" : view === item)
+                    ? "bg-[#4B47B6] text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
           </div>
 
-          <div className="bg-white/30 rounded-xl px-4 py-4">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-white/60">Active Clients</p>
-              <BarChart2 size={15} className="text-white/40" />
-            </div>
-            <p className="text-xl font-bold">342 Active</p>
-          </div>
+          {/* DOWNLOAD */}
+          <button className="flex items-center gap-1.5 border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-50 transition">
+            <Download size={13} />
+            Download
+          </button>
 
         </div>
       </div>
+
+      {/* CHART */}
+      <div className="h-72">
+        <Bar data={data} options={options} plugins={[gradientPlugin]} />
+      </div>
+
     </div>
   );
 }

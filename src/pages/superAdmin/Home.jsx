@@ -1,28 +1,29 @@
-import CasesOverview from "../../components/superAdmin/home/CasesOverview";
-import VendorOverview from "../../components/superAdmin/home/VendorOverview";
+import ClientVendorOverview from "../../components/superAdmin/home/ClientVendorOverview";
 import RevenueGrowth from "../../components/superAdmin/home/RevenueGrowth";
 import ClientPageHeader from "../../components/superAdmin/client/ClientPageHeader";
 
 function Home() {
   return (
-    <div className="p-5 bg-white min-h-screen">
+    <div className=" bg-[#F5F7FF] min-h-screen">
 
-      <ClientPageHeader showCreateButton={false} showExportButton={false}/>
-
-      <div className="grid grid-cols-12 gap-6 mt-5">
-
-        {/* LEFT — Cases + Vendor */}
-        <div className="col-span-5 space-y-5">
-          <CasesOverview />
-          <VendorOverview />
-        </div>
-
-        {/* RIGHT — Revenue & Growth */}
-        <div className="col-span-7">
-          <RevenueGrowth />
-        </div>
-
+      {/* HEADER */}
+      <div className="bg-white rounded-2xl px-6 py-5 border border-[#ECEFFC] shadow-sm">
+        <ClientPageHeader
+          showCreateButton={false}
+          showExportButton={false}
+        />
       </div>
+
+      {/* CLIENT + VENDOR OVERVIEW */}
+      <div className="mt-2 ">
+        <ClientVendorOverview />
+      </div>
+
+      {/* REVENUE */}
+      <div className="mt-4 bg-[#EEF1FF] rounded-2xl border border-[#E5E9FF] p-1.5">
+        <RevenueGrowth />
+      </div>
+
     </div>
   );
 }
