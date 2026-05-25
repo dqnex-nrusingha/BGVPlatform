@@ -12,24 +12,75 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const initialVendors = [
-  { id: "CLT100245", vendorName: "NovaEdge Solutions",    poc: "Ananya Iyer",   email: "ananya.iyer@example.com",  status: "Active"    },
-  { id: "CLT100246", vendorName: "NovaEdge Solutions",    poc: "Advait Joshi",  email: "advait.joshi@mail.com",    status: "Active"    },
-  { id: "CLT100247", vendorName: "NextWave Innovations",  poc: "Niten Sharma",  email: "nitenkumar34@gmail.com",   status: "In Active" },
-  { id: "CLT100259", vendorName: "BluePeak Systems",      poc: "Reyansh Reddy", email: "niten.sharma@webmail.org", status: "Suspended" },
-  { id: "CLT100253", vendorName: "PrimeAxis Consulting",  poc: "Sia Banerjee",  email: "sia.banerjee@example.com", status: "In Active" },
-  { id: "CLT100258", vendorName: "FusionGrid Pvt. Ltd.",  poc: "Myra Kulkarni", email: "myra.kulkarni@mail.com",   status: "Active"    },
-  { id: "CLT100250", vendorName: "ApexNova Technologies", poc: "Navya Sharma",  email: "nitenkumar34@gmail.com",   status: "Active"    },
+  {
+    id: "CLT100245",
+    vendorName: "NovaEdge Solutions",
+    poc: "Ananya Iyer",
+    email: "ananya.iyer@example.com",
+    gst: "29ABCDE1234F1Z5",
+    status: "Active",
+  },
+  {
+    id: "CLT100246",
+    vendorName: "NovaEdge Solutions",
+    poc: "Advait Joshi",
+    email: "advait.joshi@mail.com",
+    gst: "27PQRSX5678L1Z2",
+    status: "Active",
+  },
+  {
+    id: "CLT100247",
+    vendorName: "NextWave Innovations",
+    poc: "Niten Sharma",
+    email: "nitenkumar34@gmail.com",
+    gst: "07LMNOP4321K1Z8",
+    status: "In Active",
+  },
+  {
+    id: "CLT100259",
+    vendorName: "BluePeak Systems",
+    poc: "Reyansh Reddy",
+    email: "niten.sharma@webmail.org",
+    gst: "07LMNOP4321K1Z8",
+    status: "Suspended",
+  },
+  {
+    id: "CLT100253",
+    vendorName: "PrimeAxis Consulting",
+    poc: "Sia Banerjee",
+    email: "sia.banerjee@example.com",
+    gst: "33ZXCVB2468N1Z7",
+    status: "In Active",
+  },
+  {
+    id: "CLT100258",
+    vendorName: "FusionGrid Pvt. Ltd.",
+    poc: "Myra Kulkarni",
+    email: "myra.kulkarni@mail.com",
+    gst: "24QWERT1357P1Z9",
+    status: "Active",
+  },
+  {
+    id: "CLT100250",
+    vendorName: "ApexNova Technologies",
+    poc: "Navya Sharma",
+    email: "nitenkumar34@gmail.com",
+    gst: "06ASDFG7531H1Z3",
+    status: "Active",
+  },
 ];
 
 // ── Status Badge ───────────────────────────────────────────
 const StatusBadge = ({ status }) => {
   const styles = {
-    Active:      "bg-green-100 text-green-600",
+    Active: "bg-green-100 text-green-600",
     "In Active": "bg-orange-100 text-orange-500",
-    Suspended:   "bg-red-100 text-red-500",
+    Suspended: "bg-red-100 text-red-500",
   };
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${styles[status] || "bg-gray-100 text-gray-500"}`}>
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-semibold ${styles[status] || "bg-gray-100 text-gray-500"}`}
+    >
       {status}
     </span>
   );
@@ -106,9 +157,7 @@ const TerminateSuccessModal = ({ vendor, onClose }) => (
       </div>
 
       <div className="p-8">
-        <h2 className="text-lg font-bold text-gray-800 mb-1">
-          "{vendor.id}"
-        </h2>
+        <h2 className="text-lg font-bold text-gray-800 mb-1">"{vendor.id}"</h2>
         <p className="text-base font-semibold text-gray-600 mb-6">
           Terminated Successfully
         </p>
@@ -123,39 +172,9 @@ const TerminateSuccessModal = ({ vendor, onClose }) => (
   </Modal>
 );
 
-// ── Send Email Modal ───────────────────────────────────────
-// const SendEmailModal = ({ onClose }) => (
-//   <Modal onClose={onClose}>
-//     <div className="text-center">
-//       {/* Purple wave top */}
-//       <div className="bg-purple-600 h-28 flex items-center justify-center rounded-t-2xl">
-//         <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-//           <Mail size={32} className="text-white" />
-//         </div>
-//       </div>
-
-//       <div className="p-8">
-//         <h2 className="text-lg font-bold text-gray-800 mb-2">
-//           The Email Has Been Successfully<br />Sent To The Client.
-//         </h2>
-//         <p className="text-sm text-gray-400 mb-6">
-//           "We've Sent You An Email—Take A Look In Your Inbox."
-//         </p>
-//         <button
-//           onClick={onClose}
-//           className="px-8 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
-//         >
-//           Okay
-//         </button>
-//       </div>
-//     </div>
-//   </Modal>
-// );
-
 const SendEmailModal = ({ onClose }) => (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-9999">
     <div className="bg-white rounded-2xl w-120 overflow-hidden shadow-xl text-center">
-
       {/* Purple wave top */}
       <div className="relative bg-purple-600 h-40 flex items-center justify-center">
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[50%]" />
@@ -179,7 +198,6 @@ const SendEmailModal = ({ onClose }) => (
           Okay
         </button>
       </div>
-
     </div>
   </div>
 );
@@ -198,10 +216,30 @@ const ActionMenu = ({ vendor, onView, onEdit, onSendEmail, onTerminate }) => {
   }, []);
 
   const actions = [
-    { label: "View",       icon: <Eye size={13} />,    onClick: onView,       className: "text-gray-700" },
-    { label: "Edit",       icon: <Pencil size={13} />, onClick: onEdit,       className: "text-gray-700" },
-    { label: "Send Email", icon: <Mail size={13} />,   onClick: onSendEmail,  className: "text-gray-700" },
-    { label: "Terminate",  icon: <Trash2 size={13} />, onClick: onTerminate,  className: "text-red-500"  },
+    {
+      label: "View",
+      icon: <Eye size={13} />,
+      onClick: onView,
+      className: "text-gray-700",
+    },
+    {
+      label: "Edit",
+      icon: <Pencil size={13} />,
+      onClick: onEdit,
+      className: "text-gray-700",
+    },
+    {
+      label: "Send Email",
+      icon: <Mail size={13} />,
+      onClick: onSendEmail,
+      className: "text-gray-700",
+    },
+    {
+      label: "Terminate",
+      icon: <Trash2 size={13} />,
+      onClick: onTerminate,
+      className: "text-red-500",
+    },
   ];
 
   return (
@@ -218,7 +256,10 @@ const ActionMenu = ({ vendor, onView, onEdit, onSendEmail, onTerminate }) => {
           {actions.map(({ label, icon, onClick, className }) => (
             <button
               key={label}
-              onClick={() => { onClick(); setOpen(false); }}
+              onClick={() => {
+                onClick();
+                setOpen(false);
+              }}
               className={`w-full text-left px-4 py-2 text-xs flex items-center gap-2 hover:bg-gray-50 transition ${className}`}
             >
               {icon} {label}
@@ -244,7 +285,9 @@ export default function VendorTable() {
     setSelected(e.target.checked ? vendors.map((v) => v.id) : []);
 
   const toggleOne = (id) =>
-    setSelected((p) => p.includes(id) ? p.filter((x) => x !== id) : [...p, id]);
+    setSelected((p) =>
+      p.includes(id) ? p.filter((x) => x !== id) : [...p, id],
+    );
 
   const handleTerminateConfirm = (reason) => {
     setVendors((p) => p.filter((v) => v.id !== terminateTarget.id));
@@ -262,12 +305,24 @@ export default function VendorTable() {
                 <input
                   type="checkbox"
                   onChange={toggleAll}
-                  checked={vendors.length > 0 && selected.length === vendors.length}
+                  checked={
+                    vendors.length > 0 && selected.length === vendors.length
+                  }
                   className="rounded"
                 />
               </th>
-              {["Vendor ID", "Vendor Name", "Poc Name", "POC- Email", "Status", "Action"].map((h) => (
-                <th key={h} className="px-4 py-4 text-left text-sm font-medium text-gray-600">
+              {[
+                "Vendor ID",
+                "Vendor Name",
+                "Poc Name",
+                "GST Number",
+                "Status",
+                "Action",
+              ].map((h) => (
+                <th
+                  key={h}
+                  className="px-4 py-4 text-left text-sm font-medium text-gray-600"
+                >
                   {h}
                 </th>
               ))}
@@ -275,7 +330,10 @@ export default function VendorTable() {
           </thead>
           <tbody>
             {vendors.map((v) => (
-              <tr key={v.id} className="border-b border-gray-50 hover:bg-gray-50 transition">
+              <tr
+                key={v.id}
+                className="border-b border-gray-50 hover:bg-gray-50 transition"
+              >
                 <td className="px-4 py-4">
                   <input
                     type="checkbox"
@@ -285,15 +343,22 @@ export default function VendorTable() {
                   />
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">{v.id}</td>
-                <td className="px-4 py-4 text-sm text-gray-700">{v.vendorName}</td>
-                <td className="px-4 py-4 text-sm text-gray-700">{v.poc}</td>
-                <td className="px-4 py-4 text-sm text-indigo-500">{v.email}</td>
-                <td className="px-4 py-4"><StatusBadge status={v.status} /></td>
+                <td className="px-4 py-4 text-sm text-gray-700">
+                  {v.vendorName}
+                </td>
+                <td className="px-4 py-4">
+                  <p className="text-sm text-gray-700">{v.poc}</p>
+                  <p className="text-xs text-indigo-400">{v.email}</p>
+                </td>
+                <td className="px-4 py-4 text-sm text-gray-700">{v.gst}</td>
+                <td className="px-4 py-4">
+                  <StatusBadge status={v.status} />
+                </td>
                 <td className="px-4 py-4">
                   <ActionMenu
                     vendor={v}
-                    onView={() => navigate(`/super-admin/vendor/${v.id}`)}
-                    onEdit={() => navigate(`/super-admin/vendor/edit/${v.id}`)}
+                    onView={() => navigate(`/super-admin/view-vendor/${v.id}`)}
+                    onEdit={() => navigate(`/super-admin/edit-vendor/${v.id}`)}
                     onSendEmail={() => setEmailSuccess(true)}
                     onTerminate={() => setTerminateTarget(v)}
                   />

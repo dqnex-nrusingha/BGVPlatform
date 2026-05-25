@@ -41,6 +41,8 @@ import BulkUpload from "../pages/superAdmin/BulkUpload";
 import View from "../components/superAdmin/candidate/View";
 import EditCandidate from "../components/superAdmin/candidate/EditCandidate";
 import BulkAssignPage from "../pages/superAdmin/BulkAssignPage";
+import ViewVendor from "../pages/superAdmin/ViewVendor";
+import EditVendor from "../pages/superAdmin/EditVendor";
 
 function SuperAdminRoutes() {
   return (
@@ -76,6 +78,8 @@ function SuperAdminRoutes() {
         <Route path="vendor" element={<Vendor />} />
 
         <Route path="create-vendor" element={<CreateVendor />} />
+        <Route path="view-vendor/:id" element={<ViewVendor />} />
+        <Route path="edit-vendor/:id" element={<EditVendor />} />
 
         {/* HR */}
         <Route path="hr" element={<Hr />} />
