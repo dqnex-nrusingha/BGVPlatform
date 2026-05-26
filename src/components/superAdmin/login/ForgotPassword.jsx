@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -7,20 +8,32 @@ export default function ForgotPassword() {
   const [successMsg, setSuccessMsg] = useState("");
   const [error, setError] = useState("");
 
-  const handleSend = () => {
-    if (!email.trim()) {
-      setError("Please enter your email.");
-      setSuccessMsg("");
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError("Please enter a valid email.");
-      setSuccessMsg("");
-      return;
-    }
+  const handleSend = async () => {
+
+  try {
+
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/forgot-password",
+      {
+        email,
+      }
+    );
+
+    setSuccessMsg(response.data.message);
     setError("");
-    setSuccessMsg("Password reset link has been sent to your email.");
-  };
+
+  } catch (error) {
+
+    setError(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+
+    setSuccessMsg("");
+
+  }
+
+};
 
   const handleResend = () => {
     if (!email.trim()) return;

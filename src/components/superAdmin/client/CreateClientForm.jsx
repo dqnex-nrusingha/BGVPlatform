@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Building2, UserCircle, CreditCard } from "lucide-react";
+import axios from "axios";
 
 function Field({ label, required, hint, error, children }) {
   return (
@@ -71,8 +72,12 @@ export default function CreateClientForm({ onSubmit, onCancel }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-  if (validate()) {
+const handleSubmit = async () => {
+
+  if (!validate()) return;
+
+  try {
+
     const fullPhone = `+91${form.phone}`;
 
     const finalData = {
@@ -80,12 +85,49 @@ export default function CreateClientForm({ onSubmit, onCancel }) {
       phone: fullPhone,
     };
 
-    onSubmit && onSubmit(finalData);
+    const response = await axios.post(
+      "http://localhost:5000/api/client/create-client",
+      finalData
+    );
 
-    // Success Alert
-    alert("Client Registration Completed Successfully ✅");
+    alert(response.data.message);
 
-    console.log(finalData);
+    console.log(response.data);
+
+    // RESET FORM
+    setForm({
+      companyName: "",
+      cin: "",
+      gst: "",
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      pinCode: "",
+      country: "",
+      fullName: "",
+      email: "",
+      phone: "",
+      plan: "standard",
+    });
+
+    setErrors({});
+
+  } catch (error) {
+
+    console.log(error);
+
+    if (error.response?.data?.errors) {
+
+      setErrors(error.response.data.errors);
+
+    } else {
+
+      alert(
+        error.response?.data?.message ||
+        "Something went wrong"
+      );
+    }
   }
 };
 

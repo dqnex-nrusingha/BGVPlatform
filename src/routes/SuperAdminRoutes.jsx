@@ -6,6 +6,7 @@ import SuperAdminLayout from "../layouts/SuperAdminLayout";
 
 /* AUTH */
 import Login from "../pages/superAdmin/Login";
+import ForgotPassword from "../components/superAdmin/login/ForgotPassword";
 
 /* DASHBOARD */
 import Home from "../pages/superAdmin/Home";
@@ -49,6 +50,7 @@ function SuperAdminRoutes() {
     <Routes>
       {/* LOGIN */}
       <Route path="login" element={<Login />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
 
       {/* PROTECTED LAYOUT */}
       <Route
@@ -92,9 +94,9 @@ function SuperAdminRoutes() {
 
         <Route path="candidate" element={<Candidates />} />
 
-        <Route path="/create-candidate" element={<CreateCandidateForm />} />
+        <Route path="create-candidate" element={<CreateCandidateForm />} />
 
-        <Route path="/create-candidate-bulk" element={<BulkUpload />} />
+        <Route path="create-candidate-bulk" element={<BulkUpload />} />
 
          <Route path="view/:id" element={<View />} />
         <Route path="edit-candidate/:id" element={<EditCandidate />} />

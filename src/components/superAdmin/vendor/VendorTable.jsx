@@ -110,12 +110,12 @@ const TerminateModal = ({ vendor, onClose, onConfirm }) => {
       <div className="p-8 text-center">
         <h2 className="text-xl font-bold text-gray-800 leading-snug mb-6">
           "Are You Sure You Want To{" "}
-          <span className="text-red-600">Terminate {vendor.id}"</span>
+          <span className="text-red-600">Suspend {vendor.id}"</span>
         </h2>
 
         <div className="text-left mb-5">
           <label className="text-xs font-medium text-gray-600 mb-1 block">
-            Reason For Terminate <span className="text-red-500">*</span>
+            Reason For Suspend <span className="text-red-500">*</span>
           </label>
           <textarea
             value={reason}
@@ -134,11 +134,16 @@ const TerminateModal = ({ vendor, onClose, onConfirm }) => {
             Cancel
           </button>
           <button
-            onClick={() => onConfirm(reason)}
-            className="px-5 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition"
-          >
-            Terminate Application
-          </button>
+  onClick={() => onConfirm(reason)}
+  disabled={!reason.trim()}
+  className={`px-5 py-2 rounded-lg text-sm font-semibold transition ${
+    reason.trim()
+      ? "bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+      : "bg-red-100 text-red-300 cursor-not-allowed pointer-events-none"
+  }`}
+>
+  Suspend
+</button>
         </div>
       </div>
     </Modal>
@@ -159,7 +164,7 @@ const TerminateSuccessModal = ({ vendor, onClose }) => (
       <div className="p-8">
         <h2 className="text-lg font-bold text-gray-800 mb-1">"{vendor.id}"</h2>
         <p className="text-base font-semibold text-gray-600 mb-6">
-          Terminated Successfully
+          Suspended Successfully
         </p>
         <button
           onClick={onClose}

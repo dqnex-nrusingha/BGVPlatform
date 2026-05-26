@@ -109,7 +109,7 @@ function TableSection({ isToolBarRequired }) {
 
               {/* PHONE */}
               <td className="px-4 py-5 text-gray-700">{item.Phone}</td>
- <td className="px-4 py-4">
+              <td className="px-4 py-4">
                 <span
                   className={`px-4 py-1 rounded-full text-xs font-medium ${
                     item.status === "Active"

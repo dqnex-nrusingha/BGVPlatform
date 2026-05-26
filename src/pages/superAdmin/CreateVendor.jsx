@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   ArrowLeft,
   ChevronRight,
@@ -38,11 +39,13 @@ const TagInput = ({ value, onChange, tags, setTags, placeholder, error }) => {
   const removeTag = (tag) => setTags(tags.filter((t) => t !== tag));
 
   return (
-    <div className={`w-full border rounded-lg px-3 py-2 focus-within:ring-2 transition ${
-      error
-        ? "border-red-400 focus-within:ring-red-200 bg-red-50"
-        : "border-gray-200 focus-within:ring-[#02027A]/20 bg-white"
-    }`}>
+    <div
+      className={`w-full border rounded-lg px-3 py-2 focus-within:ring-2 transition ${
+        error
+          ? "border-red-400 focus-within:ring-red-200 bg-red-50"
+          : "border-gray-200 focus-within:ring-[#02027A]/20 bg-white"
+      }`}
+    >
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -54,7 +57,9 @@ const TagInput = ({ value, onChange, tags, setTags, placeholder, error }) => {
             onChange("");
           }
         }}
-        placeholder={tags.length === 0 ? placeholder : "Type and press Enter..."}
+        placeholder={
+          tags.length === 0 ? placeholder : "Type and press Enter..."
+        }
         className="w-full text-sm outline-none bg-transparent placeholder-gray-400 h-7"
       />
       {tags.length > 0 && (
@@ -82,7 +87,9 @@ const TagInput = ({ value, onChange, tags, setTags, placeholder, error }) => {
 // ── Field ──────────────────────────────────────────────
 const Field = ({ label, error, children }) => (
   <div>
-    <label className="text-sm font-medium text-gray-700 mb-1 block">{label}</label>
+    <label className="text-sm font-medium text-gray-700 mb-1 block">
+      {label}
+    </label>
     {children}
     {error && (
       <p className="text-[11px] text-red-500 mt-1 flex items-center gap-1">
@@ -128,14 +135,14 @@ export default function CreateVendor() {
   });
 
   const [stateInput, setStateInput] = useState("");
-  const [stateTags, setStateTags]   = useState([]);
-  const [cityInput, setCityInput]   = useState("");
-  const [cityTags, setCityTags]     = useState([]);
+  const [stateTags, setStateTags] = useState([]);
+  const [cityInput, setCityInput] = useState("");
+  const [cityTags, setCityTags] = useState([]);
 
-  const [errors, setErrors]                   = useState({});
+  const [errors, setErrors] = useState({});
   const [selectedServices, setSelectedServices] = useState({});
-  const [serviceError, setServiceError]         = useState("");
-  const [submitted, setSubmitted]               = useState(false);
+  const [serviceError, setServiceError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   // ── Handlers ──────────────────────────────────────────
   const handleChange = (field, value) => {
@@ -161,8 +168,7 @@ export default function CreateVendor() {
     if (!form.vendorName.trim())
       e.vendorName = "Vendor company name is required.";
 
-    if (!form.gst.trim())
-      e.gst = "GST number is required.";
+    if (!form.gst.trim()) e.gst = "GST number is required.";
 
     if (!stateTags.length && !stateInput.trim())
       e.states = "Coverage state is required.";
@@ -170,8 +176,7 @@ export default function CreateVendor() {
     if (!cityTags.length && !cityInput.trim())
       e.cities = "Coverage city is required.";
 
-    if (!form.fullName.trim())
-      e.fullName = "Full name is required.";
+    if (!form.fullName.trim()) e.fullName = "Full name is required.";
 
     if (!form.email.trim()) {
       e.email = "Email is required.";
@@ -185,7 +190,9 @@ export default function CreateVendor() {
       e.phone = "Enter a valid phone number.";
     }
 
-    const hasService = Object.values(selectedServices).some((v) => v !== undefined);
+    const hasService = Object.values(selectedServices).some(
+      (v) => v !== undefined,
+    );
     if (!hasService) setServiceError("Please select at least one service.");
     else setServiceError("");
 
@@ -198,13 +205,51 @@ export default function CreateVendor() {
   };
 
   // ── Save ──────────────────────────────────────────────
-  const handleSave = () => {
+  const handleSave = async () => {
+    // FRONTEND VALIDATION
     const e = validate();
+
     setErrors(e);
-    const hasService = Object.values(selectedServices).some((v) => v !== undefined);
+
+    const hasService = Object.values(selectedServices).some(
+      (v) => v !== undefined,
+    );
+
     if (Object.keys(e).length > 0 || !hasService) return;
-    setSubmitted(true);
-    setTimeout(() => navigate(-1), 1500);
+
+    try {
+      // FINAL DATA
+      const finalData = {
+        ...form,
+        states: stateTags,
+        cities: cityTags,
+        services: selectedServices,
+      };
+
+      // API CALL
+      const response = await axios.post(
+        "http://localhost:5000/api/vendor/create",
+        finalData,
+      );
+
+      console.log(response.data);
+
+      // SUCCESS
+      setSubmitted(true);
+
+      setTimeout(() => {
+        navigate(-1);
+      }, 1500);
+    } catch (error) {
+      console.log(error);
+
+      // BACKEND VALIDATION ERRORS
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      } else {
+        alert(error.response?.data?.message || "Something went wrong");
+      }
+    }
   };
 
   // ── Success Screen ─────────────────────────────────────
@@ -222,7 +267,6 @@ export default function CreateVendor() {
 
   return (
     <div className="flex flex-col h-[92vh] px-6 py-5">
-
       {/* BACK */}
       <button
         onClick={() => navigate(-1)}
@@ -247,16 +291,18 @@ export default function CreateVendor() {
       {/* SCROLLABLE CARD */}
       <div className="flex-1 overflow-y-auto">
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5 max-w-3xl">
-
           {/* ── SECTION 1: Vendor Details ── */}
           <SectionHeader icon={Building2} title="Vendor Details & Coverage" />
 
           <div className="space-y-4 -mt-2">
-
             {/* ROW 1 — Company Name + GST */}
             <div className="grid grid-cols-2 gap-4">
               <Field
-                label={<>Vendor Company Name <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    Vendor Company Name <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.vendorName}
               >
                 <input
@@ -268,7 +314,11 @@ export default function CreateVendor() {
               </Field>
 
               <Field
-                label={<>GST Number <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    GST Number <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.gst}
               >
                 <input
@@ -283,7 +333,12 @@ export default function CreateVendor() {
             {/* ROW 2 — States + Cities tag inputs */}
             <div className="grid grid-cols-2 gap-4">
               <Field
-                label={<>Coverage Area (States) <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    Coverage Area (States){" "}
+                    <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.states}
               >
                 <TagInput
@@ -300,7 +355,12 @@ export default function CreateVendor() {
               </Field>
 
               <Field
-                label={<>Coverage Area (Cities) <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    Coverage Area (Cities){" "}
+                    <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.cities}
               >
                 <TagInput
@@ -325,7 +385,11 @@ export default function CreateVendor() {
 
           <div className="space-y-4 -mt-2">
             <Field
-              label={<>Full Name <span className="text-red-500">*</span></>}
+              label={
+                <>
+                  Full Name <span className="text-red-500">*</span>
+                </>
+              }
               error={errors.fullName}
             >
               <input
@@ -338,7 +402,11 @@ export default function CreateVendor() {
 
             <div className="grid grid-cols-2 gap-4">
               <Field
-                label={<>Contact Email <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    Contact Email <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.email}
               >
                 <input
@@ -349,12 +417,18 @@ export default function CreateVendor() {
                   className={inputClass(errors.email)}
                 />
                 {!errors.email && (
-                  <p className="text-[10px] text-gray-400 mt-1">Must be unique across platform.</p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Must be unique across platform.
+                  </p>
                 )}
               </Field>
 
               <Field
-                label={<>Phone Number <span className="text-red-500">*</span></>}
+                label={
+                  <>
+                    Phone Number <span className="text-red-500">*</span>
+                  </>
+                }
                 error={errors.phone}
               >
                 <input
@@ -364,7 +438,9 @@ export default function CreateVendor() {
                   className={inputClass(errors.phone)}
                 />
                 {!errors.phone && (
-                  <p className="text-[10px] text-gray-400 mt-1">Must be a unique active number.</p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Must be a unique active number.
+                  </p>
                 )}
               </Field>
             </div>
@@ -408,7 +484,9 @@ export default function CreateVendor() {
                       onChange={() => {}}
                       className="w-4 h-4 accent-[#02027A] cursor-pointer"
                     />
-                    <span className="flex-1 text-sm font-medium text-gray-800">{service}</span>
+                    <span className="flex-1 text-sm font-medium text-gray-800">
+                      {service}
+                    </span>
 
                     {isChecked && (
                       <div
@@ -416,13 +494,17 @@ export default function CreateVendor() {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Info size={13} className="text-gray-400" />
-                        <div className={`flex items-center border rounded-lg overflow-hidden h-8 ${
-                          slaErr ? "border-red-400" : "border-gray-300"
-                        }`}>
+                        <div
+                          className={`flex items-center border rounded-lg overflow-hidden h-8 ${
+                            slaErr ? "border-red-400" : "border-gray-300"
+                          }`}
+                        >
                           <input
                             type="number"
                             value={selectedServices[index]}
-                            onChange={(e) => handleSlaChange(index, e.target.value)}
+                            onChange={(e) =>
+                              handleSlaChange(index, e.target.value)
+                            }
                             placeholder="10"
                             min="1"
                             className="w-14 px-2 text-sm text-center outline-none bg-white"
@@ -432,7 +514,9 @@ export default function CreateVendor() {
                           </div>
                         </div>
                         {slaErr && (
-                          <span className="text-[10px] text-red-500">{slaErr}</span>
+                          <span className="text-[10px] text-red-500">
+                            {slaErr}
+                          </span>
                         )}
                       </div>
                     )}
@@ -441,7 +525,6 @@ export default function CreateVendor() {
               );
             })}
           </div>
-
         </div>
       </div>
 
@@ -460,7 +543,6 @@ export default function CreateVendor() {
           Save Vendor Details
         </button>
       </div>
-
     </div>
   );
 }
