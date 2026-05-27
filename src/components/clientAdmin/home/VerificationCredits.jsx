@@ -1,59 +1,182 @@
-import { CreditCard, FileText, Wallet } from "lucide-react";
+import {
+  CreditCard,
+  FileText,
+  Wallet,
+  CircleDollarSign,
+} from "lucide-react";
 
-export default function VerificationCredits() {
+export function VerificationCredits() {
+
   const credits = [
+
     {
       label: "Total Credits",
       value: "5,000",
-      icon: <FileText size={18} className="text-white/70" />,
+
+      icon: (
+        <FileText
+          size={18}
+          className="text-white/80"
+        />
+      ),
     },
+
     {
       label: "Credits Used",
       value: "3,850",
-      icon: <CreditCard size={18} className="text-white/70" />,
+
+      icon: (
+        <CreditCard
+          size={18}
+          className="text-white/80"
+        />
+      ),
     },
+
     {
       label: "Available Remaining",
       value: "1,150",
-      icon: <Wallet size={18} className="text-white/70" />,
+
+      icon: (
+        <Wallet
+          size={18}
+          className="text-white/80"
+        />
+      ),
     },
+
   ];
 
   return (
-    <div className="bg-[#1c1c4d] rounded-2xl p-5 text-white flex flex-col h-full w-full">
 
-      {/* TOP */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <CreditCard size={18} className="text-white/80" />
-          <span className="text-sm font-semibold">Verification Credits</span>
-        </div>
-        {/* Donut icon placeholder */}
-        <div className="w-10 h-10 rounded-full border-4 border-white/20 border-t-white animate-spin-slow" />
-      </div>
+    <div
+      className="
+        relative overflow-hidden
+        bg-[#09004D]
+        rounded-3xl
+        p-5
+        border border-indigo-900
+        shadow-xl
+        h-full
+      "
+    >
 
-      {/* PLAN BADGE */}
-      <div className="mb-5">
-        <span className="bg-indigo-500/30 text-indigo-300 text-xs px-3 py-1 rounded-full">
-          Standard Employment Plan
-        </span>
-      </div>
+      {/* TOP LIGHT EFFECT */}
+      <div className="
+        absolute -top-20 -right-20
+        w-60 h-60
+        bg-indigo-400/20
+        blur-3xl
+        rounded-full
+      " />
 
-      {/* CREDIT ROWS */}
-      <div className="flex flex-col gap-3 flex-1">
-        {credits.map(({ label, value, icon }) => (
-          <div
-            key={label}
-            className="bg-white/10 rounded-xl px-4 py-4 flex items-center justify-between"
-          >
-            <div>
-              <p className="text-xs text-white/60 mb-1">{label}</p>
-              <p className="text-2xl font-bold">{value}</p>
-            </div>
-            <div className="bg-white/10 p-2 rounded-lg">{icon}</div>
+      {/* HEADER */}
+      <div className="relative flex items-start justify-between mb-5 z-10">
+
+        {/* LEFT */}
+        <div>
+
+          <div className="flex items-center gap-2">
+
+            <CircleDollarSign
+              size={18}
+              className="text-white/80"
+            />
+
+            <h2 className="text-[18px] font-semibold text-white">
+
+              Verification Credits
+
+            </h2>
+
           </div>
-        ))}
+
+          {/* PLAN */}
+          <div className="mt-3">
+
+            <span className="
+              px-3 py-1 rounded-full
+              bg-indigo-400/20
+              text-indigo-200
+              text-[10px]
+              font-medium
+              border border-indigo-300/10
+            ">
+
+              Standard Employment Plan
+
+            </span>
+
+          </div>
+
+        </div>
+
+        {/* RIGHT ICON */}
+        <div className="
+          w-12 h-12 rounded-full
+          border-4
+          border-white/15
+          border-t-white/80
+        " />
+
       </div>
+
+      {/* CREDIT CARDS */}
+      <div className="relative space-y-4 z-10">
+
+        {credits.map((item, index) => (
+
+          <div
+            key={index}
+            className="
+              bg-white/10
+              backdrop-blur-md
+              border border-white/10
+              rounded-2xl
+              px-4 py-4
+              flex items-center justify-between
+
+              shadow-[0_4px_20px_rgba(0,0,0,0.15)]
+            "
+          >
+
+            {/* LEFT */}
+            <div>
+
+              <p className="text-[13px] text-white/70 mb-1">
+
+                {item.label}
+
+              </p>
+
+              <h1 className="text-[40px] font-semibold leading-none text-white">
+
+                {item.value}
+
+              </h1>
+
+            </div>
+
+            {/* RIGHT ICON */}
+            <div className="
+              w-11 h-11 rounded-xl
+              bg-white/10
+              border border-white/10
+              flex items-center justify-center
+            ">
+
+              {item.icon}
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
     </div>
   );
 }
+
+export default VerificationCredits;

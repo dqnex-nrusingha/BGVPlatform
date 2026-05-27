@@ -5,9 +5,8 @@ import {
   RefreshCcw,
   BadgeCheck,
   Ban,
+  MoveUpRight,
 } from "lucide-react";
-
-import OverviewCard from "./OverviewCard";
 
 function CandidateOverview() {
 
@@ -19,12 +18,15 @@ function CandidateOverview() {
 
       icon: (
         <ClipboardList
-          size={16}
-          className="text-indigo-600"
+          size={18}
+          className="text-[#4F46E5]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-indigo-100",
+      bg: "bg-[#F3F2FF]",
+      border: "bg-[#4338CA]",
+      iconBg: "bg-[#DDD8FF]",
     },
 
     {
@@ -33,12 +35,15 @@ function CandidateOverview() {
 
       icon: (
         <CheckCircle2
-          size={16}
-          className="text-green-600"
+          size={18}
+          className="text-[#16A34A]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-green-100",
+      bg: "bg-[#EAF9EB]",
+      border: "bg-[#22C55E]",
+      iconBg: "bg-[#86EFAC]",
     },
 
     {
@@ -47,12 +52,15 @@ function CandidateOverview() {
 
       icon: (
         <PauseCircle
-          size={16}
-          className="text-yellow-600"
+          size={18}
+          className="text-[#B7791F]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-yellow-100",
+      bg: "bg-[#FFF8E7]",
+      border: "bg-[#D4A017]",
+      iconBg: "bg-[#F6D58B]",
     },
 
     {
@@ -61,12 +69,15 @@ function CandidateOverview() {
 
       icon: (
         <RefreshCcw
-          size={16}
-          className="text-orange-500"
+          size={18}
+          className="text-[#EA580C]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-orange-100",
+      bg: "bg-[#FFF1E8]",
+      border: "bg-[#F97316]",
+      iconBg: "bg-[#FDBA74]",
     },
 
     {
@@ -75,12 +86,15 @@ function CandidateOverview() {
 
       icon: (
         <BadgeCheck
-          size={16}
-          className="text-teal-600"
+          size={18}
+          className="text-[#0F766E]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-teal-100",
+      bg: "bg-[#ECF8F6]",
+      border: "bg-[#14B8A6]",
+      iconBg: "bg-[#A7F3D0]",
     },
 
     {
@@ -89,12 +103,15 @@ function CandidateOverview() {
 
       icon: (
         <Ban
-          size={16}
-          className="text-red-500"
+          size={18}
+          className="text-[#EF4444]"
+          strokeWidth={2}
         />
       ),
 
-      color: "bg-red-100",
+      bg: "bg-[#FFECEC]",
+      border: "bg-[#FF3B30]",
+      iconBg: "bg-[#FDA4AF]",
     },
 
   ];
@@ -103,20 +120,89 @@ function CandidateOverview() {
 
     <div>
 
-      <h2 className="text-base font-semibold text-gray-700 mb-3">
+      {/* TITLE */}
+      <h2 className="text-[18px] font-semibold text-[#121212] mb-4">
 
         Candidate overview
 
       </h2>
 
-      <div className="grid grid-cols-3 gap-3">
+      {/* GRID */}
+      <div className="grid grid-cols-3 gap-4">
 
         {candidateStats.map((item) => (
 
-          <OverviewCard
+          <div
             key={item.title}
-            {...item}
-          />
+            className={`
+              relative rounded-3xl
+              p-5 min-h-33.75
+              overflow-hidden
+              ${item.bg}
+
+              border border-white
+              shadow-[0_4px_14px_rgba(15,23,42,0.04)]
+            `}
+          >
+
+            {/* LEFT BORDER */}
+            <div
+              className={`
+                absolute left-0 top-5 bottom-5
+                w-0.75
+                rounded-full
+                ${item.border}
+
+                shadow-[0_0_8px_rgba(0,0,0,0.10)]
+              `}
+            />
+
+            {/* TOP */}
+            <div className="flex items-start justify-between">
+
+              <h3 className="text-[15px] font-semibold text-[#1F1F1F] leading-5 max-w-35">
+
+                {item.title}
+
+              </h3>
+
+              {/* ICON */}
+              <div
+                className={`
+                  w-12 h-12 rounded-full
+                  flex items-center justify-center
+                  shrink-0
+                  ${item.iconBg}
+                `}
+              >
+
+                {item.icon}
+
+              </div>
+
+            </div>
+
+            {/* BOTTOM */}
+            <div className="flex items-end justify-between mt-8">
+
+              <h1 className="text-[44px] font-semibold leading-none text-[#121212]">
+
+                {item.value}
+
+              </h1>
+
+              <button>
+
+                <MoveUpRight
+                  size={14}
+                  className="text-gray-300"
+                />
+
+              </button>
+
+            </div>
+
+          </div>
 
         ))}
 
