@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 import { useForm } from "react-hook-form";
 
@@ -21,52 +22,68 @@ function CreateCandidateForm() {
   } = useForm();
 
   // SUBMIT
-  const onSubmit = async (data) => {
+ const onSubmit = async (data) => {
+
+  try {
+
     setLoading(true);
 
     setPhoneMessage("");
 
     setEmailMessage("");
 
-    // CHECK PHONE EXISTS
-    const phoneExists = candidateData.find((item) => item.phone === data.phone);
+    // API CALL
+    const response = await axios.post(
+      "http://localhost:5000/api/candidate/create",
+      data
+    );
 
-    // CHECK EMAIL EXISTS
-    const emailExists = candidateData.find((item) => item.email === data.email);
+    console.log(response.data);
 
-    // PHONE VALIDATION
-    if (phoneExists) {
-      setPhoneMessage("Phone number already exists");
-
-      setLoading(false);
-
-      return;
-    }
-
-    // EMAIL VALIDATION
-    if (emailExists) {
-      setEmailMessage("Email already exists");
-
-      setLoading(false);
-
-      return;
-    }
-
-    // ADD NEW CANDIDATE
-    candidateData.push({
-      id: candidateData.length + 1,
-      ...data,
-    });
-
-    console.log("Updated Candidate Data:", candidateData);
-
-    alert("Candidate Created Successfully");
+    alert(response.data.message);
 
     // RESET FORM
     reset();
 
+  } catch (error) {
+
+    console.log(error);
+
+    // BACKEND VALIDATION ERRORS
+    if (error.response?.data?.errors) {
+
+      const backendErrors =
+        error.response.data.errors;
+
+      // EMAIL ERROR
+      if (backendErrors.email) {
+
+        setEmailMessage(
+          backendErrors.email
+        );
+      }
+
+      // PHONE ERROR
+      if (backendErrors.phone) {
+
+        setPhoneMessage(
+          backendErrors.phone
+        );
+      }
+
+    } else {
+
+      alert(
+        error.response?.data?.message ||
+        "Something went wrong"
+      );
+    }
+
+  } finally {
+
     setLoading(false);
-  };
+  }
+};
 
   return (
     <div className="p-6">

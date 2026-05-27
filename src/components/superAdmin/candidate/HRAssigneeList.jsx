@@ -78,9 +78,22 @@ function HRAssigneeList({ totalCases }) {
       </div>
 
       {/* BUTTON */}
-      <button className="w-full bg-[#02027A] hover:bg-[#00005E] text-white py-3 rounded-lg font-semibold mt-6 transition">
-        Assign {totalCases} cases
-      </button>
+      <button
+  onClick={() => {
+
+    // VALIDATION
+    if (!selectedHR) {
+      alert("Please select an HR");
+      return;
+    }
+
+    console.log("Assigned HR:", selectedHR);
+
+  }}
+  className="w-full bg-[#02027A] hover:bg-[#00005E] text-white py-3 rounded-lg font-semibold mt-6 transition"
+>
+  Assign {totalCases} cases
+</button>
     </div>
   );
 }
