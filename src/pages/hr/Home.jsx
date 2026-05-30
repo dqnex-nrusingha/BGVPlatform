@@ -10,7 +10,7 @@ const Home = () => {
   const totalPages = 9;
   return (
     <div className="p-4 flex flex-col gap-5">
-      <ProfileHeader showExport={false} showAddCandidate={true}/>
+      <ProfileHeader showExport={false} showAddCandidate={false}/>
       <TableToolbar/>
       <TableSection/>
       <Pagination currentPage={page}

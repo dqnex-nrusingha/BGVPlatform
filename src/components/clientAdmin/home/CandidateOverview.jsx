@@ -191,14 +191,14 @@ function CandidateOverview() {
 
               </h1>
 
-              <button>
+              {/* <button>
 
                 <MoveUpRight
                   size={14}
                   className="text-gray-300"
                 />
 
-              </button>
+              </button> */}
 
             </div>
 

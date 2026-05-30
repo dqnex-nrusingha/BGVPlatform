@@ -158,14 +158,14 @@ function HROverview() {
               </h1>
 
               {/* BUTTON */}
-              <button>
+              {/* <button>
 
                 <MoveUpRight
                   size={14}
                   className="text-gray-300"
                 />
 
-              </button>
+              </button> */}
 
             </div>
 

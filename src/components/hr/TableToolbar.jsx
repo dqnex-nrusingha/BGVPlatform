@@ -5,8 +5,7 @@ import {
   Trash2,
   Search,
   Upload,
-  FileText,
-  FileSpreadsheet
+  FileText
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -49,11 +48,6 @@ function TableToolbar() {
           <CalendarDays size={16} />
           Sort by Date
         </button>
-
-        {/* <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg text-sm">
-          <Trash2 size={16} />
-          Trash
-        </button> */}
       </div>
 
       {/* Right Side */}
@@ -69,90 +63,93 @@ function TableToolbar() {
           <Search size={16} className="text-gray-500" />
         </div>
 
-        {/* Export Dropdown */}
-        <div className="relative" ref={dropdownRef}>
-          
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowExportModal(!showExportModal);
-            }}
-            className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm hover:bg-gray-100"
-          >
-            <Upload size={16} />
-            Export
-          </button>
+       {/* Export Dropdown */}
+<div className="relative" ref={dropdownRef}>
 
-          {/* Dropdown Panel */}
-          {showExportModal && (
-            <div className="absolute right-full mr-2 top-0 w-70 bg-white border rounded-xl shadow-lg z-50 p-4">
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      setShowExportModal(!showExportModal);
+    }}
+    className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm hover:bg-gray-100"
+  >
+    <Upload size={16} />
+    Export
+  </button>
 
-              {/* Title */}
-              <h3 className="text-sm font-medium mb-3">
-                Select file type
-              </h3>
+  {/* Dropdown Panel */}
+  {showExportModal && (
+    <div className="absolute right-full mr-2 top-0 w-64 bg-white border border-gray-200 rounded-xl shadow-lg z-50 p-4">
 
-              {/* Options */}
-              <div className="flex gap-2 mb-4">
+      {/* Title */}
+      <h3 className="text-sm font-semibold text-gray-700 mb-4">
+        Select file type
+      </h3>
 
-                {/* PDF */}
-                <div
-                  onClick={() => setSelectedType("pdf")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
-                    selectedType === "pdf"
-                      ? "border-[#01026E] bg-blue-50"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  <FileText size={16} className="text-red-500" />
-                  <span className="text-xs">PDF</span>
-                </div>
+      {/* Options */}
+      <div className="flex gap-3 mb-5">
 
-                {/* Excel */}
-                <div
-                  onClick={() => setSelectedType("excel")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
-                    selectedType === "excel"
-                      ? "border-[#01026E] bg-blue-50"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  <FileSpreadsheet size={16} className="text-green-600" />
-                  <span className="text-xs">Excel</span>
-                </div>
+        {/* PDF */}
+        <div
+          onClick={() => setSelectedType("pdf")}
+          className={`flex items-center gap-2 border rounded-lg px-4 py-2 cursor-pointer transition ${
+            selectedType === "pdf"
+              ? "border-[#01026E] bg-blue-50"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <FileText
+            size={16}
+            className="text-red-500"
+          />
 
-                {/* CSV */}
-                <div
-                  onClick={() => setSelectedType("csv")}
-                  className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer ${
-                    selectedType === "csv"
-                      ? "border-[#01026E] bg-blue-50"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <FileText size={16} className="text-green-500" />
-                  <span className="text-xs">CSV</span>
-                </div>
-
-              </div>
-
-              {/* Download Button */}
-              <div className="flex justify-end">
-                <button
-                  onClick={() => {
-                    console.log("Download:", selectedType);
-                    setShowExportModal(false);
-                  }}
-                  className="bg-[#01026E] text-white px-4 py-1.5 rounded-lg text-sm hover:opacity-90"
-                >
-                  Download
-                </button>
-              </div>
-
-            </div>
-          )}
-
+          <span className="text-sm font-medium">
+            PDF
+          </span>
         </div>
+
+        {/* CSV */}
+        <div
+          onClick={() => setSelectedType("csv")}
+          className={`flex items-center gap-2 border rounded-lg px-4 py-2 cursor-pointer transition ${
+            selectedType === "csv"
+              ? "border-[#01026E] bg-blue-50"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <FileText
+            size={16}
+            className="text-green-500"
+          />
+
+          <span className="text-sm font-medium">
+            CSV
+          </span>
+        </div>
+
+      </div>
+
+      {/* Download Button */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => {
+            console.log(
+              "Download:",
+              selectedType
+            );
+
+            setShowExportModal(false);
+          }}
+          className="bg-[#01026E] text-white px-5 py-2 rounded-lg text-sm hover:opacity-90 transition"
+        >
+          Download
+        </button>
+      </div>
+
+    </div>
+  )}
+
+</div>
 
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -31,6 +32,46 @@ export default function LoginForm() {
       alert("Invalid email or password");
     }
   };
+
+//   const handleLogin = async () => {
+
+//   try {
+
+//     const response = await axios.post(
+//       "http://localhost:5000/api/client-admin/auth/login",
+//       {
+//         email,
+//         password,
+//       }
+//     );
+
+//     console.log(response.data);
+
+//     localStorage.setItem(
+//       "role",
+//       "admin"
+//     );
+
+//     localStorage.setItem(
+//       "user",
+//       JSON.stringify({
+//         email,
+//         role: "Client Admin",
+//       })
+//     );
+
+//     navigate("/admin/home");
+
+//   } catch (error) {
+
+//     console.log(error);
+
+//     alert(
+//       error.response?.data?.message ||
+//       "Invalid email or password"
+//     );
+//   }
+// };
 
   return (
     <div className="relative z-10 w-full max-w-sm px-8">

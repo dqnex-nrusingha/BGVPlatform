@@ -12,7 +12,7 @@ const DashBoard = () => {
 
   return (
     <div className="p-4 flex flex-col gap-5">
-        <ProfileHeader showExport={true} showAddCandidate={false}/>
+        <ProfileHeader showExport={true} showAddCandidate={true}/>
         <CandidateOverviewSection />
         <TableSection isToolBarRequired = {false} />
         <Pagination currentPage={page}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function CreateHRForm() {
@@ -95,11 +95,31 @@ function CreateHRForm() {
   };
 
   // SUBMIT
-  const handleSubmit = () => {
-    if (!validateForm()) return;
-    console.log(formData);
+ const handleSubmit = async () => {
+
+  if (!validateForm()) return;
+
+  try {
+
+    const response = await axios.post(
+      "http://localhost:5000/api/client-admin/hr/create",
+      formData
+    );
+
+    console.log(response.data);
+
     setShowSuccessModal(true);
-  };
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+  }
+};
 
   return (
     <div className="pl-32">
