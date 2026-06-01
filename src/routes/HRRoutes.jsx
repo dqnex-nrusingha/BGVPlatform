@@ -18,6 +18,7 @@ import CreateCandidateForm from "../components/hr/CreateCandidateForm";
 
 
 import Login from "../pages/hr/Login";
+import Analytics from "../pages/hr/Analytics";
 
 function HRRoutes() {
 
@@ -86,6 +87,7 @@ function HRRoutes() {
           path="edit"
           element={<EditCandidate />}
         />
+        <Route path="analytics" element={<Analytics />} />
 
       </Route>
 

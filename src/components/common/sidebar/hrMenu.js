@@ -37,7 +37,7 @@ export const hrMenu = [
   {
     name: "Analytics",
     icon: FileText,
-    path: "/hr/report",
+    path: "/hr/analytics",
 
     activePaths: [
       "/hr/report",
