@@ -1,15 +1,18 @@
 import { useState } from "react";
-
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import PageHeader from "./PageHeader";
 
-import { candidateTableData } from "../../components/clientAdmin/data/candidateTableData";
-
 function CreateCandidateForm() {
+  const navigate = useNavigate();
+
   const [phoneMessage, setPhoneMessage] = useState("");
 
   const [emailMessage, setEmailMessage] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -23,49 +26,40 @@ function CreateCandidateForm() {
   // SUBMIT
   const onSubmit = async (data) => {
     setLoading(true);
-
     setPhoneMessage("");
-
     setEmailMessage("");
+    setSuccessMessage("");
 
-    // CHECK PHONE EXISTS
-    const phoneExists = candidateData.find((item) => item.phone === data.phone);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/candidates/single_candidate_add",
+        data
+      );
 
-    // CHECK EMAIL EXISTS
-    const emailExists = candidateData.find((item) => item.email === data.email);
+      if (response.data.success) {
+        setSuccessMessage("Candidate Created Successfully! ✅");
+        reset();
+        // 2 second baad HR home pe navigate karo
+        setTimeout(() => {
+          navigate("/hr/home");
+        }, 2000);
+      }
 
-    // PHONE VALIDATION
-    if (phoneExists) {
-      setPhoneMessage("Phone number already exists");
+    } catch (error) {
+      const errData = error.response?.data;
 
+      // Duplicate phone ya email — field ke neeche dikhao
+      if (errData?.field === "phone") {
+        setPhoneMessage(errData.message);
+      } else if (errData?.field === "email") {
+        setEmailMessage(errData.message);
+      } else {
+        setEmailMessage(errData?.message || "Something went wrong. Please try again.");
+      }
+
+    } finally {
       setLoading(false);
-
-      return;
     }
-
-    // EMAIL VALIDATION
-    if (emailExists) {
-      setEmailMessage("Email already exists");
-
-      setLoading(false);
-
-      return;
-    }
-
-    // ADD NEW CANDIDATE
-    candidateData.push({
-      id: candidateData.length + 1,
-      ...data,
-    });
-
-    console.log("Updated Candidate Data:", candidateData);
-
-    alert("Candidate Created Successfully");
-
-    // RESET FORM
-    reset();
-
-    setLoading(false);
   };
 
   return (
@@ -74,7 +68,16 @@ function CreateCandidateForm() {
 
       <div className="bg-white p-6 rounded-xl shadow max-w-xl ml-28">
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+
+          {/* SUCCESS BANNER */}
+          {successMessage && (
+            <div className="bg-green-50 border border-green-300 text-green-700 text-sm p-3 rounded-lg flex items-center gap-2">
+              {successMessage}
+            </div>
+          )}
+
           {/* FIRST / LAST NAME */}
+
           <div className="flex gap-4">
             {/* FIRST NAME */}
             <div className="w-1/2">
@@ -213,9 +216,9 @@ function CreateCandidateForm() {
                 type="text"
                 placeholder="IT"
                 className="w-full mt-1 p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                {...register("function", {
-                  required: "Function is required",
-                })}
+               {...register("jobFunction", {
+  required: "Function is required",
+})}
               />
 
               {errors.function && (
