@@ -1,74 +1,595 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
-  User,
-  MapPin,
-  IdCard,
-  GraduationCap,
-  Briefcase,
-  ShieldCheck,
-  Users,
-  CheckCircle,
-  Pencil, Eye, Trash2 
+  User, MapPin, IdCard, GraduationCap, Briefcase,
+  ShieldCheck, Users, CheckCircle, Eye, Trash2, Pencil, Loader2
 } from "lucide-react";
 
-const InputField = ({ label, value }) => (
+const BASE = "http://localhost:5000/api/candidates";
+
+/* ─── helpers ─── */
+const statusBadge = (s) => {
+  switch (Number(s)) {
+    case 1: return { label: "Verified",     cls: "bg-green-100 text-green-600" };
+    case 2: return { label: "In Progress",  cls: "bg-yellow-100 text-yellow-600" };
+    case 3: return { label: "Rejected",     cls: "bg-red-100 text-red-500" };
+    default: return { label: "Pending",     cls: "bg-gray-100 text-gray-500" };
+  }
+};
+
+const docTypeLabel = (t) =>
+  ({ 1: "PAN Card", 2: "Aadhaar", 3: "Passport", 4: "Driving License", 5: "Voter ID" }[t] || "Document");
+
+const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("en-IN") : "—");
+
+/* ─── Skeleton ─── */
+const Skeleton = () => (
+  <div className="flex flex-col gap-4 mt-2">
+    {[1, 2, 3].map((i) => <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse" />)}
+  </div>
+);
+
+/* ─── Input (read-only view) ─── */
+const Field = ({ label, value }) => (
   <div>
     <label className="block text-sm text-gray-600 mb-1">{label}</label>
     <input
-      defaultValue={value}
+      defaultValue={value ?? ""}
+      className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#01026E] bg-gray-50"
+      readOnly
+    />
+  </div>
+);
+
+/* ─── Input (editable) ─── */
+const EditField = ({ label, name, value, onChange, type = "text" }) => (
+  <div>
+    <label className="block text-sm text-gray-600 mb-1">{label}</label>
+    <input
+      type={type}
+      name={name}
+      value={value ?? ""}
+      onChange={onChange}
       className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#01026E]"
     />
   </div>
 );
 
+/* ════════════════ PERSONAL TAB ════════════════ */
+function PersonalTab({ candId }) {
+  const [data, setData]     = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving]   = useState(false);
+  const [msg, setMsg]         = useState("");
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/personal`)
+      .then(r => setData(r.data.data || {}))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  const onChange = (e) => setData(p => ({ ...p, [e.target.name]: e.target.value }));
+
+  const onSave = async () => {
+    setSaving(true); setMsg("");
+    try {
+      await axios.put(`${BASE}/${candId}/personal`, data);
+      setMsg("✅ Saved successfully!");
+    } catch { setMsg("❌ Save failed."); }
+    finally { setSaving(false); }
+  };
+
+  if (loading) return <Skeleton />;
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Personal Information</h3>
+      <p className="text-sm text-gray-500 mb-6">General Profile Details And Contact Information.</p>
+      <div className="grid grid-cols-2 gap-5">
+        <EditField label="First Name"    name="first_name"    value={data.first_name}   onChange={onChange} />
+        <EditField label="Last Name"     name="last_name"     value={data.last_name}    onChange={onChange} />
+        <EditField label="Email"         name="email"         value={data.email}         onChange={onChange} type="email" />
+        <EditField label="Phone"         name="phone"         value={data.phone}         onChange={onChange} />
+        <EditField label="Date of Birth" name="date_of_birth" value={data.date_of_birth?.slice(0,10)} onChange={onChange} type="date" />
+        <EditField label="Father Name"   name="father_name"   value={data.father_name}  onChange={onChange} />
+        <EditField label="Nationality"   name="nationality"   value={data.nationality}  onChange={onChange} />
+        <div>
+          <label className="block text-sm text-gray-600 mb-1">Gender</label>
+          <select name="gender" value={data.gender ?? ""} onChange={onChange}
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#01026E]">
+            <option value="">Select</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Other</option>
+          </select>
+        </div>
+        <EditField label="Function" name="job_function" value={data.job_function} onChange={onChange} />
+        <EditField label="Tag"      name="tag"          value={data.tag}          onChange={onChange} />
+      </div>
+      {msg && <p className="mt-3 text-sm">{msg}</p>}
+      <div className="flex items-center justify-between mt-8">
+        <p className="text-xs text-gray-400">Last edited: {fmtDate(data.updated_at)}</p>
+        <button onClick={onSave} disabled={saving}
+          className="px-5 py-2 bg-[#01026E] text-white rounded-lg text-sm flex items-center gap-2 hover:opacity-90 disabled:opacity-60">
+          {saving && <Loader2 size={14} className="animate-spin" />}
+          {saving ? "Saving..." : "Save Profile Details"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+/* ════════════════ ADDRESS TAB ════════════════ */
+function AddressTab({ candId }) {
+  const [data, setData]     = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving]   = useState(false);
+  const [msg, setMsg]         = useState("");
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/address`)
+      .then(r => setData(r.data.data || {}))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  const onChange = (e) => setData(p => ({ ...p, [e.target.name]: e.target.value }));
+
+  const onSave = async () => {
+    setSaving(true); setMsg("");
+    try {
+      await axios.put(`${BASE}/${candId}/address`, data);
+      setMsg("✅ Address saved!");
+    } catch { setMsg("❌ Save failed."); }
+    finally { setSaving(false); }
+  };
+
+  if (loading) return <Skeleton />;
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Present Address</h3>
+      <p className="text-sm text-gray-500 mb-6">Current residential address details.</p>
+      <div className="grid grid-cols-2 gap-5 mb-8">
+        <EditField label="Address Line 1" name="candidate_current_address" value={data.candidate_current_address} onChange={onChange} />
+        <EditField label="Pin Code"       name="current_zipcode"           value={data.current_zipcode}           onChange={onChange} />
+        <EditField label="City"           name="current_city"              value={data.current_city}              onChange={onChange} />
+        <EditField label="Area"           name="current_area"              value={data.current_area}              onChange={onChange} />
+        <EditField label="State"          name="current_state"             value={data.current_state}             onChange={onChange} />
+        <EditField label="Country"        name="current_country"           value={data.current_country}           onChange={onChange} />
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Permanent Address</h3>
+      <div className="grid grid-cols-2 gap-5">
+        <EditField label="Address"  name="permanent_address"  value={data.permanent_address}  onChange={onChange} />
+        <EditField label="Pin Code" name="permanent_zipcode"  value={data.permanent_zipcode}  onChange={onChange} />
+        <EditField label="City"     name="permanent_city"     value={data.permanent_city}     onChange={onChange} />
+        <EditField label="Area"     name="permanent_area"     value={data.permanent_area}     onChange={onChange} />
+        <EditField label="State"    name="permanent_state"    value={data.permanent_state}    onChange={onChange} />
+        <EditField label="Country"  name="permanent_country"  value={data.permanent_country}  onChange={onChange} />
+      </div>
+
+      {msg && <p className="mt-3 text-sm">{msg}</p>}
+      <div className="flex justify-end mt-6">
+        <button onClick={onSave} disabled={saving}
+          className="px-5 py-2 bg-[#01026E] text-white rounded-lg text-sm flex items-center gap-2 hover:opacity-90 disabled:opacity-60">
+          {saving && <Loader2 size={14} className="animate-spin" />}
+          {saving ? "Saving..." : "Save Address"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+/* ════════════════ IDENTITY TAB ════════════════ */
+function IdentityTab({ candId }) {
+  const [docs, setDocs]       = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/identity`)
+      .then(r => setDocs(r.data.data || []))
+      .catch(() => setDocs([]))
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  if (loading) return <Skeleton />;
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Identity Information</h3>
+      <p className="text-sm text-gray-500 mb-6">Government ID proofs uploaded by candidate.</p>
+
+      {docs.length === 0 ? (
+        <p className="text-sm text-gray-400 mt-4">No identity documents found.</p>
+      ) : (
+        <div className="space-y-5">
+          {docs.map((doc) => {
+            const { label, cls } = statusBadge(doc.verification_status);
+            return (
+              <div key={doc.id_doc_id} className="border rounded-xl p-4 shadow-sm">
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="font-medium text-[#01026E]">{docTypeLabel(doc.doc_type)}</h4>
+                  <span className={`text-xs px-3 py-1 rounded-full ${cls}`}>{label}</span>
+                </div>
+                <Field label="ID Number" value={doc.doc_number} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ════════════════ EDUCATION TAB ════════════════ */
+function EducationTab({ candId }) {
+  const [list, setList]         = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [viewItem, setViewItem] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/education`)
+      .then(r => setList(r.data.data || []))
+      .catch(() => setList([]))
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  if (loading) return <Skeleton />;
+
+  if (viewItem) {
+    const { label, cls } = statusBadge(viewItem.verification_status);
+    return (
+      <>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Education Details</h3>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="font-medium text-[#01026E]">{viewItem.degree} — {viewItem.institution_name}</h4>
+              <span className={`text-xs px-3 py-1 rounded-full ${cls}`}>{label}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-5">
+              <Field label="Institute Name"   value={viewItem.institution_name} />
+              <Field label="Degree"           value={viewItem.degree} />
+              <Field label="Field of Study"   value={viewItem.field_of_study} />
+              <Field label="Board/University" value={viewItem.board_university} />
+              <Field label="Start Year"       value={viewItem.start_year} />
+              <Field label="End Year"         value={viewItem.end_year} />
+              <Field label="Percentage/CGPA"  value={viewItem.percentage_cgpa} />
+              <Field label="Roll Number"      value={viewItem.roll_number} />
+            </div>
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow border text-center">
+            <p className="text-sm text-[#01026E] mb-3 font-medium">Preview</p>
+            {viewItem.doc_file_path
+              ? <img src={`http://localhost:5000/${viewItem.doc_file_path}`} alt="cert" className="rounded-lg shadow-sm mx-auto h-64 object-cover" />
+              : <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 text-sm">No document uploaded</div>
+            }
+          </div>
+        </div>
+        <button onClick={() => setViewItem(null)} className="mt-4 text-sm text-[#01026E] underline">← Back to list</button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Education Details</h3>
+      {list.length === 0 ? (
+        <p className="text-sm text-gray-400 mt-4">No education records found.</p>
+      ) : (
+        <div className="space-y-4 mt-4">
+          {list.map((item) => {
+            const { label, cls } = statusBadge(item.verification_status);
+            return (
+              <div key={item.edu_id}
+                className="flex items-center justify-between border rounded-xl px-4 py-3 shadow-sm hover:shadow-md">
+                <div className="flex items-center gap-3">
+                  <CheckCircle size={18} className="text-green-500" />
+                  <div>
+                    <span className="text-sm font-medium text-[#01026E]">{item.degree || "—"}</span>
+                    <p className="text-xs text-gray-400">{item.institution_name}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${cls}`}>{label}</span>
+                  <Eye size={16} className="cursor-pointer text-gray-500 hover:text-black" onClick={() => setViewItem(item)} />
+                  <Trash2 size={16} className="cursor-pointer text-red-400 hover:text-red-600" onClick={() => console.log("delete", item.edu_id)} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ════════════════ EMPLOYMENT TAB ════════════════ */
+function EmploymentTab({ candId }) {
+  const [list, setList]         = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [viewItem, setViewItem] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/employment`)
+      .then(r => setList(r.data.data || []))
+      .catch(() => setList([]))
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  if (loading) return <Skeleton />;
+
+  if (viewItem) {
+    return (
+      <>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Employment Details</h3>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
+            <div className="grid grid-cols-2 gap-5">
+              <Field label="Employee ID"   value={viewItem.employee_id} />
+              <Field label="Company Name"  value={viewItem.employer_name} />
+              <Field label="Designation"   value={viewItem.designation} />
+              <Field label="Department"    value={viewItem.department} />
+              <Field label="From Date"     value={fmtDate(viewItem.start_date)} />
+              <Field label="To Date"       value={fmtDate(viewItem.end_date)} />
+              <Field label="Annual CTC"    value={viewItem.annual_ctc} />
+              <Field label="HR Name"       value={viewItem.hr_name} />
+              <Field label="HR Email"      value={viewItem.hr_email} />
+              <Field label="HR Phone"      value={viewItem.hr_phone} />
+            </div>
+            {viewItem.reason_for_leaving && (
+              <div className="mt-4">
+                <label className="text-sm text-gray-600">Reason for Leaving</label>
+                <p className="text-sm mt-1 text-gray-700">{viewItem.reason_for_leaving}</p>
+              </div>
+            )}
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow border text-center">
+            <p className="text-sm text-[#01026E] mb-3 font-medium">Preview</p>
+            {viewItem.doc_file_path
+              ? <img src={`http://localhost:5000/${viewItem.doc_file_path}`} alt="doc" className="rounded-lg shadow-sm mx-auto h-64 object-cover" />
+              : <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 text-sm">No document uploaded</div>
+            }
+          </div>
+        </div>
+        <button onClick={() => setViewItem(null)} className="mt-4 text-sm text-[#01026E] underline">← Back to list</button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Employment Details</h3>
+      {list.length === 0 ? (
+        <p className="text-sm text-gray-400 mt-4">No employment records found.</p>
+      ) : (
+        <div className="mt-5 space-y-4">
+          {list.map((item) => {
+            const { label, cls } = statusBadge(item.verification_status);
+            return (
+              <div key={item.emp_id} className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-start">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-base font-semibold text-gray-800">{item.designation || "—"}</h4>
+                    <Pencil size={14} className="text-gray-400 cursor-pointer" />
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${cls}`}>{label}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">{item.employer_name}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {item.is_current === 1 ? "Current" : "Full-Time"} | {fmtDate(item.start_date)} – {fmtDate(item.end_date)}
+                  </p>
+                </div>
+                <div onClick={() => setViewItem(item)} className="flex items-center gap-2 text-[#01026E] cursor-pointer">
+                  <Eye size={16} /><span className="text-sm">View</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ════════════════ BACKGROUND TAB ════════════════ */
+function BackgroundTab({ candId }) {
+  const [bgData, setBgData]     = useState({ criminal: [], drug: [] });
+  const [loading, setLoading]   = useState(true);
+  const [viewItem, setViewItem] = useState(null); // { type, data }
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/background`)
+      .then(r => setBgData(r.data.data || { criminal: [], drug: [] }))
+      .catch(() => setBgData({ criminal: [], drug: [] }))
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  if (loading) return <Skeleton />;
+
+  if (viewItem) {
+    const isCriminal = viewItem.type === "criminal";
+    return (
+      <>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Background Details</h3>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
+            <div className="grid grid-cols-2 gap-5">
+              {isCriminal ? (
+                <>
+                  <Field label="Case Number" value={viewItem.data.case_number} />
+                  <Field label="Court Name"  value={viewItem.data.court_name} />
+                  <div className="col-span-2">
+                    <label className="text-sm text-gray-600 mb-1 block">Case Details</label>
+                    <textarea className="w-full border rounded-lg px-3 py-2 text-sm h-28 bg-gray-50"
+                      readOnly value={viewItem.data.case_details || ""} />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Field label="Test Centre" value={viewItem.data.test_centre} />
+                  <Field label="Test Date"   value={fmtDate(viewItem.data.test_date)} />
+                </>
+              )}
+            </div>
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow border text-center">
+            <p className="text-sm text-[#01026E] mb-3 font-medium">Preview</p>
+            {viewItem.data.doc_file_path
+              ? <img src={`http://localhost:5000/${viewItem.data.doc_file_path}`} className="rounded-lg shadow-sm mx-auto h-64 object-cover" />
+              : <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 text-sm">No document uploaded</div>
+            }
+          </div>
+        </div>
+        <button onClick={() => setViewItem(null)} className="mt-4 text-sm text-[#01026E] underline">← Back</button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-gray-800">Criminal Record</h3>
+      <div className="mt-4 mb-6 space-y-3">
+        {bgData.criminal.length === 0
+          ? <p className="text-sm text-gray-400">No criminal records found.</p>
+          : bgData.criminal.map((c) => (
+            <div key={c.criminal_id} className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-center">
+              <div>
+                <p className="text-sm font-medium text-gray-800">Case: {c.case_number || "—"}</p>
+                <p className="text-xs text-gray-400 mt-1">{c.court_name || "—"}</p>
+              </div>
+              <div onClick={() => setViewItem({ type: "criminal", data: c })}
+                className="flex items-center gap-2 text-[#01026E] cursor-pointer">
+                <Eye size={16} /><span className="text-sm">View</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-800">Drug Test Report</h3>
+      <div className="mt-4 space-y-3">
+        {bgData.drug.length === 0
+          ? <p className="text-sm text-gray-400">No drug test records found.</p>
+          : bgData.drug.map((d) => (
+            <div key={d.drug_id} className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-center">
+              <div>
+                <p className="text-sm font-medium text-gray-800">Test Centre: {d.test_centre || "—"}</p>
+                <p className="text-xs text-gray-400 mt-1">Date: {fmtDate(d.test_date)}</p>
+              </div>
+              <div onClick={() => setViewItem({ type: "drug", data: d })}
+                className="flex items-center gap-2 text-[#01026E] cursor-pointer">
+                <Eye size={16} /><span className="text-sm">View</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </>
+  );
+}
+
+/* ════════════════ REFERENCE TAB ════════════════ */
+function ReferenceTab({ candId }) {
+  const [refs, setRefs]       = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get(`${BASE}/${candId}/reference`)
+      .then(r => setRefs(r.data.data || []))
+      .catch(() => setRefs([]))
+      .finally(() => setLoading(false));
+  }, [candId]);
+
+  if (loading) return <Skeleton />;
+
+  return (
+    <>
+      <h3 className="text-lg font-semibold text-[#01026E]">Reference Details</h3>
+      {refs.length === 0
+        ? <p className="text-sm text-gray-400 mt-4">No reference records found.</p>
+        : refs.map((ref, i) => (
+          <div key={ref.ref_id}>
+            <h4 className="mt-4 font-medium text-[#01026E]">Reference {i + 1}</h4>
+            <div className="grid grid-cols-2 gap-5 mt-3">
+              <Field label="Name"        value={ref.ref_person_name} />
+              <Field label="Phone"       value={ref.ref_person_phone} />
+              <Field label="Email"       value={ref.ref_email_address} />
+              <Field label="Company"     value={ref.ref_person_company} />
+              <Field label="Designation" value={ref.ref_person_designation} />
+              <Field label="Known Since" value={ref.known_time} />
+            </div>
+          </div>
+        ))
+      }
+    </>
+  );
+}
+
+/* ════════════════════════════════════════════════
+   MAIN COMPONENT
+   ════════════════════════════════════════════════ */
 const EditCandidate = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("Personal");
-  const [showEducationView, setShowEducationView] = useState(false);
-  const [showEmploymentView, setShowEmploymentView] = useState(false);
-  const [backgroundView, setBackgroundView] = useState(null);
+  const [candidateName, setCandidateName] = useState("Candidate");
 
+  /* Load candidate name for header */
+  useEffect(() => {
+    axios.get(`${BASE}/${id}/personal`)
+      .then(r => {
+        if (r.data.data)
+          setCandidateName(`${r.data.data.first_name} ${r.data.data.last_name}`);
+      })
+      .catch(() => {});
+  }, [id]);
 
   const tabs = [
-    { name: "Personal", icon: User },
-    { name: "Address", icon: MapPin },
-    { name: "Identity", icon: IdCard },
-    { name: "Education", icon: GraduationCap },
+    { name: "Personal",   icon: User },
+    { name: "Address",    icon: MapPin },
+    { name: "Identity",   icon: IdCard },
+    { name: "Education",  icon: GraduationCap },
     { name: "Employment", icon: Briefcase },
     { name: "Background", icon: ShieldCheck },
-    { name: "Reference", icon: Users }
+    { name: "Reference",  icon: Users },
   ];
+
+  const renderTab = () => {
+    switch (activeTab) {
+      case "Personal":   return <PersonalTab   candId={id} />;
+      case "Address":    return <AddressTab     candId={id} />;
+      case "Identity":   return <IdentityTab    candId={id} />;
+      case "Education":  return <EducationTab   candId={id} />;
+      case "Employment": return <EmploymentTab  candId={id} />;
+      case "Background": return <BackgroundTab  candId={id} />;
+      case "Reference":  return <ReferenceTab   candId={id} />;
+      default:           return null;
+    }
+  };
 
   return (
     <div className="p-6 max-w-6xl mx-auto bg-[#F4F7FE] min-h-screen">
 
-      {/* Header */}
-      <h2 className="text-xl font-semibold text-gray-800">
-        Edit Candidate Profile
-      </h2>
+      <h2 className="text-xl font-semibold text-gray-800">Edit Candidate Profile</h2>
       <p className="text-sm text-gray-500 mt-1 mb-6">
-        Update Information And Manage Verification Status For Ramesh Kumar Mishra.
+        Update Information And Manage Verification Status For {candidateName}.
       </p>
 
-      {/* Card */}
       <div className="bg-white rounded-xl shadow-md border">
 
         {/* Tabs */}
         <div className="flex items-center gap-6 px-6 py-4 border-b text-sm overflow-x-auto">
-
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.name;
-
             return (
               <button
                 key={tab.name}
                 onClick={() => setActiveTab(tab.name)}
                 className={`flex items-center gap-2 px-4 py-1.5 rounded-full whitespace-nowrap transition ${
-                  isActive
-                    ? "bg-[#01026E] text-white"
-                    : "text-gray-600 hover:text-black"
+                  isActive ? "bg-[#01026E] text-white" : "text-gray-600 hover:text-black"
                 }`}
               >
                 <Icon size={16} />
@@ -76,526 +597,11 @@ const EditCandidate = () => {
               </button>
             );
           })}
-
         </div>
 
-        {/* Content */}
-        <div className="p-6">
+        {/* Tab Content */}
+        <div className="p-6">{renderTab()}</div>
 
-          {/* Only Personal Tab (others can be added later) */}
-          {activeTab === "Personal" && (
-            <>
-              <h3 className="text-lg font-semibold text-gray-800">
-                Personal Information
-              </h3>
-              <p className="text-sm text-gray-500 mb-6">
-                General Profile Details And Contact Information.
-              </p>
-
-              <div className="grid grid-cols-2 gap-5">
-
-                <InputField label="Name" value="Ramesh Kumar Mishra" />
-                <InputField label="Phone no" value="+91 1234567890" />
-
-                <InputField label="Email" value="abcdsew67@mail.com" />
-                <InputField label="Date Of Birth" value="5/10/1998" />
-
-                <InputField label="Function" value="Product" />
-                <InputField label="Tag" value="May Batch" />
-
-              </div>
-            </>
-          )}
-
-        {activeTab === "Address" && (
-            <>
-                {/* Present Address */}
-                <h3 className="text-lg font-semibold text-gray-800">
-                Present Address
-                </h3>
-                <p className="text-sm text-gray-500 mb-6">
-                General Profile Details And Contact Information.
-                </p>
-
-                <div className="grid grid-cols-2 gap-5 mb-8">
-
-                <InputField label="House And Apartment Number" value="G-501" />
-                <InputField label="Pin Code" value="524158" />
-
-                <InputField label="Address Line 1" value="Kula Layout, Sanjib Nagar 3 Rd Phase" />
-                <InputField label="Address Line 2" value="Bingolike, Bangalore" />
-
-                <InputField label="City" value="Bangalore" />
-                <InputField label="State" value="Karnataka" />
-
-                </div>
-
-                {/* Permanent Address */}
-                <h3 className="text-lg font-semibold text-gray-800">
-                Permanent Address
-                </h3>
-
-                <div className="grid grid-cols-2 gap-5">
-
-                <InputField label="House And Apartment Number" value="14 Krishna Avenue" />
-                <InputField label="Pin Code" value="110009" />
-
-                <InputField label="Address Line 1" value="Model Town" />
-                <InputField label="Address Line 2" value="New Delhi" />
-
-                <InputField label="City" value="Delhi" />
-                <InputField label="State" value="Delhi" />
-
-                </div>
-            </>
-            )}
-            {activeTab === "Identity" && (
-            <>
-                <h3 className="text-lg font-semibold text-gray-800">
-                Identity Information
-                </h3>
-                <p className="text-sm text-gray-500 mb-6">
-                General Profile Details And Contact Information.
-                </p>
-
-                <div className="space-y-5">
-
-                {/* Passport */}
-                <div className="border rounded-xl p-4 shadow-sm">
-                    <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-[#01026E]">Passport</h4>
-                    <span className="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">
-                        Verified
-                    </span>
-                    </div>
-
-                    <InputField label="ID Number" value="OFE5214VD80015" />
-                </div>
-
-                {/* PAN Card */}
-                <div className="border rounded-xl p-4 shadow-sm">
-                    <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-[#01026E]">Pan Card</h4>
-                    <span className="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">
-                        Verified
-                    </span>
-                    </div>
-
-                    <InputField label="Card Number" value="JAHPQ6443G" />
-                </div>
-
-                {/* Driving License */}
-                <div className="border rounded-xl p-4 shadow-sm">
-                    <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-[#01026E]">Driving License</h4>
-                    <span className="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">
-                        Verified
-                    </span>
-                    </div>
-
-                    <InputField label="License Number" value="DL-04202000045" />
-                </div>
-
-                {/* Voter ID (NEW FIELD) */}
-                <div className="border rounded-xl p-4 shadow-sm">
-                    <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-[#01026E]">Voter ID</h4>
-                    <span className="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">
-                        Verified
-                    </span>
-                    </div>
-
-                    <InputField label="Voter ID Number" value="XYZ9088271" />
-                </div>
-
-                </div>
-            </>
-            )}
-
-            {activeTab === "Education" && (
-  <>
-    {!showEducationView ? (
-      <>
-        <h3 className="text-lg font-semibold text-gray-800">
-          Education Details
-        </h3>
-
-        <div className="space-y-4 mt-4">
-          {[
-            "Matriculation",
-            "Intermediate",
-            "Graduation",
-            "Post Graduation"
-          ].map((item) => (
-            <div
-              key={item}
-              className="flex items-center justify-between border rounded-xl px-4 py-3 shadow-sm hover:shadow-md"
-            >
-              <div className="flex items-center gap-3">
-                <CheckCircle size={18} className="text-green-500" />
-                <span className="text-sm font-medium text-[#01026E]">
-                  {item}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-4 text-gray-500">
-                <Eye
-                  size={16}
-                  className="cursor-pointer hover:text-black"
-                  onClick={() => setShowEducationView(true)}
-                />
-                <Trash2
-                  size={16}
-                  className="cursor-pointer text-red-500 hover:text-red-600"
-                  onClick={() => {
-                    console.log("Delete clicked:", item);
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </>
-    ) : (
-      <>
-        {/* 🔥 EDUCATION DETAILS VIEW */}
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Education Details
-        </h3>
-
-        <div className="grid grid-cols-3 gap-6">
-
-          {/* LEFT FORM */}
-          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
-            <div className="grid grid-cols-2 gap-5">
-
-              <InputField label="Institute Name" value="Noida Group Of Institutions" />
-              <InputField label="Degree" value="M tech" />
-
-              <InputField label="Start Date" value="25/5/2018" />
-              <InputField label="End Date" value="06/04/2022" />
-
-              <InputField label="Course" value="Computer Science Engineering" />
-              <InputField label="Percentage/CGPA" value="8.9 CGPA" />
-
-            </div>
-          </div>
-
-          {/* RIGHT PREVIEW */}
-          <div className="bg-white p-4 rounded-xl shadow border text-center">
-            <p className="text-sm text-[#01026E] mb-3 font-medium">
-              Preview
-            </p>
-
-            <img
-              src="https://images.unsplash.com/photo-1586281380349-632531db7ed4"
-              alt="certificate"
-              className="rounded-lg shadow-sm mx-auto h-64 object-cover"
-            />
-          </div>
-
-        </div>
-      </>
-    )}
-  </>
-)}
-            {activeTab === "Employment" && (
-  <>
-    {!showEmploymentView ? (
-      <>
-        <h3 className="text-lg font-semibold text-gray-800">
-          Employment Details
-        </h3>
-
-        <div className="mt-5">
-          <div className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-start">
-
-            {/* Left */}
-            <div>
-              <div className="flex items-center gap-3">
-                <h4 className="text-base font-semibold text-gray-800">
-                  UI/UX Designer
-                </h4>
-                <Pencil size={16} className="text-gray-500 cursor-pointer" />
-              </div>
-
-              <p className="text-sm text-gray-600 mt-1">
-                DQnex Consultant
-              </p>
-
-              <p className="text-xs text-gray-400 mt-1">
-                Full-Time | May 2024 To Aug 2026 (18 Months)
-              </p>
-
-              <p className="text-xs text-gray-400 mt-2">
-                Responsible UI UX Designer And Web Or Application Designer
-              </p>
-            </div>
-
-            {/* Right */}
-            <div
-              onClick={() => setShowEmploymentView(true)}
-              className="flex items-center gap-2 text-[#01026E] cursor-pointer"
-            >
-              <Eye size={16} />
-              <span className="text-sm">view</span>
-            </div>
-
-          </div>
-        </div>
-      </>
-    ) : (
-      <>
-        {/* 🔥 EMPLOYMENT DETAILS VIEW */}
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Employment Details
-        </h3>
-
-        <div className="grid grid-cols-3 gap-6">
-
-          {/* LEFT FORM */}
-          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
-            <div className="grid grid-cols-2 gap-5">
-
-              <InputField label="Employee ID" value="GAD54217899" />
-              <InputField label="Company Name" value="DQnex Private LTD" />
-
-              <InputField label="From Date" value="25/5/2018" />
-              <InputField label="To Date" value="06/04/2024" />
-
-              <InputField label="Designation" value="UI/UX Designer" />
-              <InputField label="Drawn CTC" value="9 LPA" />
-
-            </div>
-          </div>
-
-          {/* RIGHT PREVIEW */}
-          <div className="bg-white p-4 rounded-xl shadow border text-center">
-            <p className="text-sm text-[#01026E] mb-3 font-medium">
-              Preview
-            </p>
-
-            <img
-              src="https://images.unsplash.com/photo-1586281380349-632531db7ed4"
-              className="rounded-lg shadow-sm mx-auto h-64 object-cover"
-            />
-          </div>
-
-        </div>
-      </>
-    )}
-  </>
-)}
-
-                {activeTab === "Background" && (
-  <>
-    {!backgroundView ? (
-      <>
-        {/* ===== LIST VIEW ===== */}
-
-        {/* Criminal */}
-        <h3 className="text-lg font-semibold text-gray-800">
-          Criminal Record
-        </h3>
-
-        <div className="mt-4 mb-6">
-          <div className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-center">
-            <div>
-              <p className="text-sm font-medium text-gray-800">
-                Criminal Record Exist
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                Case Number 1547254
-              </p>
-            </div>
-
-            <div
-              onClick={() => setBackgroundView("criminal")}
-              className="flex items-center gap-2 text-[#01026E] cursor-pointer"
-            >
-              <Eye size={16} />
-              <span className="text-sm">View</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Drug */}
-        <h3 className="text-lg font-semibold text-gray-800">
-          Drug Test Report
-        </h3>
-
-        <div className="mt-4">
-          <div className="bg-white border rounded-xl shadow-sm p-5 flex justify-between items-center">
-            <div>
-              <p className="text-sm font-medium text-gray-800">
-                Drug Test Report Available
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                Report Number 154872031
-              </p>
-            </div>
-
-           <div
-             onClick={() => setBackgroundView("drug")}
-             className="flex items-center gap-2 text-[#01026E] cursor-pointer"
-           >
-             <Eye size={16} />
-             <span className="text-sm">View</span>
-           </div>
-          </div>
-        </div>
-      </>
-    ) : (
-      <>
-        {/* ===== DETAIL VIEW ===== */}
-
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Background Details
-        </h3>
-
-        <div className="grid grid-cols-3 gap-6">
-
-          {/* LEFT FORM */}
-          <div className="col-span-2 bg-white p-5 rounded-xl shadow border">
-            <div className="grid grid-cols-2 gap-5">
-
-              <InputField label="Name" value="Ramesh Kumar Mishra" />
-
-              <InputField
-                label={backgroundView === "criminal" ? "Case No" : "Test Id"}
-                value={backgroundView === "criminal" ? "BAN472-98201" : "15498201"}
-              />
-
-              <div className="col-span-2">
-                <label className="text-sm text-gray-600 mb-1 block">
-                  {backgroundView === "criminal" ? "Case Details" : "Test Details"}
-                </label>
-
-                <textarea
-                  className="w-full border rounded-lg px-3 py-2 text-sm h-28"
-                  defaultValue={
-                    backgroundView === "criminal"
-                      ? "On [date], the accused committed offense... case under trial."
-                      : "The drug test ensures a safe workplace..."
-                  }
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* RIGHT PREVIEW */}
-          <div className="bg-white p-4 rounded-xl shadow border text-center">
-            <p className="text-sm text-[#01026E] mb-3 font-medium">
-              Preview
-            </p>
-
-            <img
-              src="https://images.unsplash.com/photo-1586281380349-632531db7ed4"
-              className="rounded-lg shadow-sm mx-auto h-64 object-cover"
-            />
-          </div>
-
-        </div>
-      </>
-    )}
-  </>
-)}
-                    {activeTab === "Reference" && (
-                    <>
-                        <h3 className="text-lg font-semibold text-[#01026E]">
-                        Reference Details
-                        </h3>
-
-                        {/* Reference 1 */}
-                        <h4 className="mt-4 font-medium text-[#01026E]">Reference 1</h4>
-
-                        <div className="grid grid-cols-2 gap-5 mt-3">
-
-                        <InputField label="Name *" value="Varun Kummel" />
-                        <InputField label="Phone no *" value="+91 1234567890" />
-
-                        <InputField label="Email *" value="abcsdew67@mail.com" />
-                        <InputField label="Gender *" value="Male" />
-
-                        <InputField label="Institute Name *" value="Brindavan College of Engineering" />
-                        <InputField label="Designation *" value="Director" />
-
-                        </div>
-
-                        {/* Reference 2 */}
-                        <h4 className="mt-6 font-medium text-[#01026E]">Reference 2</h4>
-
-                        <div className="grid grid-cols-2 gap-5 mt-3">
-
-                        <InputField label="Name *" value="Manisha Dixit" />
-                        <InputField label="Phone no *" value="+91 1234567890" />
-
-                        <InputField label="Email *" value="manishad5487@gmail.com" />
-
-                        {/* Dropdown for Gender */}
-                        <div>
-                            <label className="block text-sm text-gray-600 mb-1">
-                            Gender *
-                            </label>
-                            <select className="w-full border rounded-lg px-3 py-2 text-sm">
-                            <option>Female</option>
-                            <option>Male</option>
-                            </select>
-                        </div>
-
-                        <InputField label="Institute Name *" value="Brindavan College of Engineering" />
-                        <InputField label="Designation *" value="Professor" />
-
-                        </div>
-                    </>
-                    )}
-
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-8">
-            
-            <p className="text-xs text-gray-400">
-              Last edited by Admin on Oct 24, 2023
-            </p>
-
-            <div className="flex gap-3">
-
-  {/* Cancel → go back from education view */}
-  <button
-  onClick={() => {
-  if (showEducationView) {
-    setShowEducationView(false);
-  } else if (showEmploymentView) {
-    setShowEmploymentView(false);
-  } else if (backgroundView) {
-    setBackgroundView(null);
-  } else {
-    console.log("Go back or reset form");
-  }
-}}
->
-  Cancel
-</button>
-
-  {/* Save → works for both normal + education */}
-  <button
-    onClick={() => {
-      if (showEducationView) {
-        console.log("Submit Education Data");
-      } else {
-        console.log("Save Full Profile");
-      }
-    }}
-    className="px-5 py-2 bg-[#01026E] text-white rounded-lg text-sm"
-  >
-    Save Profile Details
-  </button>
-
-</div>
-
-          </div>
-
-        </div>
       </div>
     </div>
   );

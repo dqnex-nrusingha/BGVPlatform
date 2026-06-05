@@ -78,13 +78,13 @@ function HRRoutes() {
 
         {/* VIEW */}
         <Route
-          path="view"
+          path="view/:id"
           element={<CandidateDetails />}
         />
 
         {/* EDIT */}
         <Route
-          path="edit"
+          path="edit-candidate/:id"
           element={<EditCandidate />}
         />
         <Route path="analytics" element={<Analytics />} />

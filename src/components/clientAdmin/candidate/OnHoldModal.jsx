@@ -1,20 +1,45 @@
 import { useState } from "react";
 import { Square } from "lucide-react";
+import axios from "axios";
 
-function OnHoldModal({ candidate, onClose }) {
+function OnHoldModal({ candidate, onClose, onSuccess }) {
   const [reason, setReason] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleOnHold = async () => {
+    if (!reason.trim()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/candidates/on_hold/${candidate.cand_id}`,
+        { reason }
+      );
+
+      setIsSuccess(true);
+      // Table refresh ke liye callback
+      if (onSuccess) onSuccess();
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // ── SUCCESS SCREEN ─────────────────────────────────
   if (isSuccess) {
     return (
-      <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-9999">
+      <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div className="bg-white rounded-2xl w-120 overflow-hidden shadow-2xl text-center">
 
           {/* ORANGE WAVE TOP */}
           <div className="relative bg-orange-500 h-44 flex items-center justify-center">
             <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[50%]" />
-            {/* PAUSE ICON BOX */}
             <div className="relative z-10 mb-2 w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-md">
               <Square size={26} className="text-orange-500 fill-orange-500" />
             </div>
@@ -23,9 +48,11 @@ function OnHoldModal({ candidate, onClose }) {
           {/* CONTENT */}
           <div className="px-8 py-6">
             <h2 className="text-orange-500 text-lg font-bold mb-3 leading-7">
-              "Candidate {candidate?.candidateId} Has Been
-              <br />
-              Successfully Placed On Hold."
+              Candidate{" "}
+              <span className="font-bold">
+                {candidate?.first_name} {candidate?.last_name}
+              </span>{" "}
+              Has Been Successfully Placed On Hold.
             </h2>
             <p className="text-sm text-gray-500 leading-6">
               This Will Pause The Candidate's Progress In The
@@ -47,16 +74,17 @@ function OnHoldModal({ candidate, onClose }) {
 
   // ── CONFIRM SCREEN ─────────────────────────────────
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-9999">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-2xl w-155 px-12 py-10">
 
         {/* TITLE */}
         <h2 className="text-2xl font-semibold text-center mb-6 leading-9">
-          "Are You Sure You Want To Place
+          Are You Sure You Want To Place
           <br />
-          Candidate{" "}
-          <span className="font-bold">{candidate?.candidateId}</span>{" "}
-          <span className="text-orange-500 font-bold">On Hold</span>"
+          <span className="font-bold">
+            {candidate?.first_name} {candidate?.last_name}
+          </span>{" "}
+          <span className="text-orange-500 font-bold">On Hold</span>?
         </h2>
 
         {/* REASON FIELD */}
@@ -76,24 +104,29 @@ function OnHoldModal({ candidate, onClose }) {
           <p className="text-xs text-red-500 mt-2">Reason is required</p>
         )}
 
+        {error && (
+          <p className="text-xs text-red-500 mt-2">{error}</p>
+        )}
+
         {/* BUTTONS */}
         <div className="flex justify-center gap-4 mt-8">
           <button
             onClick={onClose}
-            className="px-8 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium transition"
+            disabled={loading}
+            className="px-8 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium transition disabled:opacity-60"
           >
             Cancel
           </button>
           <button
-            disabled={!reason.trim()}
-            onClick={() => setIsSuccess(true)}
+            disabled={!reason.trim() || loading}
+            onClick={handleOnHold}
             className={`px-8 py-2.5 border rounded-xl text-sm font-medium transition ${
-              reason.trim()
+              reason.trim() && !loading
                 ? "border-orange-400 text-orange-500 hover:bg-orange-50"
                 : "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed"
             }`}
           >
-            Place On Hold
+            {loading ? "Placing On Hold..." : "Place On Hold"}
           </button>
         </div>
 
